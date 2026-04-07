@@ -50,6 +50,29 @@ const (
 	// EventsIndex is the Elasticsearch index for log events
 	EventsIndex = "events"
 
+	// DrwaDenialsIndex is the Elasticsearch index for DRWA regulated transfer denial history
+	DrwaDenialsIndex = "drwa-denials"
+	// DrwaHolderComplianceIndex is the Elasticsearch index for DRWA holder compliance update history
+	DrwaHolderComplianceIndex = "drwa-holder-compliance"
+	// DrwaAttestationsIndex is the Elasticsearch index for DRWA auditor attestation history
+	DrwaAttestationsIndex = "drwa-attestations"
+	// DrwaTokenPoliciesIndex is the Elasticsearch index for DRWA token policy history
+	DrwaTokenPoliciesIndex = "drwa-token-policies"
+
+	// DrwaDenialsPolicy is the Elasticsearch policy for DRWA denial records
+	DrwaDenialsPolicy = "drwa-denials_policy"
+	// DrwaHolderCompliancePolicy is the Elasticsearch policy for DRWA holder compliance records
+	DrwaHolderCompliancePolicy = "drwa-holder-compliance_policy"
+	// DrwaAttestationsPolicy is the Elasticsearch policy for DRWA attestation records
+	DrwaAttestationsPolicy = "drwa-attestations_policy"
+	// DrwaTokenPoliciesPolicy is the Elasticsearch policy for DRWA token policy history records
+	DrwaTokenPoliciesPolicy = "drwa-token-policies_policy"
+
+	// T-41: MrvProofsIndex is the Elasticsearch index for MRV proof materialization records
+	MrvProofsIndex = "mrv-proofs"
+	// MrvProofsPolicy is the Elasticsearch policy for MRV proof records
+	MrvProofsPolicy = "mrv-proofs_policy"
+
 	// TransactionsPolicy is the Elasticsearch policy for the transactions
 	TransactionsPolicy = "transactions_policy"
 	// BlockPolicy is the Elasticsearch policy for the blocks

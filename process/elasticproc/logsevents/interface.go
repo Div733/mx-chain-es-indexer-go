@@ -26,10 +26,14 @@ type argsProcessEvent struct {
 }
 
 type argOutputProcessEvent struct {
-	tokenInfo     *data.TokenInfo
-	delegator     *data.Delegator
-	updatePropNFT *data.NFTDataUpdate
-	processed     bool
+	tokenInfo            *data.TokenInfo
+	delegator            *data.Delegator
+	updatePropNFT        *data.NFTDataUpdate
+	drwaDenial           *data.DrwaDenialRecord
+	drwaHolderCompliance *data.DrwaHolderComplianceRecord
+	drwaAttestation      *data.DrwaAttestationRecord
+	drwaTokenPolicy      *data.DrwaTokenPolicyRecord
+	processed            bool
 }
 
 type eventsProcessor interface {

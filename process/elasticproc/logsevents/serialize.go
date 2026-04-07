@@ -200,6 +200,9 @@ func (*logsAndEventsProcessor) SerializeTokens(tokens []*data.TokenInfo, updateN
 }
 
 func serializeToken(tokenData *data.TokenInfo, index string) ([]byte, []byte, error) {
+	if tokenData.DrwaUpdate {
+		return serializeTokenDrwa(tokenData, index)
+	}
 	if tokenData.TransferOwnership {
 		return serializeTokenTransferOwnership(tokenData, index)
 	}
@@ -226,6 +229,35 @@ func serializeToken(tokenData *data.TokenInfo, index string) ([]byte, []byte, er
 		`"params": {"token": %s}},`+
 		`"upsert": %s}`,
 		converters.FormatPainlessSource(codeToExecute), string(serializedTokenData), string(serializedTokenData))
+
+	return meta, []byte(serializedDataStr), nil
+}
+
+func serializeTokenDrwa(tokenData *data.TokenInfo, index string) ([]byte, []byte, error) {
+	meta := []byte(fmt.Sprintf(`{ "update" : { "_index":"%s", "_id" : "%s" } }%s`, index, converters.JsonEscape(tokenData.Token), "\n"))
+	serializedDrwa, err := json.Marshal(tokenData.Drwa)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	codeToExecute := `
+		if (!ctx._source.containsKey('drwa') || ctx._source.drwa == null) {
+			ctx._source.drwa = params.drwa
+		} else {
+			ctx._source.drwa.putAll(params.drwa)
+		}
+`
+	serializedDataStr := fmt.Sprintf(`{"script": {`+
+		`"source": "%s",`+
+		`"lang": "painless",`+
+		`"params": {"drwa": %s}},`+
+		`"upsert": {"identifier": "%s", "token": "%s", "drwa": %s}}`,
+		converters.FormatPainlessSource(codeToExecute),
+		string(serializedDrwa),
+		converters.JsonEscape(tokenData.Token),
+		converters.JsonEscape(tokenData.Token),
+		string(serializedDrwa),
+	)
 
 	return meta, []byte(serializedDataStr), nil
 }

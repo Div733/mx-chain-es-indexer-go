@@ -110,6 +110,33 @@ func TestSerializeTokens(t *testing.T) {
 	require.Equal(t, expectedRes, buffSlice.Buffers()[0].String())
 }
 
+func TestSerializeTokensDrwaUpdate(t *testing.T) {
+	t.Parallel()
+
+	tokens := []*data.TokenInfo{
+		{
+			Token: "HOTEL-1234",
+			Drwa: &data.DrwaTokenInfo{
+				Regulated:          true,
+				PolicyID:           "policy-hotel-1",
+				TokenPolicyVersion: 3,
+				GlobalPause:        true,
+				StrictAuditorMode:  false,
+			},
+			DrwaUpdate: true,
+		},
+	}
+
+	buffSlice := data.NewBufferSlice(data.DefaultMaxBulkSize)
+	err := (&logsAndEventsProcessor{}).SerializeTokens(tokens, nil, buffSlice, "tokens")
+	require.Nil(t, err)
+	require.Equal(t, 1, len(buffSlice.Buffers()))
+	require.Contains(t, buffSlice.Buffers()[0].String(), `"policyId":"policy-hotel-1"`)
+	require.Contains(t, buffSlice.Buffers()[0].String(), `"tokenPolicyVersion":3`)
+	require.Contains(t, buffSlice.Buffers()[0].String(), `"globalPause":true`)
+	require.Contains(t, buffSlice.Buffers()[0].String(), `ctx._source.drwa.putAll(params.drwa)`)
+}
+
 func TestLogsAndEventsProcessor_SerializeDelegators(t *testing.T) {
 	t.Parallel()
 

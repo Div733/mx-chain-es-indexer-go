@@ -116,6 +116,11 @@ type DBLogsAndEventsHandler interface {
 		index string,
 	) error
 	PrepareDelegatorsQueryInCaseOfRevert(timestampMs uint64) *bytes.Buffer
+
+	SerializeDRWADenials(records []*data.DrwaDenialRecord, buffSlice *data.BufferSlice, index string) error
+	SerializeDRWAHolderCompliance(records []*data.DrwaHolderComplianceRecord, buffSlice *data.BufferSlice, index string) error
+	SerializeDRWAAttestations(records []*data.DrwaAttestationRecord, buffSlice *data.BufferSlice, index string) error
+	SerializeDRWATokenPolicies(records []*data.DrwaTokenPolicyRecord, buffSlice *data.BufferSlice, index string) error
 }
 
 // OperationsHandler defines the actions that an operations' handler should do

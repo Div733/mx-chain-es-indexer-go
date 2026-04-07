@@ -424,87 +424,103 @@ func (ei *elasticProcessor) SaveTransactions(obh *outport.OutportBlockWithHeader
 	logsData := ei.logsAndEventsProc.ExtractDataFromLogs(obh.TransactionPool.Logs, preparedResults, headerTimestamp, obh.Header.GetShardID(), obh.NumberOfShards, obh.BlockData.TimestampMs)
 
 	buffers := data.NewBufferSlice(ei.bulkRequestMaxSize)
-	err := ei.indexTransactions(preparedResults.Transactions, logsData.TxHashStatusInfo, obh.Header, buffers)
-	if err != nil {
-		return err
-	}
 
-	err = ei.prepareAndIndexOperations(preparedResults.Transactions, logsData.TxHashStatusInfo, obh.Header, preparedResults.ScResults, buffers, ei.isImportDB())
-	if err != nil {
+	if err := ei.indexTransactions(preparedResults.Transactions, logsData.TxHashStatusInfo, obh.Header, buffers); err != nil {
 		return err
 	}
-
-	err = ei.indexTransactionsFeeData(preparedResults.TxHashFee, buffers)
-	if err != nil {
+	if err := ei.prepareAndIndexOperations(preparedResults.Transactions, logsData.TxHashStatusInfo, obh.Header, preparedResults.ScResults, buffers, ei.isImportDB()); err != nil {
 		return err
 	}
-
-	err = ei.indexNFTCreateInfo(logsData.Tokens, obh.AlteredAccounts, buffers, obh.ShardID)
-	if err != nil {
+	if err := ei.indexTransactionsFeeData(preparedResults.TxHashFee, buffers); err != nil {
 		return err
 	}
-
-	err = ei.indexLogs(logsData.DBLogs, buffers)
-	if err != nil {
+	if err := ei.indexScResults(preparedResults.ScResults, buffers); err != nil {
 		return err
 	}
-
-	err = ei.indexEvents(logsData.DBEvents, buffers)
-	if err != nil {
+	if err := ei.indexReceipts(preparedResults.Receipts, buffers); err != nil {
 		return err
 	}
-
-	err = ei.indexScResults(preparedResults.ScResults, buffers)
-	if err != nil {
-		return err
-	}
-
-	err = ei.indexReceipts(preparedResults.Receipts, buffers)
-	if err != nil {
-		return err
-	}
-
-	tagsCount := tags.NewTagsCount()
-	err = ei.indexAlteredAccounts(logsData.NFTsDataUpdates, obh.AlteredAccounts, buffers, tagsCount, obh.Header.GetShardID(), obh.BlockData.TimestampMs)
-	if err != nil {
-		return err
-	}
-
-	err = ei.prepareAndIndexTagsCount(tagsCount, buffers)
-	if err != nil {
-		return err
-	}
-
-	err = ei.indexTokens(logsData.TokensInfo, logsData.NFTsDataUpdates, buffers, obh.ShardID)
-	if err != nil {
-		return err
-	}
-
-	err = ei.prepareAndIndexDelegators(logsData.Delegators, buffers)
-	if err != nil {
-		return err
-	}
-
-	err = ei.indexNFTBurnInfo(logsData.TokensSupply, buffers, obh.ShardID)
-	if err != nil {
-		return err
-	}
-
-	err = ei.prepareAndIndexRolesData(logsData.TokenRolesAndProperties, buffers, elasticIndexer.TokensIndex)
-	if err != nil {
-		return err
-	}
-	err = ei.prepareAndIndexRolesData(logsData.TokenRolesAndProperties, buffers, elasticIndexer.ESDTsIndex)
-	if err != nil {
-		return err
-	}
-
-	err = ei.indexScDeploys(logsData.ScDeploys, logsData.ChangeOwnerOperations, buffers)
-	if err != nil {
+	if err := ei.indexLogsData(logsData, obh, buffers); err != nil {
 		return err
 	}
 
 	return ei.doBulkRequests("", buffers.Buffers(), obh.ShardID)
+}
+
+func (ei *elasticProcessor) indexLogsData(logsData *data.PreparedLogsResults, obh *outport.OutportBlockWithHeader, buffers *data.BufferSlice) error {
+	tagsCount := tags.NewTagsCount()
+
+	if err := ei.indexNFTCreateInfo(logsData.Tokens, obh.AlteredAccounts, buffers, obh.ShardID); err != nil {
+		return err
+	}
+	if err := ei.indexLogs(logsData.DBLogs, buffers); err != nil {
+		return err
+	}
+	if err := ei.indexEvents(logsData.DBEvents, buffers); err != nil {
+		return err
+	}
+	if err := ei.indexAlteredAccounts(logsData.NFTsDataUpdates, obh.AlteredAccounts, buffers, tagsCount, obh.Header.GetShardID(), obh.BlockData.TimestampMs); err != nil {
+		return err
+	}
+	if err := ei.prepareAndIndexTagsCount(tagsCount, buffers); err != nil {
+		return err
+	}
+	if err := ei.indexTokens(logsData.TokensInfo, logsData.NFTsDataUpdates, buffers, obh.ShardID); err != nil {
+		return err
+	}
+	if err := ei.prepareAndIndexDelegators(logsData.Delegators, buffers); err != nil {
+		return err
+	}
+	if err := ei.indexNFTBurnInfo(logsData.TokensSupply, buffers, obh.ShardID); err != nil {
+		return err
+	}
+	if err := ei.prepareAndIndexRolesData(logsData.TokenRolesAndProperties, buffers, elasticIndexer.TokensIndex); err != nil {
+		return err
+	}
+	if err := ei.prepareAndIndexRolesData(logsData.TokenRolesAndProperties, buffers, elasticIndexer.ESDTsIndex); err != nil {
+		return err
+	}
+	if err := ei.indexScDeploys(logsData.ScDeploys, logsData.ChangeOwnerOperations, buffers); err != nil {
+		return err
+	}
+	if err := ei.indexDRWADenials(logsData.DrwaDenials, buffers); err != nil {
+		return err
+	}
+	if err := ei.indexDRWAHolderCompliance(logsData.DrwaHolderCompliance, buffers); err != nil {
+		return err
+	}
+	if err := ei.indexDRWAAttestations(logsData.DrwaAttestations, buffers); err != nil {
+		return err
+	}
+	return ei.indexDRWATokenPolicies(logsData.DrwaTokenPolicies, buffers)
+}
+
+func (ei *elasticProcessor) indexDRWADenials(records []*data.DrwaDenialRecord, buffSlice *data.BufferSlice) error {
+	if len(records) == 0 || !ei.isIndexEnabled(elasticIndexer.DrwaDenialsIndex) {
+		return nil
+	}
+	return ei.logsAndEventsProc.SerializeDRWADenials(records, buffSlice, elasticIndexer.DrwaDenialsIndex)
+}
+
+func (ei *elasticProcessor) indexDRWAHolderCompliance(records []*data.DrwaHolderComplianceRecord, buffSlice *data.BufferSlice) error {
+	if len(records) == 0 || !ei.isIndexEnabled(elasticIndexer.DrwaHolderComplianceIndex) {
+		return nil
+	}
+	return ei.logsAndEventsProc.SerializeDRWAHolderCompliance(records, buffSlice, elasticIndexer.DrwaHolderComplianceIndex)
+}
+
+func (ei *elasticProcessor) indexDRWAAttestations(records []*data.DrwaAttestationRecord, buffSlice *data.BufferSlice) error {
+	if len(records) == 0 || !ei.isIndexEnabled(elasticIndexer.DrwaAttestationsIndex) {
+		return nil
+	}
+	return ei.logsAndEventsProc.SerializeDRWAAttestations(records, buffSlice, elasticIndexer.DrwaAttestationsIndex)
+}
+
+func (ei *elasticProcessor) indexDRWATokenPolicies(records []*data.DrwaTokenPolicyRecord, buffSlice *data.BufferSlice) error {
+	if len(records) == 0 || !ei.isIndexEnabled(elasticIndexer.DrwaTokenPoliciesIndex) {
+		return nil
+	}
+	return ei.logsAndEventsProc.SerializeDRWATokenPolicies(records, buffSlice, elasticIndexer.DrwaTokenPoliciesIndex)
 }
 
 func (ei *elasticProcessor) prepareAndIndexRolesData(tokenRolesAndProperties *tokeninfo.TokenRolesAndProperties, buffSlice *data.BufferSlice, index string) error {

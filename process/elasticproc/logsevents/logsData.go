@@ -20,6 +20,10 @@ type logsData struct {
 	tokensInfo              []*data.TokenInfo
 	nftsDataUpdates         []*data.NFTDataUpdate
 	tokenRolesAndProperties *tokeninfo.TokenRolesAndProperties
+	drwaDenials             []*data.DrwaDenialRecord
+	drwaHolderCompliance    []*data.DrwaHolderComplianceRecord
+	drwaAttestations        []*data.DrwaAttestationRecord
+	drwaTokenPolicies       []*data.DrwaTokenPolicyRecord
 }
 
 func newLogsData(
@@ -43,6 +47,10 @@ func newLogsData(
 	ld.tokenRolesAndProperties = tokeninfo.NewTokenRolesAndProperties()
 	ld.txHashStatusInfoProc = newTxHashStatusInfoProcessor()
 	ld.timestampMs = timestampMs
+	ld.drwaDenials = make([]*data.DrwaDenialRecord, 0)
+	ld.drwaHolderCompliance = make([]*data.DrwaHolderComplianceRecord, 0)
+	ld.drwaAttestations = make([]*data.DrwaAttestationRecord, 0)
+	ld.drwaTokenPolicies = make([]*data.DrwaTokenPolicyRecord, 0)
 
 	return ld
 }

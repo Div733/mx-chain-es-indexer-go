@@ -67,6 +67,7 @@ func checkArgsLogsAndEventsProcessor(args ArgsLogsAndEventsProcessor) error {
 func createEventsProcessors(args ArgsLogsAndEventsProcessor) []eventsProcessor {
 	nftsProc := newNFTsProcessor(args.PubKeyConverter, args.Marshalizer)
 	scDeploysProc := newSCDeploysProcessor(args.PubKeyConverter)
+	drwaProc := newDRWAEventsProcessor()
 	informativeProc := newInformativeLogsProcessor()
 	updateNFTProc := newNFTsPropertiesProcessor(args.PubKeyConverter, args.Marshalizer)
 	esdtPropProc := newEsdtPropertiesProcessor(args.PubKeyConverter)
@@ -75,6 +76,7 @@ func createEventsProcessors(args ArgsLogsAndEventsProcessor) []eventsProcessor {
 
 	eventsProcs := []eventsProcessor{
 		scDeploysProc,
+		drwaProc,
 		informativeProc,
 		updateNFTProc,
 		esdtPropProc,
@@ -130,6 +132,10 @@ func (lep *logsAndEventsProcessor) ExtractDataFromLogs(
 		ChangeOwnerOperations:   lgData.changeOwnerOperations,
 		DBLogs:                  dbLogs,
 		DBEvents:                dbEvents,
+		DrwaDenials:             lgData.drwaDenials,
+		DrwaHolderCompliance:    lgData.drwaHolderCompliance,
+		DrwaAttestations:        lgData.drwaAttestations,
+		DrwaTokenPolicies:       lgData.drwaTokenPolicies,
 	}
 }
 
@@ -162,15 +168,8 @@ func (lep *logsAndEventsProcessor) processEvent(lgData *logsData, logHashHexEnco
 			selfShardID:             shardID,
 			numOfShards:             numOfShards,
 		})
-		if res.tokenInfo != nil {
-			lgData.tokensInfo = append(lgData.tokensInfo, res.tokenInfo)
-		}
-		if res.delegator != nil {
-			lgData.delegators[res.delegator.Address+res.delegator.Contract] = res.delegator
-		}
-		if res.updatePropNFT != nil {
-			lgData.nftsDataUpdates = append(lgData.nftsDataUpdates, res.updatePropNFT)
-		}
+
+		lep.collectEventResults(lgData, logHashHexEncoded, res)
 
 		tx, ok := lgData.txsMap[logHashHexEncoded]
 		if ok {
@@ -186,6 +185,30 @@ func (lep *logsAndEventsProcessor) processEvent(lgData *logsData, logHashHexEnco
 		if res.processed {
 			return
 		}
+	}
+}
+
+func (lep *logsAndEventsProcessor) collectEventResults(lgData *logsData, _ string, res argOutputProcessEvent) {
+	if res.tokenInfo != nil {
+		lgData.tokensInfo = append(lgData.tokensInfo, res.tokenInfo)
+	}
+	if res.delegator != nil {
+		lgData.delegators[res.delegator.Address+res.delegator.Contract] = res.delegator
+	}
+	if res.updatePropNFT != nil {
+		lgData.nftsDataUpdates = append(lgData.nftsDataUpdates, res.updatePropNFT)
+	}
+	if res.drwaDenial != nil {
+		lgData.drwaDenials = append(lgData.drwaDenials, res.drwaDenial)
+	}
+	if res.drwaHolderCompliance != nil {
+		lgData.drwaHolderCompliance = append(lgData.drwaHolderCompliance, res.drwaHolderCompliance)
+	}
+	if res.drwaAttestation != nil {
+		lgData.drwaAttestations = append(lgData.drwaAttestations, res.drwaAttestation)
+	}
+	if res.drwaTokenPolicy != nil {
+		lgData.drwaTokenPolicies = append(lgData.drwaTokenPolicies, res.drwaTokenPolicy)
 	}
 }
 

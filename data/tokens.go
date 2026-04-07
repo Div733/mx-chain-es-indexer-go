@@ -58,9 +58,20 @@ type TokenInfo struct {
 	TimestampMs       uint64           `json:"timestampMs,omitempty"`
 	Data              *TokenMetaData   `json:"data,omitempty"`
 	OwnersHistory     []*OwnerData     `json:"ownersHistory,omitempty"`
+	Drwa              *DrwaTokenInfo   `json:"drwa,omitempty"`
 	TransferOwnership bool             `json:"-"`
 	ChangeToDynamic   bool             `json:"-"`
+	DrwaUpdate        bool             `json:"-"`
 	Properties        *TokenProperties `json:"properties,omitempty"`
+}
+
+// DrwaTokenInfo holds DRWA token-level materialized fields for the tokens index.
+type DrwaTokenInfo struct {
+	Regulated         bool   `json:"regulated,omitempty"`
+	PolicyID          string `json:"policyId,omitempty"`
+	TokenPolicyVersion uint64 `json:"tokenPolicyVersion,omitempty"`
+	GlobalPause       bool   `json:"globalPause,omitempty"`
+	StrictAuditorMode bool   `json:"strictAuditorMode,omitempty"`
 }
 
 // TokenProperties is a structure that is needed to store all properties of a token
