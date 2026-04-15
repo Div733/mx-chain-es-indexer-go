@@ -28,8 +28,11 @@ func (op *operationsProcessor) ProcessTransactionsAndSCRs(
 	newTxsSlice := make([]*data.Transaction, 0)
 	newScrsSlice := make([]*data.ScResult, 0)
 
-	for idx, tx := range txs {
-		if !op.shouldIndex(txs[idx].ReceiverShard, isImportDB, selfShardID) {
+	for _, tx := range txs {
+		if tx == nil {
+			continue
+		}
+		if !op.shouldIndex(tx.ReceiverShard, isImportDB, selfShardID) {
 			continue
 		}
 
@@ -40,6 +43,9 @@ func (op *operationsProcessor) ProcessTransactionsAndSCRs(
 	}
 
 	for idx := 0; idx < len(scrs); idx++ {
+		if scrs[idx] == nil {
+			continue
+		}
 		if !op.shouldIndex(scrs[idx].ReceiverShard, isImportDB, selfShardID) {
 			continue
 		}

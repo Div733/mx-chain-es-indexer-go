@@ -3,6 +3,7 @@ package logsevents
 import (
 	"encoding/hex"
 	"fmt"
+	"strings"
 	"github.com/multiversx/mx-chain-core-go/core"
 	"github.com/multiversx/mx-chain-core-go/core/check"
 	coreData "github.com/multiversx/mx-chain-core-go/data"
@@ -325,9 +326,19 @@ func (lep *logsAndEventsProcessor) getExecutionOrder(lgData *logsData, logHashHe
 		return scr.ExecutionOrder
 	}
 
-	log.Warn("cannot find hash in the txs map or scrs map", "hash", logHashHex)
+	log.Warn("cannot find hash in the txs map or scrs map", "hash", sanitizeLogString(logHashHex))
 
 	return -1
+}
+
+func sanitizeLogString(s string) string {
+	s = strings.ReplaceAll(s, "\n", " ")
+	s = strings.ReplaceAll(s, "\r", " ")
+	s = strings.ReplaceAll(s, "\t", " ")
+	if len(s) > 150 {
+		s = s[:150] + "...[truncated]"
+	}
+	return s
 }
 
 func hexEncodeSlice(input [][]byte) []string {

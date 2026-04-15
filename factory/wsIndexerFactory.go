@@ -1,6 +1,8 @@
 package factory
 
 import (
+	"os"
+
 	"github.com/multiversx/mx-chain-communication-go/websocket/data"
 	factoryHost "github.com/multiversx/mx-chain-communication-go/websocket/factory"
 	"github.com/multiversx/mx-chain-core-go/core/pubkeyConverter"
@@ -87,8 +89,8 @@ func createDataIndexer(
 		Denomination:             cfg.Config.Economics.Denomination,
 		BulkRequestMaxSize:       clusterCfg.Config.ElasticCluster.BulkRequestMaxSizeInBytes,
 		Url:                      clusterCfg.Config.ElasticCluster.URL,
-		UserName:                 clusterCfg.Config.ElasticCluster.UserName,
-		Password:                 clusterCfg.Config.ElasticCluster.Password,
+		UserName:                 resolveCredential(clusterCfg.Config.ElasticCluster.UserName, clusterCfg.Config.ElasticCluster.UserNameEnvVar),
+		Password:                 resolveCredential(clusterCfg.Config.ElasticCluster.Password, clusterCfg.Config.ElasticCluster.PasswordEnvVar),
 		EnabledIndexes:           prepareIndices(cfg.Config.AvailableIndices, clusterCfg.Config.DisabledIndices),
 		Marshalizer:              marshaller,
 		Hasher:                   hasher,
@@ -99,6 +101,15 @@ func createDataIndexer(
 		Version:                  version,
 		EnableEpochsConfig:       enableEpochsCfg,
 	})
+}
+
+func resolveCredential(configValue, envVarName string) string {
+	if envVarName != "" {
+		if envValue := os.Getenv(envVarName); envValue != "" {
+			return envValue
+		}
+	}
+	return configValue
 }
 
 func prepareIndices(availableIndices, disabledIndices []string) []string {

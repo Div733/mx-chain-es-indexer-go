@@ -152,3 +152,90 @@ func TestDRWAEventsProcessorBuildsAttestationRecord(t *testing.T) {
 	require.True(t, res.drwaAttestation.Approved)
 	require.Equal(t, uint64(7), res.drwaAttestation.AttestedRound)
 }
+
+func TestDRWAEventsProcessorAttestationRecordStoresAttestationType(t *testing.T) {
+	t.Parallel()
+
+	proc := newDRWAEventsProcessor()
+	res := proc.processEvent(&argsProcessEvent{
+		event: &transaction.Event{
+			Identifier: []byte(drwaAttestationRecordedEvent),
+			Topics: [][]byte{
+				[]byte("HOTEL-1234"),
+				[]byte("erd1subject"),
+				[]byte("erd1auditor"),
+				[]byte("aml"),
+				[]byte("true"),
+				{5},
+			},
+		},
+		txs:              map[string]*data.Transaction{},
+		txHashHexEncoded: "hash",
+	})
+
+	require.NotNil(t, res.drwaAttestation)
+	require.Equal(t, "aml", res.drwaAttestation.AttestationType)
+}
+
+func TestDRWAEventsProcessorDenialCodeNormalized(t *testing.T) {
+	t.Parallel()
+
+	proc := newDRWAEventsProcessor()
+	res := proc.processEvent(&argsProcessEvent{
+		event: &transaction.Event{
+			Identifier: []byte(drwaTransferDeniedEvent),
+			Topics: [][]byte{
+				[]byte("HOTEL-1234"),
+				{2}, // byte encoding of denial code 2
+			},
+		},
+		txs:              map[string]*data.Transaction{},
+		txHashHexEncoded: "hash",
+	})
+
+	require.NotNil(t, res.drwaDenial)
+	require.Equal(t, "2", res.drwaDenial.DenialCode)
+}
+
+func TestDRWAEventsProcessorCaseInsensitiveIdentifier(t *testing.T) {
+	t.Parallel()
+
+	proc := newDRWAEventsProcessor()
+	// Mixed-case identifier should still be processed
+	res := proc.processEvent(&argsProcessEvent{
+		event: &transaction.Event{
+			Identifier: []byte("DRWATransferDenied"),
+			Topics: [][]byte{
+				[]byte("HOTEL-1234"),
+				{3},
+			},
+		},
+		txs:              map[string]*data.Transaction{},
+		txHashHexEncoded: "hash",
+	})
+
+	require.True(t, res.processed)
+	require.NotNil(t, res.drwaDenial)
+	require.Equal(t, "3", res.drwaDenial.DenialCode)
+}
+
+func TestDRWAEventsProcessorShardIDPopulated(t *testing.T) {
+	t.Parallel()
+
+	proc := newDRWAEventsProcessor()
+	res := proc.processEvent(&argsProcessEvent{
+		event: &transaction.Event{
+			Identifier: []byte(drwaTransferDeniedEvent),
+			Topics: [][]byte{
+				[]byte("HOTEL-1234"),
+				{1},
+			},
+		},
+		txs:              map[string]*data.Transaction{},
+		txHashHexEncoded: "hash",
+		selfShardID:      1,
+	})
+
+	require.NotNil(t, res.drwaDenial)
+	require.Equal(t, uint32(1), res.drwaDenial.ShardID)
+}

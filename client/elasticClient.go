@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"regexp"
 	"strings"
 
 	"github.com/elastic/go-elasticsearch/v7"
@@ -128,7 +129,7 @@ func (ec *elasticClient) DoBulkRequest(ctx context.Context, buff *bytes.Buffer, 
 	)
 	if err != nil {
 		log.Warn("elasticClient.DoBulkRequest",
-			"indexer do bulk request no response", err.Error())
+			"indexer do bulk request no response", sanitizeElasticsearchError(err))
 		return err
 	}
 
@@ -150,14 +151,14 @@ func (ec *elasticClient) DoMultiGet(ctx context.Context, ids []string, index str
 	)
 	if err != nil {
 		log.Warn("elasticClient.DoMultiGet",
-			"cannot do multi get no response", err.Error())
+			"cannot do multi get no response", sanitizeElasticsearchError(err))
 		return err
 	}
 
 	err = parseResponse(res, &resBody, elasticDefaultErrorResponseHandler)
 	if err != nil {
 		log.Warn("elasticClient.DoMultiGet",
-			"error parsing response", err.Error())
+			"error parsing response", sanitizeElasticsearchError(err))
 		return err
 	}
 
@@ -186,13 +187,13 @@ func (ec *elasticClient) DoQueryRemove(ctx context.Context, index string, body *
 	)
 
 	if err != nil {
-		log.Warn("elasticClient.DoQueryRemove", "cannot do query remove", err)
+		log.Warn("elasticClient.DoQueryRemove", "cannot do query remove", sanitizeElasticsearchError(err))
 		return err
 	}
 
 	err = parseResponse(res, nil, elasticDefaultErrorResponseHandler)
 	if err != nil {
-		log.Warn("elasticClient.DoQueryRemove", "error parsing response", err)
+		log.Warn("elasticClient.DoQueryRemove", "error parsing response", sanitizeElasticsearchError(err))
 		return err
 	}
 
@@ -392,7 +393,8 @@ func (ec *elasticClient) UpdateByQuery(ctx context.Context, index string, buff *
 		return err
 	}
 	if res.IsError() {
-		return fmt.Errorf("%s", res.String())
+		sanitized := sanitizeElasticsearchError(fmt.Errorf("%s", res.String()))
+		return fmt.Errorf("%s", sanitized)
 	}
 
 	return parseResponse(res, nil, elasticDefaultErrorResponseHandler)
@@ -401,4 +403,15 @@ func (ec *elasticClient) UpdateByQuery(ctx context.Context, index string, buff *
 // IsInterfaceNil returns true if there is no value under the interface
 func (ec *elasticClient) IsInterfaceNil() bool {
 	return ec == nil
+}
+
+func sanitizeElasticsearchError(err error) string {
+	if err == nil {
+		return ""
+	}
+	msg := err.Error()
+	msg = regexp.MustCompile(`\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b`).ReplaceAllString(msg, "[IP_REDACTED]")
+	msg = regexp.MustCompile(`Elasticsearch \d+\.\d+\.\d+`).ReplaceAllString(msg, "Elasticsearch [VERSION_REDACTED]")
+	msg = regexp.MustCompile(`\[node-[^\]]+\]`).ReplaceAllString(msg, "[NODE_REDACTED]")
+	return msg
 }

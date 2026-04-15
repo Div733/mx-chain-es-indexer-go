@@ -1,28 +1,33 @@
 package logsevents
 
 import (
+	"fmt"
 	"math/big"
 	"strings"
+
+	logger "github.com/multiversx/mx-chain-logger-go"
 
 	"github.com/multiversx/mx-chain-es-indexer-go/data"
 )
 
 const (
-	drwaAssetRegisteredEvent    = "drwaAssetRegistered"
-	drwaTokenPolicyEvent        = "drwaTokenPolicy"
-	drwaHolderComplianceEvent   = "drwaHolderCompliance"
-	drwaTransferDeniedEvent     = "drwaTransferDenied"
-	drwaTransferAllowedEvent    = "drwaTransferAllowed"
-	drwaGlobalPauseEvent        = "drwaGlobalPause"
-	drwaMetadataProtectionEvent = "drwaMetadataProtection"
-	drwaAuditorProposedEvent    = "drwaAuditorProposed"
-	drwaAuditorAcceptedEvent    = "drwaAuditorAccepted"
-	drwaAttestationRecordedEvent = "drwaAttestationRecorded"
-	drwaGovernanceProposedEvent = "drwaGovernanceProposed"
-	drwaGovernanceAcceptedEvent = "drwaGovernanceAccepted"
+	drwaAssetRegisteredEvent     = "drwaassetregistered"
+	drwaTokenPolicyEvent         = "drwatokenpolicy"
+	drwaHolderComplianceEvent    = "drwaholdercompliance"
+	drwaTransferDeniedEvent      = "drwatransferdenied"
+	drwaTransferAllowedEvent     = "drwatransferallowed"
+	drwaGlobalPauseEvent         = "drwaglobalpause"
+	drwaMetadataProtectionEvent  = "drwametadataprotection"
+	drwaAuditorProposedEvent     = "drwaauditorproposed"
+	drwaAuditorAcceptedEvent     = "drwaauditoraccepted"
+	drwaAttestationRecordedEvent = "drwaattestationrecorded"
+	drwaGovernanceProposedEvent  = "drwagovernanceproposed"
+	drwaGovernanceAcceptedEvent  = "drwagovernanceaccepted"
 )
 
 type drwaEventsProcessor struct{}
+
+var drwaLog = logger.GetOrCreate("indexer/process/drwa")
 
 func newDRWAEventsProcessor() *drwaEventsProcessor {
 	return &drwaEventsProcessor{}
@@ -34,8 +39,9 @@ func (dep *drwaEventsProcessor) IsInterfaceNil() bool {
 }
 
 func (dep *drwaEventsProcessor) processEvent(args *argsProcessEvent) argOutputProcessEvent {
-	identifier := string(args.event.GetIdentifier())
-	if !strings.HasPrefix(strings.ToLower(identifier), "drwa") {
+	originalIdentifier := string(args.event.GetIdentifier())
+	identifier := strings.ToLower(originalIdentifier)
+	if !strings.HasPrefix(identifier, "drwa") {
 		return argOutputProcessEvent{}
 	}
 
@@ -49,7 +55,7 @@ func (dep *drwaEventsProcessor) processEvent(args *argsProcessEvent) argOutputPr
 	if ok {
 		tx.HasOperations = true
 		tx.Operation = "drwa"
-		tx.Function = identifier
+		tx.Function = originalIdentifier
 		return argOutputProcessEvent{
 			processed:            true,
 			tokenInfo:            tokenInfo,
@@ -64,7 +70,7 @@ func (dep *drwaEventsProcessor) processEvent(args *argsProcessEvent) argOutputPr
 	if ok {
 		scr.HasOperations = true
 		scr.Operation = "drwa"
-		scr.Function = identifier
+		scr.Function = originalIdentifier
 		return argOutputProcessEvent{
 			processed:            true,
 			tokenInfo:            tokenInfo,
@@ -147,6 +153,7 @@ func (dep *drwaEventsProcessor) tryBuildTokenPolicyRecord(identifier string, arg
 			EventType:  identifier,
 			PolicyID:   string(topics[1]),
 			Regulated:  bytesToBool(topics[2]),
+			ShardID:    args.selfShardID,
 			Timestamp:  args.timestamp,
 			TimestampMs: args.timestampMs,
 		}
@@ -163,6 +170,7 @@ func (dep *drwaEventsProcessor) tryBuildTokenPolicyRecord(identifier string, arg
 			GlobalPause:        bytesToBool(topics[2]),
 			StrictAuditorMode:  bytesToBool(topics[3]),
 			TokenPolicyVersion: big.NewInt(0).SetBytes(topics[4]).Uint64(),
+			ShardID:            args.selfShardID,
 			Timestamp:          args.timestamp,
 			TimestampMs:        args.timestampMs,
 		}
@@ -176,6 +184,7 @@ func (dep *drwaEventsProcessor) tryBuildTokenPolicyRecord(identifier string, arg
 			TokenID:     string(topics[0]),
 			EventType:   identifier,
 			GlobalPause: bytesToBool(topics[1]),
+			ShardID:     args.selfShardID,
 			Timestamp:   args.timestamp,
 			TimestampMs: args.timestampMs,
 		}
@@ -194,10 +203,16 @@ func (dep *drwaEventsProcessor) tryBuildDenialRecord(identifier string, args *ar
 		return nil
 	}
 
+	denialCodeNum := big.NewInt(0).SetBytes(topics[1]).Uint64()
+	if denialCodeNum > 11 {
+		drwaLog.Warn("drwaEventsProcessor: unknown denial code", "code", denialCodeNum, "txHash", args.txHashHexEncoded)
+	}
+
 	record := &data.DrwaDenialRecord{
 		TxHash:      args.txHashHexEncoded,
 		TokenID:     string(topics[0]),
-		DenialCode:  string(topics[1]),
+		DenialCode:  fmt.Sprintf("%d", denialCodeNum),
+		ShardID:     args.selfShardID,
 		Timestamp:   args.timestamp,
 		TimestampMs: args.timestampMs,
 	}
@@ -225,6 +240,7 @@ func (dep *drwaEventsProcessor) tryBuildHolderComplianceRecord(identifier string
 		TxHash:      args.txHashHexEncoded,
 		TokenID:     string(topics[0]),
 		Holder:      string(topics[1]),
+		ShardID:     args.selfShardID,
 		Timestamp:   args.timestamp,
 		TimestampMs: args.timestampMs,
 	}
@@ -272,6 +288,7 @@ func (dep *drwaEventsProcessor) tryBuildAttestationRecord(identifier string, arg
 	record := &data.DrwaAttestationRecord{
 		TxHash:      args.txHashHexEncoded,
 		EventType:   identifier,
+		ShardID:     args.selfShardID,
 		Timestamp:   args.timestamp,
 		TimestampMs: args.timestampMs,
 	}
@@ -281,11 +298,12 @@ func (dep *drwaEventsProcessor) tryBuildAttestationRecord(identifier string, arg
 			return nil
 		}
 
-		record.TokenID = string(topics[0])
-		record.Subject = string(topics[1])
-		record.Auditor = string(topics[2])
-		record.Approved = bytesToBool(topics[4])
-		record.AttestedRound = big.NewInt(0).SetBytes(topics[5]).Uint64()
+		record.TokenID          = string(topics[0])
+		record.Subject          = string(topics[1])
+		record.Auditor          = string(topics[2])
+		record.AttestationType  = string(topics[3])
+		record.Approved         = bytesToBool(topics[4])
+		record.AttestedRound    = big.NewInt(0).SetBytes(topics[5]).Uint64()
 		return record
 	}
 

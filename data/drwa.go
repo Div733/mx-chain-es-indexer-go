@@ -41,6 +41,7 @@ type DrwaHolderComplianceRecord struct {
 	ReceiveLocked        bool   `json:"receiveLocked,omitempty"`
 	AuditorAuthorized    bool   `json:"auditorAuthorized,omitempty"`
 	ExpiryRound          uint64 `json:"expiryRound,omitempty"`
+	ShardID              uint32 `json:"shardId,omitempty"`
 	Timestamp            uint64 `json:"timestamp,omitempty"`
 	TimestampMs          uint64 `json:"timestampMs,omitempty"`
 }
@@ -48,15 +49,17 @@ type DrwaHolderComplianceRecord struct {
 // DrwaAttestationRecord is a persistent record for a DRWA attestation event.
 // Written to the drwa-attestations Elasticsearch index.
 type DrwaAttestationRecord struct {
-	TxHash      string `json:"txHash"`
-	TokenID     string `json:"tokenId,omitempty"`
-	Subject     string `json:"subject,omitempty"`
-	Auditor     string `json:"auditor"`
-	EventType   string `json:"eventType"` // drwaAuditorAccepted, drwaAuditorProposed
-	Approved    bool   `json:"approved,omitempty"`
-	AttestedRound uint64 `json:"attestedRound,omitempty"`
-	Timestamp   uint64 `json:"timestamp,omitempty"`
-	TimestampMs uint64 `json:"timestampMs,omitempty"`
+	TxHash          string `json:"txHash"`
+	TokenID         string `json:"tokenId,omitempty"`
+	Subject         string `json:"subject,omitempty"`
+	Auditor         string `json:"auditor"`
+	EventType       string `json:"eventType"`
+	AttestationType string `json:"attestationType,omitempty"`
+	Approved        bool   `json:"approved,omitempty"`
+	AttestedRound   uint64 `json:"attestedRound,omitempty"`
+	ShardID         uint32 `json:"shardId,omitempty"`
+	Timestamp       uint64 `json:"timestamp,omitempty"`
+	TimestampMs     uint64 `json:"timestampMs,omitempty"`
 }
 
 // DrwaTokenPolicyRecord is a persistent record for DRWA token policy history.
@@ -70,6 +73,7 @@ type DrwaTokenPolicyRecord struct {
 	GlobalPause        bool   `json:"globalPause,omitempty"`
 	StrictAuditorMode  bool   `json:"strictAuditorMode,omitempty"`
 	TokenPolicyVersion uint64 `json:"tokenPolicyVersion,omitempty"`
+	ShardID            uint32 `json:"shardId,omitempty"`
 	Timestamp          uint64 `json:"timestamp,omitempty"`
 	TimestampMs        uint64 `json:"timestampMs,omitempty"`
 }

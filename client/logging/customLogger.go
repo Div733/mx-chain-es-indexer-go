@@ -3,6 +3,7 @@ package logging
 import (
 	"io"
 	"net/http"
+	"strings"
 	"time"
 
 	logger "github.com/multiversx/mx-chain-logger-go"
@@ -34,7 +35,7 @@ func (cl *CustomLogger) LogRoundTrip(
 	}
 
 	if err != nil {
-		log.Warn("elastic client", "error", err.Error())
+		log.Warn("elastic client", "error", sanitizeLogMessage(err.Error()))
 	}
 
 	if req != nil && res != nil {
@@ -66,6 +67,16 @@ func logInformation(
 	}
 
 	log.Debug("elastic client", logData...)
+}
+
+func sanitizeLogMessage(msg string) string {
+	msg = strings.ReplaceAll(msg, "\n", " ")
+	msg = strings.ReplaceAll(msg, "\r", " ")
+	msg = strings.ReplaceAll(msg, "\t", " ")
+	if len(msg) > 500 {
+		msg = msg[:500] + "...[truncated]"
+	}
+	return msg
 }
 
 // RequestBodyEnabled makes the client pass request body to logger

@@ -5,7 +5,7 @@ Digest: sha256:055ab3c3466c6bd72ef42f7773c5fa224db4fb7cd6a9a5588ebe46642a15abf5
 Status: Image is up to date for docker.elastic.co/elasticsearch/elasticsearch:7.16.2
 docker.elastic.co/elasticsearch/elasticsearch:7.16.2
 elastic-container
-93110eec011345acf9473f47a1d8ad2031b165e47b6e80ba742ba6ca001aef9a
+3bb1b752be7ca8e6e94fcabd9d70b1cf7c58a3a8e1d84fee6eddfcaa4135cd50
 Waiting Elasticsearch cluster to start...
 go test -v ./integrationtests -tags integrationtests
 === RUN   TestAccountBalanceNFTTransfer
@@ -1036,30 +1036,30 @@ created by testing.(*T).Run in goroutine 1
 === RUN   TestCheckVersionIsIndexer
 --- PASS: TestCheckVersionIsIndexer (0.13s)
 PASS
-ok  	github.com/multiversx/mx-chain-es-indexer-go/integrationtests	14.122s
+ok  	github.com/multiversx/mx-chain-es-indexer-go/integrationtests	(cached)
 cd scripts && /bin/bash script.sh delete
-{"acknowledged":true}
-{"acknowledged":true}
-{"acknowledged":true}
-{"acknowledged":true}
-{"acknowledged":true}
-{"acknowledged":true}
-{"acknowledged":true}
-{"acknowledged":true}
-{"acknowledged":true}
-{"acknowledged":true}
-{"acknowledged":true}
-{"acknowledged":true}
-{"acknowledged":true}
-{"acknowledged":true}
-{"acknowledged":true}
-{"acknowledged":true}
-{"acknowledged":true}
-{"acknowledged":true}
-{"acknowledged":true}
-{"acknowledged":true}
-{"acknowledged":true}
-{"acknowledged":true}
+{"error":{"root_cause":[{"type":"index_not_found_exception","reason":"no such index [rating-000001]","resource.type":"index_or_alias","resource.id":"rating-000001","index_uuid":"_na_","index":"rating-000001"}],"type":"index_not_found_exception","reason":"no such index [rating-000001]","resource.type":"index_or_alias","resource.id":"rating-000001","index_uuid":"_na_","index":"rating-000001"},"status":404}
+{"error":{"root_cause":[{"type":"index_not_found_exception","reason":"no such index [transactions-000001]","resource.type":"index_or_alias","resource.id":"transactions-000001","index_uuid":"_na_","index":"transactions-000001"}],"type":"index_not_found_exception","reason":"no such index [transactions-000001]","resource.type":"index_or_alias","resource.id":"transactions-000001","index_uuid":"_na_","index":"transactions-000001"},"status":404}
+{"error":{"root_cause":[{"type":"index_not_found_exception","reason":"no such index [blocks-000001]","resource.type":"index_or_alias","resource.id":"blocks-000001","index_uuid":"_na_","index":"blocks-000001"}],"type":"index_not_found_exception","reason":"no such index [blocks-000001]","resource.type":"index_or_alias","resource.id":"blocks-000001","index_uuid":"_na_","index":"blocks-000001"},"status":404}
+{"error":{"root_cause":[{"type":"index_not_found_exception","reason":"no such index [validators-000001]","resource.type":"index_or_alias","resource.id":"validators-000001","index_uuid":"_na_","index":"validators-000001"}],"type":"index_not_found_exception","reason":"no such index [validators-000001]","resource.type":"index_or_alias","resource.id":"validators-000001","index_uuid":"_na_","index":"validators-000001"},"status":404}
+{"error":{"root_cause":[{"type":"index_not_found_exception","reason":"no such index [miniblocks-000001]","resource.type":"index_or_alias","resource.id":"miniblocks-000001","index_uuid":"_na_","index":"miniblocks-000001"}],"type":"index_not_found_exception","reason":"no such index [miniblocks-000001]","resource.type":"index_or_alias","resource.id":"miniblocks-000001","index_uuid":"_na_","index":"miniblocks-000001"},"status":404}
+{"error":{"root_cause":[{"type":"index_not_found_exception","reason":"no such index [rounds-000001]","resource.type":"index_or_alias","resource.id":"rounds-000001","index_uuid":"_na_","index":"rounds-000001"}],"type":"index_not_found_exception","reason":"no such index [rounds-000001]","resource.type":"index_or_alias","resource.id":"rounds-000001","index_uuid":"_na_","index":"rounds-000001"},"status":404}
+{"error":{"root_cause":[{"type":"index_not_found_exception","reason":"no such index [accounts-000001]","resource.type":"index_or_alias","resource.id":"accounts-000001","index_uuid":"_na_","index":"accounts-000001"}],"type":"index_not_found_exception","reason":"no such index [accounts-000001]","resource.type":"index_or_alias","resource.id":"accounts-000001","index_uuid":"_na_","index":"accounts-000001"},"status":404}
+{"error":{"root_cause":[{"type":"index_not_found_exception","reason":"no such index [accountshistory-000001]","resource.type":"index_or_alias","resource.id":"accountshistory-000001","index_uuid":"_na_","index":"accountshistory-000001"}],"type":"index_not_found_exception","reason":"no such index [accountshistory-000001]","resource.type":"index_or_alias","resource.id":"accountshistory-000001","index_uuid":"_na_","index":"accountshistory-000001"},"status":404}
+{"error":{"root_cause":[{"type":"index_not_found_exception","reason":"no such index [receipts-000001]","resource.type":"index_or_alias","resource.id":"receipts-000001","index_uuid":"_na_","index":"receipts-000001"}],"type":"index_not_found_exception","reason":"no such index [receipts-000001]","resource.type":"index_or_alias","resource.id":"receipts-000001","index_uuid":"_na_","index":"receipts-000001"},"status":404}
+{"error":{"root_cause":[{"type":"index_not_found_exception","reason":"no such index [scresults-000001]","resource.type":"index_or_alias","resource.id":"scresults-000001","index_uuid":"_na_","index":"scresults-000001"}],"type":"index_not_found_exception","reason":"no such index [scresults-000001]","resource.type":"index_or_alias","resource.id":"scresults-000001","index_uuid":"_na_","index":"scresults-000001"},"status":404}
+{"error":{"root_cause":[{"type":"index_not_found_exception","reason":"no such index [accountsesdt-000001]","resource.type":"index_or_alias","resource.id":"accountsesdt-000001","index_uuid":"_na_","index":"accountsesdt-000001"}],"type":"index_not_found_exception","reason":"no such index [accountsesdt-000001]","resource.type":"index_or_alias","resource.id":"accountsesdt-000001","index_uuid":"_na_","index":"accountsesdt-000001"},"status":404}
+{"error":{"root_cause":[{"type":"index_not_found_exception","reason":"no such index [accountsesdthistory-000001]","resource.type":"index_or_alias","resource.id":"accountsesdthistory-000001","index_uuid":"_na_","index":"accountsesdthistory-000001"}],"type":"index_not_found_exception","reason":"no such index [accountsesdthistory-000001]","resource.type":"index_or_alias","resource.id":"accountsesdthistory-000001","index_uuid":"_na_","index":"accountsesdthistory-000001"},"status":404}
+{"error":{"root_cause":[{"type":"index_not_found_exception","reason":"no such index [epochinfo-000001]","resource.type":"index_or_alias","resource.id":"epochinfo-000001","index_uuid":"_na_","index":"epochinfo-000001"}],"type":"index_not_found_exception","reason":"no such index [epochinfo-000001]","resource.type":"index_or_alias","resource.id":"epochinfo-000001","index_uuid":"_na_","index":"epochinfo-000001"},"status":404}
+{"error":{"root_cause":[{"type":"index_not_found_exception","reason":"no such index [scdeploys-000001]","resource.type":"index_or_alias","resource.id":"scdeploys-000001","index_uuid":"_na_","index":"scdeploys-000001"}],"type":"index_not_found_exception","reason":"no such index [scdeploys-000001]","resource.type":"index_or_alias","resource.id":"scdeploys-000001","index_uuid":"_na_","index":"scdeploys-000001"},"status":404}
+{"error":{"root_cause":[{"type":"index_not_found_exception","reason":"no such index [tokens-000001]","resource.type":"index_or_alias","resource.id":"tokens-000001","index_uuid":"_na_","index":"tokens-000001"}],"type":"index_not_found_exception","reason":"no such index [tokens-000001]","resource.type":"index_or_alias","resource.id":"tokens-000001","index_uuid":"_na_","index":"tokens-000001"},"status":404}
+{"error":{"root_cause":[{"type":"index_not_found_exception","reason":"no such index [tags-000001]","resource.type":"index_or_alias","resource.id":"tags-000001","index_uuid":"_na_","index":"tags-000001"}],"type":"index_not_found_exception","reason":"no such index [tags-000001]","resource.type":"index_or_alias","resource.id":"tags-000001","index_uuid":"_na_","index":"tags-000001"},"status":404}
+{"error":{"root_cause":[{"type":"index_not_found_exception","reason":"no such index [logs-000001]","resource.type":"index_or_alias","resource.id":"logs-000001","index_uuid":"_na_","index":"logs-000001"}],"type":"index_not_found_exception","reason":"no such index [logs-000001]","resource.type":"index_or_alias","resource.id":"logs-000001","index_uuid":"_na_","index":"logs-000001"},"status":404}
+{"error":{"root_cause":[{"type":"index_not_found_exception","reason":"no such index [delegators-000001]","resource.type":"index_or_alias","resource.id":"delegators-000001","index_uuid":"_na_","index":"delegators-000001"}],"type":"index_not_found_exception","reason":"no such index [delegators-000001]","resource.type":"index_or_alias","resource.id":"delegators-000001","index_uuid":"_na_","index":"delegators-000001"},"status":404}
+{"error":{"root_cause":[{"type":"index_not_found_exception","reason":"no such index [operations-000001]","resource.type":"index_or_alias","resource.id":"operations-000001","index_uuid":"_na_","index":"operations-000001"}],"type":"index_not_found_exception","reason":"no such index [operations-000001]","resource.type":"index_or_alias","resource.id":"operations-000001","index_uuid":"_na_","index":"operations-000001"},"status":404}
+{"error":{"root_cause":[{"type":"index_not_found_exception","reason":"no such index [esdts-000001]","resource.type":"index_or_alias","resource.id":"esdts-000001","index_uuid":"_na_","index":"esdts-000001"}],"type":"index_not_found_exception","reason":"no such index [esdts-000001]","resource.type":"index_or_alias","resource.id":"esdts-000001","index_uuid":"_na_","index":"esdts-000001"},"status":404}
+{"error":{"root_cause":[{"type":"index_not_found_exception","reason":"no such index [values-000001]","resource.type":"index_or_alias","resource.id":"values-000001","index_uuid":"_na_","index":"values-000001"}],"type":"index_not_found_exception","reason":"no such index [values-000001]","resource.type":"index_or_alias","resource.id":"values-000001","index_uuid":"_na_","index":"values-000001"},"status":404}
+{"error":{"root_cause":[{"type":"index_not_found_exception","reason":"no such index [events-000001]","resource.type":"index_or_alias","resource.id":"events-000001","index_uuid":"_na_","index":"events-000001"}],"type":"index_not_found_exception","reason":"no such index [events-000001]","resource.type":"index_or_alias","resource.id":"events-000001","index_uuid":"_na_","index":"events-000001"},"status":404}
 {"acknowledged":true}
 cd scripts && /bin/bash script.sh stop
 elastic-container

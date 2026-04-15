@@ -10,8 +10,9 @@ import (
 
 // SerializeDRWADenials writes denial records to the drwa-denials Elasticsearch index.
 func (lep *logsAndEventsProcessor) SerializeDRWADenials(records []*data.DrwaDenialRecord, buffSlice *data.BufferSlice, index string) error {
-	for _, record := range records {
-		meta, serialized, err := prepareDRWARecord(record.TxHash+"-denial-"+record.DenialCode, index, record)
+	for idx, record := range records {
+		id := fmt.Sprintf("%s-denial-%s-%d", record.TxHash, record.DenialCode, idx)
+		meta, serialized, err := prepareDRWARecord(id, index, record)
 		if err != nil {
 			return err
 		}

@@ -31,6 +31,8 @@ var (
 		elasticIndexer.AccountsIndex, elasticIndexer.AccountsHistoryIndex, elasticIndexer.ReceiptsIndex, elasticIndexer.ScResultsIndex, elasticIndexer.AccountsESDTHistoryIndex, elasticIndexer.AccountsESDTIndex,
 		elasticIndexer.EpochInfoIndex, elasticIndexer.SCDeploysIndex, elasticIndexer.TokensIndex, elasticIndexer.TagsIndex, elasticIndexer.LogsIndex, elasticIndexer.DelegatorsIndex, elasticIndexer.OperationsIndex,
 		elasticIndexer.ESDTsIndex, elasticIndexer.ValuesIndex, elasticIndexer.EventsIndex,
+		elasticIndexer.DrwaDenialsIndex, elasticIndexer.DrwaHolderComplianceIndex,
+		elasticIndexer.DrwaAttestationsIndex, elasticIndexer.DrwaTokenPoliciesIndex,
 	}
 )
 
@@ -346,7 +348,29 @@ func (ei *elasticProcessor) RemoveTransactions(header coreData.HeaderHandler, bo
 		return err
 	}
 
+	if err = ei.removeDRWARecordsOnRevert(header.GetShardID(), timestampMs); err != nil {
+		return err
+	}
+
 	return ei.updateDelegatorsInCaseOfRevert(header, body, timestampMs)
+}
+
+func (ei *elasticProcessor) removeDRWARecordsOnRevert(shardID uint32, timestampMs uint64) error {
+	drwaIndices := []string{
+		elasticIndexer.DrwaDenialsIndex,
+		elasticIndexer.DrwaHolderComplianceIndex,
+		elasticIndexer.DrwaAttestationsIndex,
+		elasticIndexer.DrwaTokenPoliciesIndex,
+	}
+	for _, index := range drwaIndices {
+		if !ei.isIndexEnabled(index) {
+			continue
+		}
+		if err := ei.removeFromIndexByTimestampAndShardID(shardID, index, timestampMs); err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 func (ei *elasticProcessor) updateDelegatorsInCaseOfRevert(header coreData.HeaderHandler, body *block.Body, timestampMs uint64) error {

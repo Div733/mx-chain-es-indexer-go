@@ -3,6 +3,7 @@ package dataindexer
 import (
 	"encoding/hex"
 	"fmt"
+	"strings"
 	"time"
 
 	"github.com/multiversx/mx-chain-core-go/core"
@@ -87,7 +88,7 @@ func (di *dataIndexer) SaveBlock(outportBlock *outport.OutportBlock) error {
 			"hash", headerHash,
 		)
 	}()
-	log.Debug("indexer: starting indexing block", "hash", headerHash, "nonce", headerNonce)
+	log.Debug("indexer: starting indexing block", "hash", sanitizeLogValue(fmt.Sprintf("%x", headerHash)), "nonce", sanitizeLogValue(fmt.Sprintf("%d", headerNonce)))
 
 	if outportBlock.TransactionPool == nil {
 		outportBlock.TransactionPool = &outport.TransactionPool{}
@@ -107,7 +108,7 @@ func (di *dataIndexer) saveBlockData(outportBlock *outport.OutportBlock, header 
 	err := di.elasticProcessor.SaveHeader(outportBlockWithHeader)
 	if err != nil {
 		return fmt.Errorf("%w when saving header block, hash %s, nonce %d",
-			err, hex.EncodeToString(headerHash), headerNonce)
+			sanitizeError(err), hex.EncodeToString(headerHash), headerNonce)
 	}
 
 	if len(outportBlock.BlockData.Body.MiniBlocks) == 0 {
@@ -118,7 +119,7 @@ func (di *dataIndexer) saveBlockData(outportBlock *outport.OutportBlock, header 
 	err = di.elasticProcessor.SaveMiniblocks(header, miniBlocks, outportBlock.BlockData.GetTimestampMs())
 	if err != nil {
 		return fmt.Errorf("%w when saving miniblocks, block hash %s, nonce %d",
-			err, hex.EncodeToString(headerHash), headerNonce)
+			sanitizeError(err), hex.EncodeToString(headerHash), headerNonce)
 	}
 
 	err = di.elasticProcessor.SaveTransactions(outportBlockWithHeader)
@@ -205,4 +206,28 @@ func (di *dataIndexer) SetCurrentSettings(cfg outport.OutportConfig) error {
 // IsInterfaceNil returns true if there is no value under the interface
 func (di *dataIndexer) IsInterfaceNil() bool {
 	return di == nil
+}
+
+func sanitizeLogValue(value string) string {
+	value = strings.ReplaceAll(value, "\n", " ")
+	value = strings.ReplaceAll(value, "\r", " ")
+	value = strings.ReplaceAll(value, "\t", " ")
+	if len(value) > 200 {
+		value = value[:200] + "...[truncated]"
+	}
+	return value
+}
+
+func sanitizeError(err error) error {
+	if err == nil {
+		return nil
+	}
+	msg := err.Error()
+	msg = strings.ReplaceAll(msg, "\n", " ")
+	msg = strings.ReplaceAll(msg, "\r", " ")
+	msg = strings.ReplaceAll(msg, "\t", " ")
+	if len(msg) > 300 {
+		msg = msg[:300] + "...[truncated]"
+	}
+	return fmt.Errorf("%s", msg)
 }

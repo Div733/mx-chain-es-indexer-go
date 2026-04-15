@@ -49,6 +49,8 @@ type ClusterConfig struct {
 			URL                       string `toml:"url"`
 			UserName                  string `toml:"username"`
 			Password                  string `toml:"password"`
+			UserNameEnvVar            string `toml:"username-env-var"`
+			PasswordEnvVar            string `toml:"password-env-var"`
 			BulkRequestMaxSizeInBytes int    `toml:"bulk-request-max-size-in-bytes"`
 		} `toml:"elastic-cluster"`
 	} `toml:"config"`

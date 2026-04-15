@@ -141,12 +141,14 @@ func startIndexer(ctx *cli.Context) error {
 
 	err = webServer.Close()
 	if err != nil {
-		log.Error("cannot close web server", "error", err)
+		log.Error("cannot close web server — active connections may not be properly closed", "error", err.Error())
 	}
 
 	if !check.IfNilReflect(fileLogging) {
 		err = fileLogging.Close()
-		log.LogIfError(err)
+		if err != nil {
+			log.Error("failed to close file logging — log data may be lost", "error", err.Error())
+		}
 	}
 	return nil
 }
