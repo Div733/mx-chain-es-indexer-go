@@ -56,7 +56,12 @@ func (r *drwaReconciler) start() {
 
 // stop signals the reconciliation loop to exit.
 func (r *drwaReconciler) stop() {
-	close(r.quit)
+	r.once.Do(func() {})
+	select {
+	case <-r.quit:
+	default:
+		close(r.quit)
+	}
 }
 
 func (r *drwaReconciler) loop() {
