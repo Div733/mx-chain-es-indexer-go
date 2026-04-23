@@ -1,6 +1,8 @@
 package integrationtests
 
 import (
+	"bytes"
+	"context"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -52,15 +54,26 @@ func decodeAddress(address string) []byte {
 func CreateElasticProcessor(
 	esClient elasticproc.DatabaseClientHandler,
 ) (dataindexer.ElasticProcessor, error) {
+	return CreateElasticProcessorWithIndexes(esClient, []string{
+		dataindexer.TransactionsIndex, dataindexer.LogsIndex, dataindexer.AccountsESDTIndex, dataindexer.ScResultsIndex,
+		dataindexer.ReceiptsIndex, dataindexer.BlockIndex, dataindexer.AccountsIndex, dataindexer.TokensIndex, dataindexer.TagsIndex, dataindexer.EventsIndex,
+		dataindexer.OperationsIndex, dataindexer.DelegatorsIndex, dataindexer.ESDTsIndex, dataindexer.SCDeploysIndex, dataindexer.MiniblocksIndex, dataindexer.ValuesIndex,
+	})
+}
+
+// CreateElasticProcessorWithIndexes allows integration tests to opt into specialized
+// index surfaces such as DRWA without widening the default helper for unrelated suites.
+func CreateElasticProcessorWithIndexes(
+	esClient elasticproc.DatabaseClientHandler,
+	enabledIndexes []string,
+) (dataindexer.ElasticProcessor, error) {
 	args := factory.ArgElasticProcessorFactory{
 		Marshalizer:              &mock.MarshalizerMock{},
 		Hasher:                   &mock.HasherMock{},
 		AddressPubkeyConverter:   pubKeyConverter,
 		ValidatorPubkeyConverter: mock.NewPubkeyConverterMock(32),
 		DBClient:                 esClient,
-		EnabledIndexes: []string{dataindexer.TransactionsIndex, dataindexer.LogsIndex, dataindexer.AccountsESDTIndex, dataindexer.ScResultsIndex,
-			dataindexer.ReceiptsIndex, dataindexer.BlockIndex, dataindexer.AccountsIndex, dataindexer.TokensIndex, dataindexer.TagsIndex, dataindexer.EventsIndex,
-			dataindexer.OperationsIndex, dataindexer.DelegatorsIndex, dataindexer.ESDTsIndex, dataindexer.SCDeploysIndex, dataindexer.MiniblocksIndex, dataindexer.ValuesIndex},
+		EnabledIndexes:           enabledIndexes,
 		Denomination: 18,
 		EnableEpochsConfig: config.EnableEpochsConfig{
 			RelayedTransactionsV1V2DisableEpoch: 1,
@@ -86,6 +99,22 @@ func getElementFromSlice(path string, index int) string {
 	res, _ := json.Marshal(slice[index]["_source"])
 
 	return string(res)
+}
+
+// nolint
+func deleteDocumentByID(esClient elasticproc.DatabaseClientHandler, index string, id string) error {
+	body := map[string]interface{}{
+		"query": map[string]interface{}{
+			"ids": map[string]interface{}{
+				"values": []string{id},
+			},
+		},
+	}
+	encoded, err := json.Marshal(body)
+	if err != nil {
+		return err
+	}
+	return esClient.DoQueryRemove(context.Background(), index, bytes.NewBuffer(encoded))
 }
 
 // nolint

@@ -19,6 +19,7 @@ type ElasticProcessorStub struct {
 	SaveShardValidatorsPubKeysCalled func(validators *outport.ValidatorsPubKeys) error
 	SaveAccountsCalled               func(accountsData *outport.Accounts) error
 	RemoveAccountsESDTCalled         func(shardID uint32, timestampMS uint64) error
+	FinalizedBlockCalled             func(finalizedBlock *outport.FinalizedBlock) error
 }
 
 // RemoveAccountsESDT -
@@ -106,6 +107,15 @@ func (eim *ElasticProcessorStub) SaveShardValidatorsPubKeys(validatorsPubKeys *o
 func (eim *ElasticProcessorStub) SaveAccounts(accounts *outport.Accounts) error {
 	if eim.SaveAccountsCalled != nil {
 		return eim.SaveAccountsCalled(accounts)
+	}
+
+	return nil
+}
+
+// FinalizedBlock -
+func (eim *ElasticProcessorStub) FinalizedBlock(finalizedBlock *outport.FinalizedBlock) error {
+	if eim.FinalizedBlockCalled != nil {
+		return eim.FinalizedBlockCalled(finalizedBlock)
 	}
 
 	return nil

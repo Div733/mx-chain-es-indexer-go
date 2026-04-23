@@ -122,6 +122,9 @@ func TestSerializeTokensDrwaUpdate(t *testing.T) {
 				TokenPolicyVersion: 3,
 				GlobalPause:        true,
 				StrictAuditorMode:  false,
+				WhitePaperCID:      "QmTestCidValue1234567890123456789012345678901234",
+				RegistrationStatus: "approved",
+				WindDownInitiated:  true,
 			},
 			DrwaUpdate: true,
 		},
@@ -134,6 +137,9 @@ func TestSerializeTokensDrwaUpdate(t *testing.T) {
 	require.Contains(t, buffSlice.Buffers()[0].String(), `"policyId":"policy-hotel-1"`)
 	require.Contains(t, buffSlice.Buffers()[0].String(), `"tokenPolicyVersion":3`)
 	require.Contains(t, buffSlice.Buffers()[0].String(), `"globalPause":true`)
+	require.Contains(t, buffSlice.Buffers()[0].String(), `"whitePaperCid":"QmTestCidValue1234567890123456789012345678901234"`)
+	require.Contains(t, buffSlice.Buffers()[0].String(), `"registrationStatus":"approved"`)
+	require.Contains(t, buffSlice.Buffers()[0].String(), `"windDownInitiated":true`)
 	require.Contains(t, buffSlice.Buffers()[0].String(), `ctx._source.drwa.putAll(params.drwa)`)
 }
 

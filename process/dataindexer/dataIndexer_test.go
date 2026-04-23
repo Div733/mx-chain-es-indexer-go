@@ -185,3 +185,26 @@ func TestDataIndexer_RevertIndexedBlock(t *testing.T) {
 	require.Equal(t, 1, countMap[2])
 	require.Equal(t, 1, countMap[3])
 }
+
+func TestDataIndexer_FinalizedBlock(t *testing.T) {
+	called := false
+
+	arguments := NewDataIndexerArguments()
+	arguments.ElasticProcessor = &mock.ElasticProcessorStub{
+		FinalizedBlockCalled: func(finalizedBlock *outport.FinalizedBlock) error {
+			called = true
+			require.Equal(t, uint32(2), finalizedBlock.ShardID)
+			require.Equal(t, []byte("header-hash"), finalizedBlock.HeaderHash)
+			return nil
+		},
+	}
+
+	ei, _ := NewDataIndexer(arguments)
+
+	err := ei.FinalizedBlock(&outport.FinalizedBlock{
+		ShardID:    2,
+		HeaderHash: []byte("header-hash"),
+	})
+	require.NoError(t, err)
+	require.True(t, called)
+}

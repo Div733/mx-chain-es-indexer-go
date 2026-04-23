@@ -2,6 +2,7 @@ package metrics
 
 import (
 	"bytes"
+	"fmt"
 	"net/http"
 	"strings"
 	"sync"
@@ -11,16 +12,18 @@ import (
 )
 
 const (
-	operationCount = "operations_count"
-	errorsCount    = "errors_count"
-	totalTime      = "total_time"
-	totalData      = "total_data"
-	requestsErrors = "requests_errors"
+	operationCount              = "operations_count"
+	errorsCount                 = "errors_count"
+	totalTime                   = "total_time"
+	totalData                   = "total_data"
+	requestsErrors              = "requests_errors"
+	drwaStaleUnfinalizedTopic   = "drwa_stale_unfinalized_records"
 )
 
 type statusMetrics struct {
-	metrics map[string]*request.MetricsResponse
-	mut     sync.RWMutex
+	metrics                    map[string]*request.MetricsResponse
+	drwaStaleUnfinalizedCount  uint64
+	mut                        sync.RWMutex
 }
 
 // NewStatusMetrics will return an instance of the statusMetrics
@@ -56,6 +59,14 @@ func (sm *statusMetrics) AddIndexingData(args ArgsAddIndexingData) {
 	}
 }
 
+// IncrementDRWAStaleUnfinalizedCount increments the counter for DRWA records
+// that were found in isFinalized=false state beyond the expected finality window.
+func (sm *statusMetrics) IncrementDRWAStaleUnfinalizedCount() {
+	sm.mut.Lock()
+	sm.drwaStaleUnfinalizedCount++
+	sm.mut.Unlock()
+}
+
 // GetMetrics returns the metrics map
 func (sm *statusMetrics) GetMetrics() map[string]*request.MetricsResponse {
 	sm.mut.RLock()
@@ -81,9 +92,15 @@ func (sm *statusMetrics) GetMetricsForPrometheus() string {
 		stringBuilder.WriteString(errorsMetric(topic, requestsErrors, shardIDStr, metricsData.ErrorsCount))
 	}
 
-	promMetricsOutput := stringBuilder.String()
+	// Append DRWA stale unfinalized counter as a standalone gauge
+	sm.mut.RLock()
+	staleCount := sm.drwaStaleUnfinalizedCount
+	sm.mut.RUnlock()
+	stringBuilder.WriteString(fmt.Sprintf("# HELP drwa_stale_unfinalized_records_total Number of times stale unfinalized DRWA records were detected and recovered\n"))
+	stringBuilder.WriteString(fmt.Sprintf("# TYPE drwa_stale_unfinalized_records_total counter\n"))
+	stringBuilder.WriteString(fmt.Sprintf("drwa_stale_unfinalized_records_total %d\n", staleCount))
 
-	return promMetricsOutput
+	return stringBuilder.String()
 }
 
 func (sm *statusMetrics) getAllUnprotected() map[string]*request.MetricsResponse {

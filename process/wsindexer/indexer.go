@@ -161,8 +161,14 @@ func (i *indexer) saveAccounts(marshalledData []byte) error {
 	return i.di.SaveAccounts(accounts)
 }
 
-func (i *indexer) finalizedBlock(_ []byte) error {
-	return nil
+func (i *indexer) finalizedBlock(marshalledData []byte) error {
+	finalizedBlock := &outport.FinalizedBlock{}
+	err := i.marshaller.Unmarshal(finalizedBlock, marshalledData)
+	if err != nil {
+		return err
+	}
+
+	return i.di.FinalizedBlock(finalizedBlock)
 }
 
 func (i *indexer) setSettings(marshalledData []byte) error {

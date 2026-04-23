@@ -98,6 +98,8 @@ type DBLogsAndEventsHandler interface {
 		logsAndEvents []*outport.LogData,
 		preparedResults *data.PreparedResults,
 		timestamp uint64,
+		blockHash string,
+		blockRound uint64,
 		shardID uint32,
 		numOfShards uint32,
 		timestampMs uint64,
@@ -118,9 +120,11 @@ type DBLogsAndEventsHandler interface {
 	PrepareDelegatorsQueryInCaseOfRevert(timestampMs uint64) *bytes.Buffer
 
 	SerializeDRWADenials(records []*data.DrwaDenialRecord, buffSlice *data.BufferSlice, index string) error
+	SerializeDRWAIdentities(records []*data.DrwaIdentityRecord, buffSlice *data.BufferSlice, index string) error
 	SerializeDRWAHolderCompliance(records []*data.DrwaHolderComplianceRecord, buffSlice *data.BufferSlice, index string) error
 	SerializeDRWAAttestations(records []*data.DrwaAttestationRecord, buffSlice *data.BufferSlice, index string) error
 	SerializeDRWATokenPolicies(records []*data.DrwaTokenPolicyRecord, buffSlice *data.BufferSlice, index string) error
+	SerializeDRWAControlEvents(records []*data.DrwaControlEventRecord, buffSlice *data.BufferSlice, index string) error
 }
 
 // OperationsHandler defines the actions that an operations' handler should do

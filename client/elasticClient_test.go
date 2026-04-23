@@ -1,6 +1,7 @@
 package client
 
 import (
+	"bytes"
 	"context"
 	"io"
 	"net/http"
@@ -122,4 +123,27 @@ func TestElasticClient_GetWriteIndexOneIndex(t *testing.T) {
 	res, err := esClient.getWriteIndex("delegators")
 	require.Nil(t, err)
 	require.Equal(t, "delegators-000001", res)
+}
+
+func TestElasticClient_PutMappingsSanitizesElasticErrors(t *testing.T) {
+	handler := http.NotFound
+	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		handler(w, r)
+	}))
+	defer ts.Close()
+
+	handler = func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusBadRequest)
+		_, _ = w.Write([]byte(`{"error":{"type":"mapper_parsing_exception","reason":"token=super-secret-value-1234567890"}}`))
+	}
+
+	esClient, _ := NewElasticClient(elasticsearch.Config{
+		Addresses: []string{ts.URL},
+		Logger:    &logging.CustomLogger{},
+	})
+
+	err := esClient.PutMappings("tokens", bytes.NewBufferString(`{"properties":{}}`))
+	require.Error(t, err)
+	require.Contains(t, err.Error(), "mapper_parsing_exception")
+	require.NotContains(t, err.Error(), "super-secret-value-1234567890")
 }

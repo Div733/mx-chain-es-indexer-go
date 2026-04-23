@@ -1,7 +1,6 @@
 package logging
 
 import (
-	"io"
 	"net/http"
 	"time"
 
@@ -27,10 +26,16 @@ func (cl *CustomLogger) LogRoundTrip(
 	)
 
 	if req != nil && req.Body != nil && req.Body != http.NoBody {
-		reqSize, _ = io.Copy(io.Discard, req.Body)
+		reqSize = req.ContentLength
+		if reqSize < 0 {
+			reqSize = 0
+		}
 	}
 	if res != nil && res.Body != nil && res.Body != http.NoBody {
-		resSize, _ = io.Copy(io.Discard, res.Body)
+		resSize = res.ContentLength
+		if resSize < 0 {
+			resSize = 0
+		}
 	}
 
 	if err != nil {
@@ -70,10 +75,10 @@ func logInformation(
 
 // RequestBodyEnabled makes the client pass request body to logger
 func (cl *CustomLogger) RequestBodyEnabled() bool {
-	return true
+	return false
 }
 
 // ResponseBodyEnabled makes the client pass response body to logger
 func (cl *CustomLogger) ResponseBodyEnabled() bool {
-	return true
+	return false
 }

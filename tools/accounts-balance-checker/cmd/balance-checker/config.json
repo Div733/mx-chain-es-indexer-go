@@ -1,8 +1,6 @@
 {
   "elasticsearch": {
-    "url": "",
-    "username": "",
-    "password": ""
+    "url": "https://localhost:9200"
   },
   "proxy": {
     "url": "",

@@ -1,0 +1,38 @@
+{
+	"index_patterns": [
+		"drwa-denials-*"
+	],
+	"mappings": {
+		"properties": {
+			"denialCode": {
+				"type": "keyword"
+			},
+			"eventOrder": {
+				"type": "long"
+			},
+			"receiver": {
+				"type": "keyword"
+			},
+			"sender": {
+				"type": "keyword"
+			},
+			"shardID": {
+				"type": "long"
+			},
+			"timestamp": {
+				"format": "epoch_second",
+				"type": "date"
+			},
+			"tokenId": {
+				"type": "keyword"
+			},
+			"txHash": {
+				"type": "keyword"
+			}
+		}
+	},
+	"settings": {
+		"number_of_replicas": 0,
+		"number_of_shards": 3
+	}
+}

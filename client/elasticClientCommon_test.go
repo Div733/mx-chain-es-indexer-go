@@ -79,6 +79,21 @@ func TestElasticDefaultErrorResponseHandler_UnmarshalFailsWithGenericError(t *te
 	assert.True(t, strings.Contains(err.Error(), "invalid character 'G'"))
 }
 
+func TestElasticDefaultErrorResponseHandler_DoesNotEchoFullBody(t *testing.T) {
+	t.Parallel()
+
+	secretLikePayload := `{"error":{"type":"mapper_parsing_exception","reason":"token=super-secret-value-1234567890"}}`
+	resp := createMockEsapiResponseWithText(secretLikePayload)
+	resp.StatusCode = http.StatusBadRequest
+
+	err := elasticDefaultErrorResponseHandler(resp)
+
+	require.Error(t, err)
+	assert.Contains(t, err.Error(), "mapper_parsing_exception")
+	assert.NotContains(t, err.Error(), "super-secret-value-1234567890")
+	assert.NotContains(t, err.Error(), "body preview")
+}
+
 func TestElasticDefaultErrorResponseHandler_AlreadyExistsShouldRetNil(t *testing.T) {
 	t.Parallel()
 
@@ -117,7 +132,8 @@ func TestElasticDefaultErrorResponseHandler_StatusCodeNotOkShouldErr(t *testing.
 	err := elasticDefaultErrorResponseHandler(resp)
 
 	require.NotNil(t, err)
-	assert.True(t, strings.Contains(err.Error(), errorString))
+	assert.True(t, strings.Contains(err.Error(), "body type: unknown"))
+	assert.False(t, strings.Contains(err.Error(), errorString))
 }
 
 func createMockEsapiResponseWithText(str string) *esapi.Response {
@@ -153,4 +169,13 @@ func TestExtractErrorFromBulkBodyResponseBytesIndex(t *testing.T) {
 
 	err := extractErrorFromBulkBodyResponseBytes(responseBytes)
 	require.NotNil(t, err)
+}
+
+func TestTruncateForLog_TruncatesLongValues(t *testing.T) {
+	t.Parallel()
+
+	longValue := strings.Repeat("a", elasticErrorPreviewLimit+10)
+	res := truncateForLog(longValue)
+	require.Len(t, res, elasticErrorPreviewLimit+len("...(truncated)"))
+	require.True(t, strings.HasSuffix(res, "...(truncated)"))
 }

@@ -1,7 +1,9 @@
 package check
 
 import (
+	"errors"
 	"math"
+	"os"
 	"time"
 
 	"github.com/elastic/go-elasticsearch/v7"
@@ -15,10 +17,16 @@ import (
 
 // CreateBalanceChecker will create a new instance of balanceChecker
 func CreateBalanceChecker(cfg *config.Config, repair bool) (*balanceChecker, error) {
+	username := os.Getenv("ES_USERNAME")
+	password := os.Getenv("ES_PASSWORD")
+	if username == "" || password == "" {
+		return nil, errors.New("elasticsearch credentials must not be empty — set ES_USERNAME and ES_PASSWORD")
+	}
+
 	esClient, err := esclient.NewElasticClient(elasticsearch.Config{
 		Addresses: []string{cfg.Elasticsearch.URL},
-		Username:  cfg.Elasticsearch.Username,
-		Password:  cfg.Elasticsearch.Password,
+		Username:  username,
+		Password:  password,
 		Logger:    &logging.CustomLogger{},
 		RetryBackoff: func(i int) time.Duration {
 			// A simple exponential delay

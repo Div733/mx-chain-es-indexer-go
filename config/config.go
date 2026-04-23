@@ -50,6 +50,7 @@ type ClusterConfig struct {
 			UserName                  string `toml:"username"`
 			Password                  string `toml:"password"`
 			BulkRequestMaxSizeInBytes int    `toml:"bulk-request-max-size-in-bytes"`
+			DrwaRegistryAddress       string `toml:"drwa-registry-address"`
 		} `toml:"elastic-cluster"`
 	} `toml:"config"`
 }

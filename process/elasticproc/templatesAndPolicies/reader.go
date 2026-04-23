@@ -43,6 +43,12 @@ func (tr *templatesAndPolicyReader) GetElasticTemplatesAndPolicies() (map[string
 	indexTemplates[indexer.ESDTsIndex] = indices.ESDTs.ToBuffer()
 	indexTemplates[indexer.ValuesIndex] = indices.Values.ToBuffer()
 	indexTemplates[indexer.EventsIndex] = indices.Events.ToBuffer()
+	indexTemplates[indexer.DrwaDenialsIndex] = indices.DrwaDenials.ToBuffer()
+	indexTemplates[indexer.DrwaIdentitiesIndex] = indices.DrwaIdentities.ToBuffer()
+	indexTemplates[indexer.DrwaHolderComplianceIndex] = indices.DrwaHolderCompliance.ToBuffer()
+	indexTemplates[indexer.DrwaAttestationsIndex] = indices.DrwaAttestations.ToBuffer()
+	indexTemplates[indexer.DrwaTokenPoliciesIndex] = indices.DrwaTokenPolicies.ToBuffer()
+	indexTemplates[indexer.DrwaControlEventsIndex] = indices.DrwaControlEvents.ToBuffer()
 
 	return indexTemplates, indexPolicies, nil
 }
@@ -118,6 +124,30 @@ func (tr *templatesAndPolicyReader) GetTimestampMsMappings() ([]templates.ExtraM
 		{
 			Index:    indexer.SCDeploysIndex,
 			Mappings: indices.DeploysTimestampMs.ToBuffer(),
+		},
+		{
+			Index:    indexer.DrwaDenialsIndex,
+			Mappings: indices.TimestampMs.ToBuffer(),
+		},
+		{
+			Index:    indexer.DrwaIdentitiesIndex,
+			Mappings: indices.TimestampMs.ToBuffer(),
+		},
+		{
+			Index:    indexer.DrwaHolderComplianceIndex,
+			Mappings: indices.TimestampMs.ToBuffer(),
+		},
+		{
+			Index:    indexer.DrwaAttestationsIndex,
+			Mappings: indices.TimestampMs.ToBuffer(),
+		},
+		{
+			Index:    indexer.DrwaTokenPoliciesIndex,
+			Mappings: indices.TimestampMs.ToBuffer(),
+		},
+		{
+			Index:    indexer.DrwaControlEventsIndex,
+			Mappings: indices.TimestampMs.ToBuffer(),
 		},
 	}, nil
 }

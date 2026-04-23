@@ -180,9 +180,13 @@ func (di *dataIndexer) SaveAccounts(accounts *outport.Accounts) error {
 	return di.elasticProcessor.SaveAccounts(accounts)
 }
 
-// FinalizedBlock returns nil
-func (di *dataIndexer) FinalizedBlock(_ *outport.FinalizedBlock) error {
-	return nil
+// FinalizedBlock marks records from the finalized header as finalized in the backing store.
+func (di *dataIndexer) FinalizedBlock(finalizedBlock *outport.FinalizedBlock) error {
+	if finalizedBlock == nil {
+		return nil
+	}
+
+	return di.elasticProcessor.FinalizedBlock(finalizedBlock)
 }
 
 // GetMarshaller return the marshaller

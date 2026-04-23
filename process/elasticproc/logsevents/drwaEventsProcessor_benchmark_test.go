@@ -8,7 +8,7 @@ import (
 )
 
 func BenchmarkDRWAEventsProcessor_ProcessPolicyEvent(b *testing.B) {
-	processor := newDRWAEventsProcessor()
+	processor := newDRWAEventsProcessor("")
 	event := &transaction.Event{
 		Identifier: []byte(drwaTokenPolicyEvent),
 		Topics: [][]byte{

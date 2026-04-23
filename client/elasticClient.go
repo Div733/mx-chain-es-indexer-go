@@ -3,7 +3,6 @@ package client
 import (
 	"bytes"
 	"context"
-	"errors"
 	"fmt"
 	"io"
 	"net/http"
@@ -95,11 +94,7 @@ func (ec *elasticClient) PutMappings(indexName string, mappings *bytes.Buffer) e
 		return err
 	}
 
-	if res.IsError() {
-		return errors.New(res.String())
-	}
-
-	return nil
+	return parseResponse(res, nil, elasticDefaultErrorResponseHandler)
 }
 
 // CheckAndCreateAlias creates a new alias if it does not already exist
@@ -382,17 +377,23 @@ func (ec *elasticClient) getWriteIndex(alias string) (string, error) {
 
 // UpdateByQuery will update all the documents that match the provided query from the provided index
 func (ec *elasticClient) UpdateByQuery(ctx context.Context, index string, buff *bytes.Buffer) error {
+	err := ec.doRefresh(index)
+	if err != nil {
+		log.Warn("elasticClient.doRefresh", "cannot do refresh", err)
+	}
+
 	reader := bytes.NewReader(buff.Bytes())
 	res, err := ec.client.UpdateByQuery(
 		[]string{index},
 		ec.client.UpdateByQuery.WithBody(reader),
+		ec.client.UpdateByQuery.WithConflicts(esConflictsPolicy),
 		ec.client.UpdateByQuery.WithContext(ctx),
 	)
 	if err != nil {
 		return err
 	}
 	if res.IsError() {
-		return fmt.Errorf("%s", res.String())
+		return fmt.Errorf("update by query failed with status %d", res.StatusCode)
 	}
 
 	return parseResponse(res, nil, elasticDefaultErrorResponseHandler)

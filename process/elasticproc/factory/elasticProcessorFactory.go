@@ -5,6 +5,7 @@ import (
 	"github.com/multiversx/mx-chain-core-go/hashing"
 	"github.com/multiversx/mx-chain-core-go/marshal"
 	"github.com/multiversx/mx-chain-es-indexer-go/config"
+	indexerCore "github.com/multiversx/mx-chain-es-indexer-go/core"
 	"github.com/multiversx/mx-chain-es-indexer-go/process/dataindexer"
 	"github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc"
 	"github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc/accounts"
@@ -33,6 +34,8 @@ type ArgElasticProcessorFactory struct {
 	UseKibana                bool
 	ImportDB                 bool
 	EnableEpochsConfig       config.EnableEpochsConfig
+	DrwaRegistryAddress      string
+	StatusMetrics            indexerCore.StatusMetricsHandler
 }
 
 // CreateElasticProcessor will create a new instance of ElasticProcessor
@@ -89,10 +92,11 @@ func CreateElasticProcessor(arguments ArgElasticProcessorFactory) (dataindexer.E
 	}
 
 	argsLogsAndEventsProc := logsevents.ArgsLogsAndEventsProcessor{
-		PubKeyConverter:  arguments.AddressPubkeyConverter,
-		Marshalizer:      arguments.Marshalizer,
-		BalanceConverter: balanceConverter,
-		Hasher:           arguments.Hasher,
+		PubKeyConverter:     arguments.AddressPubkeyConverter,
+		Marshalizer:         arguments.Marshalizer,
+		BalanceConverter:    balanceConverter,
+		Hasher:              arguments.Hasher,
+		DrwaRegistryAddress: arguments.DrwaRegistryAddress,
 	}
 	logsAndEventsProc, err := logsevents.NewLogsAndEventsProcessor(argsLogsAndEventsProc)
 	if err != nil {
@@ -118,6 +122,7 @@ func CreateElasticProcessor(arguments ArgElasticProcessorFactory) (dataindexer.E
 		UseKibana:          arguments.UseKibana,
 		OperationsProc:     operationsProc,
 		ImportDB:           arguments.ImportDB,
+		StatusMetrics:      arguments.StatusMetrics,
 		Version:            arguments.Version,
 		MappingsHandler:    templatesAndPoliciesReader,
 	}

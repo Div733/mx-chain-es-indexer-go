@@ -57,6 +57,9 @@ test1{operation="total_time",shardID="0"} 0
 # TYPE test1 gauge
 test1{operation="requests_errors",shardID="0",errorCode="400"} 1
 
+# HELP drwa_stale_unfinalized_records_total Number of times stale unfinalized DRWA records were detected and recovered
+# TYPE drwa_stale_unfinalized_records_total counter
+drwa_stale_unfinalized_records_total 0
 `, prometheusMetrics)
 }
 

@@ -3,6 +3,8 @@ package gin
 import (
 	"fmt"
 	"net/http"
+	"os"
+	"strings"
 	"sync"
 
 	"github.com/gin-contrib/cors"
@@ -58,8 +60,14 @@ func (ws *webServer) StartHttpServer() error {
 
 	engine = gin.Default()
 	cfg := cors.DefaultConfig()
-	cfg.AllowAllOrigins = true
-	cfg.AddAllowHeaders("Authorization")
+	allowedOrigins := os.Getenv("ALLOWED_ORIGINS")
+	if allowedOrigins != "" {
+		cfg.AllowOrigins = strings.Split(allowedOrigins, ",")
+	} else {
+		cfg.AllowOrigins = []string{}
+	}
+	cfg.AllowMethods = []string{"GET"}
+	cfg.AllowHeaders = []string{"Content-Type"}
 	engine.Use(cors.New(cfg))
 
 	err := ws.createGroups()

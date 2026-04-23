@@ -124,7 +124,7 @@ func (ec *elasticClient) clearScroll(scrollID string) error {
 	defer closeBody(resp)
 
 	if resp.IsError() && resp.StatusCode != http.StatusNotFound {
-		return fmt.Errorf("error response: %s", resp)
+		return fmt.Errorf("error response: status %d", resp.StatusCode)
 	}
 
 	return nil
@@ -132,7 +132,7 @@ func (ec *elasticClient) clearScroll(scrollID string) error {
 
 func getBytesFromResponse(res *esapi.Response) ([]byte, error) {
 	if res.IsError() {
-		return nil, fmt.Errorf("error response: %s", res)
+		return nil, fmt.Errorf("error response: status %d", res.StatusCode)
 	}
 	defer closeBody(res)
 

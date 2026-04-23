@@ -23,6 +23,7 @@ type ElasticProcessor interface {
 	SaveRoundsInfo(rounds *outport.RoundsInfo) error
 	SaveShardValidatorsPubKeys(validatorsPubKeys *outport.ValidatorsPubKeys) error
 	SaveAccounts(accounts *outport.Accounts) error
+	FinalizedBlock(finalizedBlock *outport.FinalizedBlock) error
 	SetOutportConfig(cfg outport.OutportConfig) error
 	IsInterfaceNil() bool
 }

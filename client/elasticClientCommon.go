@@ -15,6 +15,8 @@ import (
 	"github.com/multiversx/mx-chain-es-indexer-go/process/dataindexer"
 )
 
+const elasticErrorPreviewLimit = 256
+
 func exists(res *esapi.Response, err error) bool {
 	defer func() {
 		if res != nil && res.Body != nil {
@@ -71,7 +73,7 @@ func elasticDefaultErrorResponseHandler(res *esapi.Response) error {
 		}
 
 		return fmt.Errorf("%w, cannot unmarshal elastic response body to map[string]interface{}, "+
-			"decode error: %s, body response: %s", errToReturn, err.Error(), string(bodyBytes))
+			"decode error: %s, body preview: %s", errToReturn, err.Error(), sanitizeElasticBodyPreview(bodyBytes))
 	}
 
 	if res.IsError() {
@@ -87,13 +89,13 @@ func elasticDefaultErrorResponseHandler(res *esapi.Response) error {
 		return nil
 	}
 
-	return fmt.Errorf("error while parsing the response: code returned: %v, body: %v, bodyBytes: %v",
-		res.StatusCode, responseBody, string(bodyBytes))
+	return fmt.Errorf("error while parsing the response: code returned: %v, body type: %s",
+		res.StatusCode, summarizeElasticErrorType(responseBody["error"]))
 }
 
 func elasticBulkRequestResponseHandler(res *esapi.Response) error {
 	if res.IsError() {
-		return fmt.Errorf("%s", res.String())
+		return fmt.Errorf("bulk request failed with status %d", res.StatusCode)
 	}
 
 	bodyBytes, err := io.ReadAll(res.Body)
@@ -134,8 +136,8 @@ func extractErrorFromBulkBodyResponseBytes(bodyBytes []byte) error {
 		}
 
 		count++
-		errorsString += fmt.Sprintf(`{ "index": "%s", "id": "%s", "statusCode": %d, "errorType": "%s", "reason": "%s", "causedBy": { "type": "%s", "reason": "%s", "script_stack":"%s", "script":"%s" }}\n`,
-			selectedItem.Index, selectedItem.ID, selectedItem.Status, selectedItem.Error.Type, selectedItem.Error.Reason, selectedItem.Error.Cause.Type, selectedItem.Error.Cause.Reason, selectedItem.Error.Cause.ScriptStack, selectedItem.Error.Cause.Script)
+		errorsString += fmt.Sprintf(`{ "index": "%s", "id": "%s", "statusCode": %d, "errorType": "%s", "reason": "%s", "causedByType": "%s" }`+"\n",
+			selectedItem.Index, selectedItem.ID, selectedItem.Status, selectedItem.Error.Type, truncateForLog(selectedItem.Error.Reason), selectedItem.Error.Cause.Type)
 
 		if count == numOfErrorsToExtractBulkResponse {
 			break
@@ -146,6 +148,36 @@ func extractErrorFromBulkBodyResponseBytes(bodyBytes []byte) error {
 	}
 
 	return fmt.Errorf("%s", errorsString)
+}
+
+func sanitizeElasticBodyPreview(bodyBytes []byte) string {
+	return truncateForLog(strings.ReplaceAll(string(bodyBytes), "\n", " "))
+}
+
+func truncateForLog(value string) string {
+	if len(value) <= elasticErrorPreviewLimit {
+		return value
+	}
+
+	return value[:elasticErrorPreviewLimit] + "...(truncated)"
+}
+
+func summarizeElasticErrorType(rawError interface{}) string {
+	if rawError == nil {
+		return "unknown"
+	}
+
+	errMap, ok := rawError.(map[string]interface{})
+	if !ok {
+		return truncateForLog(fmt.Sprintf("%v", rawError))
+	}
+
+	errType, ok := errMap["type"].(string)
+	if ok && errType != "" {
+		return errType
+	}
+
+	return truncateForLog(fmt.Sprintf("%v", rawError))
 }
 
 func errIsAlreadyExists(response map[string]interface{}) bool {

@@ -1,0 +1,47 @@
+{
+	"index_patterns": [
+		"drwa-attestations-*"
+	],
+	"mappings": {
+		"properties": {
+			"approved": {
+				"type": "boolean"
+			},
+			"attestationType": {
+				"type": "keyword"
+			},
+			"attestedRound": {
+				"type": "long"
+			},
+			"auditor": {
+				"type": "keyword"
+			},
+			"eventOrder": {
+				"type": "long"
+			},
+			"eventType": {
+				"type": "keyword"
+			},
+			"shardID": {
+				"type": "long"
+			},
+			"subject": {
+				"type": "keyword"
+			},
+			"timestamp": {
+				"format": "epoch_second",
+				"type": "date"
+			},
+			"tokenId": {
+				"type": "keyword"
+			},
+			"txHash": {
+				"type": "keyword"
+			}
+		}
+	},
+	"settings": {
+		"number_of_replicas": 0,
+		"number_of_shards": 3
+	}
+}

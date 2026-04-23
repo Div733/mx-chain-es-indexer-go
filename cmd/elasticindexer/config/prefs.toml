@@ -18,7 +18,10 @@
         acknowledge-timeout-in-seconds = 50
 
     [config.elastic-cluster]
-        url = "http://localhost:9200"
+        url = "https://localhost:9200"
         username = ""
         password = ""
         bulk-request-max-size-in-bytes = 4194304 # 4MB
+        # Hex-encoded address of the authorised DRWA registry contract.
+        # Leave empty to disable contract address verification (not recommended for production).
+        drwa-registry-address = ""

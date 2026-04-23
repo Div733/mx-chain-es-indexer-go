@@ -1,9 +1,9 @@
 name: golangci-lint
 on:
   push:
-    branches: [ master, dev ]
+    branches: [ master ]
   pull_request:
-    branches: [ master, dev, feat/*, rc/* ]
+    branches: [ master, feat/*, rc/* ]
 
 permissions:
   contents: read

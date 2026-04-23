@@ -20,6 +20,9 @@ type argsProcessEvent struct {
 	txHashStatusInfoProc    txHashStatusInfoHandler
 	timestamp               uint64
 	timestampMs             uint64
+	blockHash               string
+	blockRound              uint64
+	eventOrder              int
 	logAddress              []byte
 	selfShardID             uint32
 	numOfShards             uint32
@@ -30,9 +33,11 @@ type argOutputProcessEvent struct {
 	delegator            *data.Delegator
 	updatePropNFT        *data.NFTDataUpdate
 	drwaDenial           *data.DrwaDenialRecord
+	drwaIdentity         *data.DrwaIdentityRecord
 	drwaHolderCompliance *data.DrwaHolderComplianceRecord
 	drwaAttestation      *data.DrwaAttestationRecord
 	drwaTokenPolicy      *data.DrwaTokenPolicyRecord
+	drwaControlEvent     *data.DrwaControlEventRecord
 	processed            bool
 }
 

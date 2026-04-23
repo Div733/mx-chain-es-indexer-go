@@ -133,33 +133,24 @@ func PrepareNFTUpdateData(buffSlice *data.BufferSlice, updateNFTData []*data.NFT
 		newTags := TruncateSliceElementsIfExceedsMaxLength(ExtractTagsFromAttributes(nftUpdate.NewAttributes))
 		newMetadata := ExtractMetaDataFromAttributes(nftUpdate.NewAttributes)
 
-		marshalizedTags, errM := json.Marshal(newTags)
-		if errM != nil {
-			return errM
-		}
+		const updateScript = `if (ctx._source.containsKey('data')) { if (params.metadata != null && params.metadata != '') { ctx._source.data.metadata = params.metadata; } else { ctx._source.data.remove('metadata'); } if (params.tags != null) { ctx._source.data.tags = params.tags; } else { ctx._source.data.remove('tags'); } ctx._source.data.attributes = params.attributes; }`
 
-		codeToExecute := `
-			if (ctx._source.containsKey('data')) {
-				ctx._source.data.attributes = params.attributes;
-				if (!params.metadata.isEmpty() ) {
-					ctx._source.data.metadata = params.metadata
-				} else {
-					if (ctx._source.data.containsKey('metadata')) {
-						ctx._source.data.remove('metadata')
-					}
-				}
-				if (params.tags != null) {
-					ctx._source.data.tags = params.tags
-				} else {
-					if (ctx._source.data.containsKey('tags')) {
-						ctx._source.data.remove('tags')
-					}
-				}
-			}
-`
-		serializedData := []byte(fmt.Sprintf(`{"script": {"source": "%s","lang": "painless","params": {"attributes": "%s", "metadata": "%s", "tags": %s}}, "upsert": {}}`,
-			FormatPainlessSource(codeToExecute), base64Attr, newMetadata, marshalizedTags),
-		)
+		payload := map[string]interface{}{
+			"script": map[string]interface{}{
+				"source": updateScript,
+				"lang":   "painless",
+				"params": map[string]interface{}{
+					"attributes": base64Attr,
+					"metadata":   newMetadata,
+					"tags":       newTags,
+				},
+			},
+			"upsert": map[string]interface{}{},
+		}
+		serializedData, errJ := json.Marshal(payload)
+		if errJ != nil {
+			return errJ
+		}
 		if len(nftUpdate.URIsToAdd) != 0 {
 			uris := make([]string, 0, len(nftUpdate.URIsToAdd))
 			for _, uri := range nftUpdate.URIsToAdd {
@@ -170,6 +161,7 @@ func PrepareNFTUpdateData(buffSlice *data.BufferSlice, updateNFTData []*data.NFT
 				return err
 			}
 
+			var codeToExecute string
 			codeToExecute = `
 				if (ctx._source.containsKey('data')) {
 					if ((!ctx._source.data.containsKey('uris')) || (params.set)) {

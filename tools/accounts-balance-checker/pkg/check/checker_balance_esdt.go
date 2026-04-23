@@ -1,6 +1,7 @@
 package check
 
 import (
+	"bytes"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -190,13 +191,20 @@ func (bc *balanceChecker) compareBalances(balancesFromES, balancesFromProxy map[
 }
 
 func (bc *balanceChecker) getLasTimeWhenBalanceWasChanged(identifier, address string) (time.Duration, string) {
-	query := queryGetLastTxForToken(identifier, address)
+	var query *bytes.Buffer
+	var err error
 	if identifier == "" {
-		query = queryGetLastOperationForAddress(address)
+		query, err = queryGetLastOperationForAddress(address)
+	} else {
+		query, err = queryGetLastTxForToken(identifier, address)
+	}
+	if err != nil {
+		log.Warn("bc.getLasTimeWhenBalanceWasChanged: build query", "identifier", identifier, "addr", address, "error", err)
+		return 0, ""
 	}
 
 	txResponse := &ResponseTransactions{}
-	err := bc.esClient.DoGetRequest(query, operationsIndex, txResponse, 1)
+	err = bc.esClient.DoGetRequest(query, operationsIndex, txResponse, 1)
 	if err != nil {
 		log.Warn("bc.getLasTimeWhenBalanceWasChanged", "identifier", identifier, "addr", address, "error", err)
 		return 0, ""

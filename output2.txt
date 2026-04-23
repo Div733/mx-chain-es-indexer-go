@@ -1,0 +1,1116 @@
+=== RUN   TestAccountBalanceNFTTransfer
+[0;36mDEBUG[0m[2026-04-23 10:39:06.474]   ei.elasticProcessor indexer version is empty 
+[0;33mWARN [0m[2026-04-23 10:39:06.474]   bech32PubkeyConverter.SilentEncode       [0;33mhex buff[0m =  [0;33merror[0m = wrong size when encoding address, expected length 32, received 0 [0;33mstack trace[0m = goroutine 7 [running]:
+runtime/debug.Stack()
+	/usr/local/go/src/runtime/debug/stack.go:26 +0x5e
+github.com/multiversx/mx-chain-core-go/core/pubkeyConverter.(*bech32PubkeyConverter).SilentEncode(0x8?, {0x0, 0x0, 0x4?}, {0xd3e820, 0xc0000aafc0})
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-core-go/core/pubkeyConverter/bech32PubkeyConverter.go:109 +0x105
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc/logsevents.(*logsAndEventsProcessor).prepareLog(0xc0000abe40, 0xc0004a2f20, {0xc00031618c, 0x4}, 0xc0002644e0, 0x15e0, 0x1, 0x557300)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/logsevents/logsAndEventsProcessor.go:262 +0x173
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc/logsevents.(*logsAndEventsProcessor).prepareLogsForDB(0xc0000abe40, 0xc0004a2f20, {0xc0000800e0, 0x1, 0xc0004a2f20?}, 0x15e0, 0x1, 0x557300)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/logsevents/logsAndEventsProcessor.go:244 +0x109
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc/logsevents.(*logsAndEventsProcessor).ExtractDataFromLogs(0xc0000abe40, {0xc0000800e0, 0x1, 0x1}, 0xc00030e8c0?, 0x15e0, {0x0?, 0x7379f8b8d108?}, 0xc000500008?, 0x1, ...)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/logsevents/logsAndEventsProcessor.go:124 +0x22e
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc.(*elasticProcessor).SaveTransactions(0xc000200380, 0xc000322198)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/elasticProcessor.go:526 +0x31e
+github.com/multiversx/mx-chain-es-indexer-go/integrationtests.TestAccountBalanceNFTTransfer(0xc000195520)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/integrationtests/accountsBalanceNftTransfer_test.go:95 +0x809
+testing.tRunner(0xc000195520, 0xc7ba70)
+	/usr/local/go/src/testing/testing.go:1690 +0xf4
+created by testing.(*T).Run in goroutine 1
+	/usr/local/go/src/testing/testing.go:1743 +0x390
+ 
+[0;33mWARN [0m[2026-04-23 10:39:06.474]   cannot find hash in the txs map or scrs map [0;33mhash[0m = 6831 
+[0;36mDEBUG[0m[2026-04-23 10:39:06.474]   accountsProcessor.splitAlteredAccounts - nil additional data 
+[0;33mWARN [0m[2026-04-23 10:39:06.474]   accountsProcessor.PrepareRegularAccountsMap: cannot cast account's balance to big int [0;33mvalue[0m =  
+[0;36mDEBUG[0m[2026-04-23 10:39:06.616]   ei.elasticProcessor indexer version is empty 
+[0;33mWARN [0m[2026-04-23 10:39:06.616]   bech32PubkeyConverter.SilentEncode       [0;33mhex buff[0m =  [0;33merror[0m = wrong size when encoding address, expected length 32, received 0 [0;33mstack trace[0m = goroutine 7 [running]:
+runtime/debug.Stack()
+	/usr/local/go/src/runtime/debug/stack.go:26 +0x5e
+github.com/multiversx/mx-chain-core-go/core/pubkeyConverter.(*bech32PubkeyConverter).SilentEncode(0x8?, {0x0, 0x0, 0x4?}, {0xd3e820, 0xc0000aafc0})
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-core-go/core/pubkeyConverter/bech32PubkeyConverter.go:109 +0x105
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc/logsevents.(*logsAndEventsProcessor).prepareLog(0xc000388b00, 0xc0001b82c0, {0xc000015f44, 0x4}, 0xc0002279e0, 0x15e0, 0x1, 0x557300)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/logsevents/logsAndEventsProcessor.go:262 +0x173
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc/logsevents.(*logsAndEventsProcessor).prepareLogsForDB(0xc000388b00, 0xc0001b82c0, {0xc000306200, 0x1, 0xc0001b82c0?}, 0x15e0, 0x1, 0x557300)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/logsevents/logsAndEventsProcessor.go:244 +0x109
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc/logsevents.(*logsAndEventsProcessor).ExtractDataFromLogs(0xc000388b00, {0xc000306200, 0x1, 0x1}, 0xc000104380?, 0x15e0, {0x0?, 0xc00022bb60?}, 0xc00035c708?, 0x1, ...)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/logsevents/logsAndEventsProcessor.go:124 +0x22e
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc.(*elasticProcessor).SaveTransactions(0xc0003fe000, 0xc00039e078)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/elasticProcessor.go:526 +0x31e
+github.com/multiversx/mx-chain-es-indexer-go/integrationtests.TestAccountBalanceNFTTransfer(0xc000195520)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/integrationtests/accountsBalanceNftTransfer_test.go:156 +0x1229
+testing.tRunner(0xc000195520, 0xc7ba70)
+	/usr/local/go/src/testing/testing.go:1690 +0xf4
+created by testing.(*T).Run in goroutine 1
+	/usr/local/go/src/testing/testing.go:1743 +0x390
+ 
+[0;33mWARN [0m[2026-04-23 10:39:06.616]   bech32PubkeyConverter.SilentEncode       [0;33mhex buff[0m = 746573742d616464726573732d62616c616e63652d31 [0;33merror[0m = wrong size when encoding address, expected length 32, received 22 [0;33mstack trace[0m = goroutine 7 [running]:
+runtime/debug.Stack()
+	/usr/local/go/src/runtime/debug/stack.go:26 +0x5e
+github.com/multiversx/mx-chain-core-go/core/pubkeyConverter.(*bech32PubkeyConverter).SilentEncode(0x8?, {0xc00002ae70, 0x16, 0x4?}, {0xd3e820, 0xc0000aafc0})
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-core-go/core/pubkeyConverter/bech32PubkeyConverter.go:109 +0x105
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc/logsevents.(*logsAndEventsProcessor).prepareLog(0xc000388b00, 0xc0001b82c0, {0xc000015f44, 0x4}, 0xc0002279e0, 0x15e0, 0x1, 0x557300)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/logsevents/logsAndEventsProcessor.go:280 +0x3a3
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc/logsevents.(*logsAndEventsProcessor).prepareLogsForDB(0xc000388b00, 0xc0001b82c0, {0xc000306200, 0x1, 0xc0001b82c0?}, 0x15e0, 0x1, 0x557300)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/logsevents/logsAndEventsProcessor.go:244 +0x109
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc/logsevents.(*logsAndEventsProcessor).ExtractDataFromLogs(0xc000388b00, {0xc000306200, 0x1, 0x1}, 0xc000104380?, 0x15e0, {0x0?, 0xc00022bb60?}, 0xc00035c708?, 0x1, ...)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/logsevents/logsAndEventsProcessor.go:124 +0x22e
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc.(*elasticProcessor).SaveTransactions(0xc0003fe000, 0xc00039e078)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/elasticProcessor.go:526 +0x31e
+github.com/multiversx/mx-chain-es-indexer-go/integrationtests.TestAccountBalanceNFTTransfer(0xc000195520)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/integrationtests/accountsBalanceNftTransfer_test.go:156 +0x1229
+testing.tRunner(0xc000195520, 0xc7ba70)
+	/usr/local/go/src/testing/testing.go:1690 +0xf4
+created by testing.(*T).Run in goroutine 1
+	/usr/local/go/src/testing/testing.go:1743 +0x390
+ 
+[0;33mWARN [0m[2026-04-23 10:39:06.616]   cannot find hash in the txs map or scrs map [0;33mhash[0m = 6831 
+[0;36mDEBUG[0m[2026-04-23 10:39:06.616]   accountsProcessor.splitAlteredAccounts - nil additional data 
+[0;36mDEBUG[0m[2026-04-23 10:39:06.616]   accountsProcessor.splitAlteredAccounts - nil additional data 
+[0;33mWARN [0m[2026-04-23 10:39:06.616]   accountsProcessor.PrepareRegularAccountsMap: cannot cast account's balance to big int [0;33mvalue[0m =  
+[0;33mWARN [0m[2026-04-23 10:39:06.616]   accountsProcessor.PrepareRegularAccountsMap: cannot cast account's balance to big int [0;33mvalue[0m =  
+--- PASS: TestAccountBalanceNFTTransfer (2.65s)
+=== RUN   TestIndexAccountsBalance
+[0;36mDEBUG[0m[2026-04-23 10:39:06.736]   ei.elasticProcessor indexer version is empty 
+[0;33mWARN [0m[2026-04-23 10:39:06.736]   bech32PubkeyConverter.SilentEncode       [0;33mhex buff[0m =  [0;33merror[0m = wrong size when encoding address, expected length 32, received 0 [0;33mstack trace[0m = goroutine 20 [running]:
+runtime/debug.Stack()
+	/usr/local/go/src/runtime/debug/stack.go:26 +0x5e
+github.com/multiversx/mx-chain-core-go/core/pubkeyConverter.(*bech32PubkeyConverter).SilentEncode(0x8?, {0x0, 0x0, 0x4?}, {0xd3e820, 0xc0000aafc0})
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-core-go/core/pubkeyConverter/bech32PubkeyConverter.go:109 +0x105
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc/logsevents.(*logsAndEventsProcessor).prepareLog(0xc0003883c0, 0xc00031d1e0, {0xc00042e3f4, 0x4}, 0xc0002d0b10, 0x15e0, 0x2, 0x557300)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/logsevents/logsAndEventsProcessor.go:262 +0x173
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc/logsevents.(*logsAndEventsProcessor).prepareLogsForDB(0xc0003883c0, 0xc00031d1e0, {0xc0003060b8, 0x1, 0xc00031d1e0?}, 0x15e0, 0x2, 0x557300)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/logsevents/logsAndEventsProcessor.go:244 +0x109
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc/logsevents.(*logsAndEventsProcessor).ExtractDataFromLogs(0xc0003883c0, {0xc0003060b8, 0x1, 0x1}, 0xc00030ea80?, 0x15e0, {0x0?, 0x7379f8b8d5b8?}, 0x10?, 0x2, ...)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/logsevents/logsAndEventsProcessor.go:124 +0x22e
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc.(*elasticProcessor).SaveTransactions(0xc000200380, 0xc000230438)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/elasticProcessor.go:526 +0x31e
+github.com/multiversx/mx-chain-es-indexer-go/integrationtests.TestIndexAccountsBalance(0xc0001941a0)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/integrationtests/accountsBalanceWithLowerTimestamp_test.go:82 +0x7bf
+testing.tRunner(0xc0001941a0, 0xc7bad8)
+	/usr/local/go/src/testing/testing.go:1690 +0xf4
+created by testing.(*T).Run in goroutine 1
+	/usr/local/go/src/testing/testing.go:1743 +0x390
+ 
+[0;33mWARN [0m[2026-04-23 10:39:06.736]   bech32PubkeyConverter.SilentEncode       [0;33mhex buff[0m = 6565656562626262 [0;33merror[0m = wrong size when encoding address, expected length 32, received 8 [0;33mstack trace[0m = goroutine 20 [running]:
+runtime/debug.Stack()
+	/usr/local/go/src/runtime/debug/stack.go:26 +0x5e
+github.com/multiversx/mx-chain-core-go/core/pubkeyConverter.(*bech32PubkeyConverter).SilentEncode(0x8?, {0xc00042e3f8, 0x8, 0x4?}, {0xd3e820, 0xc0000aafc0})
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-core-go/core/pubkeyConverter/bech32PubkeyConverter.go:109 +0x105
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc/logsevents.(*logsAndEventsProcessor).prepareLog(0xc0003883c0, 0xc00031d1e0, {0xc00042e3f4, 0x4}, 0xc0002d0b10, 0x15e0, 0x2, 0x557300)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/logsevents/logsAndEventsProcessor.go:280 +0x3a3
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc/logsevents.(*logsAndEventsProcessor).prepareLogsForDB(0xc0003883c0, 0xc00031d1e0, {0xc0003060b8, 0x1, 0xc00031d1e0?}, 0x15e0, 0x2, 0x557300)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/logsevents/logsAndEventsProcessor.go:244 +0x109
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc/logsevents.(*logsAndEventsProcessor).ExtractDataFromLogs(0xc0003883c0, {0xc0003060b8, 0x1, 0x1}, 0xc00030ea80?, 0x15e0, {0x0?, 0x7379f8b8d5b8?}, 0x10?, 0x2, ...)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/logsevents/logsAndEventsProcessor.go:124 +0x22e
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc.(*elasticProcessor).SaveTransactions(0xc000200380, 0xc000230438)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/elasticProcessor.go:526 +0x31e
+github.com/multiversx/mx-chain-es-indexer-go/integrationtests.TestIndexAccountsBalance(0xc0001941a0)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/integrationtests/accountsBalanceWithLowerTimestamp_test.go:82 +0x7bf
+testing.tRunner(0xc0001941a0, 0xc7bad8)
+	/usr/local/go/src/testing/testing.go:1690 +0xf4
+created by testing.(*T).Run in goroutine 1
+	/usr/local/go/src/testing/testing.go:1743 +0x390
+ 
+[0;33mWARN [0m[2026-04-23 10:39:06.736]   cannot find hash in the txs map or scrs map [0;33mhash[0m = 6831 
+[0;36mDEBUG[0m[2026-04-23 10:39:06.736]   accountsProcessor.splitAlteredAccounts - nil additional data 
+[0;36mDEBUG[0m[2026-04-23 10:39:06.736]   accountsProcessor.splitAlteredAccounts - nil additional data 
+[0;33mWARN [0m[2026-04-23 10:39:06.745]   bech32PubkeyConverter.SilentEncode       [0;33mhex buff[0m =  [0;33merror[0m = wrong size when encoding address, expected length 32, received 0 [0;33mstack trace[0m = goroutine 20 [running]:
+runtime/debug.Stack()
+	/usr/local/go/src/runtime/debug/stack.go:26 +0x5e
+github.com/multiversx/mx-chain-core-go/core/pubkeyConverter.(*bech32PubkeyConverter).SilentEncode(0x8?, {0x0, 0x0, 0x4?}, {0xd3e820, 0xc0000aafc0})
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-core-go/core/pubkeyConverter/bech32PubkeyConverter.go:109 +0x105
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc/logsevents.(*logsAndEventsProcessor).prepareLog(0xc0003883c0, 0xc00031db80, {0xc00042e3f4, 0x4}, 0xc0002d0b10, 0x1388, 0x2, 0x4c4b40)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/logsevents/logsAndEventsProcessor.go:262 +0x173
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc/logsevents.(*logsAndEventsProcessor).prepareLogsForDB(0xc0003883c0, 0xc00031db80, {0xc0003060b8, 0x1, 0xc00031db80?}, 0x1388, 0x2, 0x4c4b40)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/logsevents/logsAndEventsProcessor.go:244 +0x109
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc/logsevents.(*logsAndEventsProcessor).ExtractDataFromLogs(0xc0003883c0, {0xc0003060b8, 0x1, 0x1}, 0xc00030ec40?, 0x1388, {0x0?, 0xc00022bb70?}, 0x7379f8b8d5b8?, 0x2, ...)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/logsevents/logsAndEventsProcessor.go:124 +0x22e
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc.(*elasticProcessor).SaveTransactions(0xc000200380, 0xc000230618)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/elasticProcessor.go:526 +0x31e
+github.com/multiversx/mx-chain-es-indexer-go/integrationtests.TestIndexAccountsBalance(0xc0001941a0)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/integrationtests/accountsBalanceWithLowerTimestamp_test.go:105 +0xb4f
+testing.tRunner(0xc0001941a0, 0xc7bad8)
+	/usr/local/go/src/testing/testing.go:1690 +0xf4
+created by testing.(*T).Run in goroutine 1
+	/usr/local/go/src/testing/testing.go:1743 +0x390
+ 
+[0;33mWARN [0m[2026-04-23 10:39:06.745]   bech32PubkeyConverter.SilentEncode       [0;33mhex buff[0m = 6565656562626262 [0;33merror[0m = wrong size when encoding address, expected length 32, received 8 [0;33mstack trace[0m = goroutine 20 [running]:
+runtime/debug.Stack()
+	/usr/local/go/src/runtime/debug/stack.go:26 +0x5e
+github.com/multiversx/mx-chain-core-go/core/pubkeyConverter.(*bech32PubkeyConverter).SilentEncode(0x8?, {0xc00042e3f8, 0x8, 0x4?}, {0xd3e820, 0xc0000aafc0})
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-core-go/core/pubkeyConverter/bech32PubkeyConverter.go:109 +0x105
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc/logsevents.(*logsAndEventsProcessor).prepareLog(0xc0003883c0, 0xc00031db80, {0xc00042e3f4, 0x4}, 0xc0002d0b10, 0x1388, 0x2, 0x4c4b40)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/logsevents/logsAndEventsProcessor.go:280 +0x3a3
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc/logsevents.(*logsAndEventsProcessor).prepareLogsForDB(0xc0003883c0, 0xc00031db80, {0xc0003060b8, 0x1, 0xc00031db80?}, 0x1388, 0x2, 0x4c4b40)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/logsevents/logsAndEventsProcessor.go:244 +0x109
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc/logsevents.(*logsAndEventsProcessor).ExtractDataFromLogs(0xc0003883c0, {0xc0003060b8, 0x1, 0x1}, 0xc00030ec40?, 0x1388, {0x0?, 0xc00022bb70?}, 0x7379f8b8d5b8?, 0x2, ...)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/logsevents/logsAndEventsProcessor.go:124 +0x22e
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc.(*elasticProcessor).SaveTransactions(0xc000200380, 0xc000230618)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/elasticProcessor.go:526 +0x31e
+github.com/multiversx/mx-chain-es-indexer-go/integrationtests.TestIndexAccountsBalance(0xc0001941a0)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/integrationtests/accountsBalanceWithLowerTimestamp_test.go:105 +0xb4f
+testing.tRunner(0xc0001941a0, 0xc7bad8)
+	/usr/local/go/src/testing/testing.go:1690 +0xf4
+created by testing.(*T).Run in goroutine 1
+	/usr/local/go/src/testing/testing.go:1743 +0x390
+ 
+[0;33mWARN [0m[2026-04-23 10:39:06.745]   cannot find hash in the txs map or scrs map [0;33mhash[0m = 6831 
+[0;33mWARN [0m[2026-04-23 10:39:06.759]   bech32PubkeyConverter.SilentEncode       [0;33mhex buff[0m =  [0;33merror[0m = wrong size when encoding address, expected length 32, received 0 [0;33mstack trace[0m = goroutine 20 [running]:
+runtime/debug.Stack()
+	/usr/local/go/src/runtime/debug/stack.go:26 +0x5e
+github.com/multiversx/mx-chain-core-go/core/pubkeyConverter.(*bech32PubkeyConverter).SilentEncode(0x0?, {0x0, 0x0, 0xc00030ae68?}, {0xd3e820, 0xc0000ab0c0})
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-core-go/core/pubkeyConverter/bech32PubkeyConverter.go:109 +0x105
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc/transactions.(*dbTransactionBuilder).prepareTransaction(0xc000388380, 0xc000322cd8, {0xc000387328, 0x2, 0x2}, {0xc00057e7a0, 0x20, 0xc0003f0230?}, 0xc00030ae40, {0xd45910, ...}, ...)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/transactions/transactionDBBuilder.go:54 +0x1d3
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc/transactions.(*txsGrouper).prepareNormalTxForDB(0xc0002652c0, {0xc00057e7a0, 0x20, 0x20}, 0xc00030ae40, {0xc307de, 0x7}, {0xc000387328, 0x2, 0x2}, ...)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/transactions/transactionsGrouper.go:108 +0x1c5
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc/transactions.(*txsGrouper).groupNormalTxs(0xc0002652c0, 0x0, 0xc00030ae40, {0xd45910, 0xc000104380}, 0xc0003050e0, 0x0, 0x3, 0x5b8d80)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/transactions/transactionsGrouper.go:59 +0x219
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc/transactions.(*txsDatabaseProcessor).PrepareTransactionsForDatabase(0xc00009e840, {0xc00021a1f8, 0x1, 0x1}, {0xd45910, 0xc000104380}, 0xc000249110, 0x0, 0x3, 0x5b8d80)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/transactions/transactionsProcessor.go:100 +0x5c6
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc.(*elasticProcessor).SaveTransactions(0xc000200380, 0xc000322d38)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/elasticProcessor.go:525 +0x27a
+github.com/multiversx/mx-chain-es-indexer-go/integrationtests.TestIndexAccountsBalance(0xc0001941a0)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/integrationtests/accountsBalanceWithLowerTimestamp_test.go:167 +0x16ef
+testing.tRunner(0xc0001941a0, 0xc7bad8)
+	/usr/local/go/src/testing/testing.go:1690 +0xf4
+created by testing.(*T).Run in goroutine 1
+	/usr/local/go/src/testing/testing.go:1743 +0x390
+ 
+[0;33mWARN [0m[2026-04-23 10:39:06.759]   bech32PubkeyConverter.SilentEncode       [0;33mhex buff[0m = 6572643137756d63307576656c36326e6733306b3575707271637868337565333368713630386e6a656a61716c6a75717a716c78747a757165757a6c6376 [0;33merror[0m = wrong size when encoding address, expected length 32, received 62 [0;33mstack trace[0m = goroutine 20 [running]:
+runtime/debug.Stack()
+	/usr/local/go/src/runtime/debug/stack.go:26 +0x5e
+github.com/multiversx/mx-chain-core-go/core/pubkeyConverter.(*bech32PubkeyConverter).SilentEncode(0x0?, {0xc00021e780, 0x3e, 0xc00030ae68?}, {0xd3e820, 0xc0000ab0c0})
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-core-go/core/pubkeyConverter/bech32PubkeyConverter.go:109 +0x105
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc/transactions.(*dbTransactionBuilder).prepareTransaction(0xc000388380, 0xc000322cd8, {0xc000387328, 0x2, 0x2}, {0xc00057e7a0, 0x20, 0xc0003f0230?}, 0xc00030ae40, {0xd45910, ...}, ...)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/transactions/transactionDBBuilder.go:55 +0x229
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc/transactions.(*txsGrouper).prepareNormalTxForDB(0xc0002652c0, {0xc00057e7a0, 0x20, 0x20}, 0xc00030ae40, {0xc307de, 0x7}, {0xc000387328, 0x2, 0x2}, ...)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/transactions/transactionsGrouper.go:108 +0x1c5
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc/transactions.(*txsGrouper).groupNormalTxs(0xc0002652c0, 0x0, 0xc00030ae40, {0xd45910, 0xc000104380}, 0xc0003050e0, 0x0, 0x3, 0x5b8d80)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/transactions/transactionsGrouper.go:59 +0x219
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc/transactions.(*txsDatabaseProcessor).PrepareTransactionsForDatabase(0xc00009e840, {0xc00021a1f8, 0x1, 0x1}, {0xd45910, 0xc000104380}, 0xc000249110, 0x0, 0x3, 0x5b8d80)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/transactions/transactionsProcessor.go:100 +0x5c6
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc.(*elasticProcessor).SaveTransactions(0xc000200380, 0xc000322d38)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/elasticProcessor.go:525 +0x27a
+github.com/multiversx/mx-chain-es-indexer-go/integrationtests.TestIndexAccountsBalance(0xc0001941a0)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/integrationtests/accountsBalanceWithLowerTimestamp_test.go:167 +0x16ef
+testing.tRunner(0xc0001941a0, 0xc7bad8)
+	/usr/local/go/src/testing/testing.go:1690 +0xf4
+created by testing.(*T).Run in goroutine 1
+	/usr/local/go/src/testing/testing.go:1743 +0x390
+ 
+[0;33mWARN [0m[2026-04-23 10:39:06.759]   bech32PubkeyConverter.SilentEncode       [0;33mhex buff[0m =  [0;33merror[0m = wrong size when encoding address, expected length 32, received 0 [0;33mstack trace[0m = goroutine 20 [running]:
+runtime/debug.Stack()
+	/usr/local/go/src/runtime/debug/stack.go:26 +0x5e
+github.com/multiversx/mx-chain-core-go/core/pubkeyConverter.(*bech32PubkeyConverter).SilentEncode(0x8?, {0x0, 0x0, 0x4?}, {0xd3e820, 0xc0000aafc0})
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-core-go/core/pubkeyConverter/bech32PubkeyConverter.go:109 +0x105
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc/logsevents.(*logsAndEventsProcessor).prepareLog(0xc0003883c0, 0xc00038b1e0, {0xc0003872f8, 0x4}, 0xc000305140, 0x1770, 0x2, 0x5b8d80)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/logsevents/logsAndEventsProcessor.go:262 +0x173
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc/logsevents.(*logsAndEventsProcessor).prepareLogsForDB(0xc0003883c0, 0xc00038b1e0, {0xc00021a1f0, 0x1, 0xc00038b1e0?}, 0x1770, 0x2, 0x5b8d80)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/logsevents/logsAndEventsProcessor.go:244 +0x109
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc/logsevents.(*logsAndEventsProcessor).ExtractDataFromLogs(0xc0003883c0, {0xc00021a1f0, 0x1, 0x1}, 0xc000104380?, 0x1770, {0x0?, 0x7379f8b8d108?}, 0x10?, 0x2, ...)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/logsevents/logsAndEventsProcessor.go:124 +0x22e
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc.(*elasticProcessor).SaveTransactions(0xc000200380, 0xc000322d38)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/elasticProcessor.go:526 +0x31e
+github.com/multiversx/mx-chain-es-indexer-go/integrationtests.TestIndexAccountsBalance(0xc0001941a0)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/integrationtests/accountsBalanceWithLowerTimestamp_test.go:167 +0x16ef
+testing.tRunner(0xc0001941a0, 0xc7bad8)
+	/usr/local/go/src/testing/testing.go:1690 +0xf4
+created by testing.(*T).Run in goroutine 1
+	/usr/local/go/src/testing/testing.go:1743 +0x390
+ 
+[0;36mDEBUG[0m[2026-04-23 10:39:06.881]   ei.elasticProcessor indexer version is empty 
+[0;33mWARN [0m[2026-04-23 10:39:06.881]   bech32PubkeyConverter.SilentEncode       [0;33mhex buff[0m =  [0;33merror[0m = wrong size when encoding address, expected length 32, received 0 [0;33mstack trace[0m = goroutine 20 [running]:
+runtime/debug.Stack()
+	/usr/local/go/src/runtime/debug/stack.go:26 +0x5e
+github.com/multiversx/mx-chain-core-go/core/pubkeyConverter.(*bech32PubkeyConverter).SilentEncode(0x8?, {0x0, 0x0, 0x4?}, {0xd3e820, 0xc0000aafc0})
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-core-go/core/pubkeyConverter/bech32PubkeyConverter.go:109 +0x105
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc/logsevents.(*logsAndEventsProcessor).prepareLog(0xc00030a280, 0xc0001734a0, {0xc0003872f8, 0x4}, 0xc000305140, 0x1771, 0x2, 0x5b9168)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/logsevents/logsAndEventsProcessor.go:262 +0x173
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc/logsevents.(*logsAndEventsProcessor).prepareLogsForDB(0xc00030a280, 0xc0001734a0, {0xc00021a1f0, 0x1, 0xc0001734a0?}, 0x1771, 0x2, 0x5b9168)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/logsevents/logsAndEventsProcessor.go:244 +0x109
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc/logsevents.(*logsAndEventsProcessor).ExtractDataFromLogs(0xc00030a280, {0xc00021a1f0, 0x1, 0x1}, 0xc000104380?, 0x1771, {0x0?, 0xc000045b88?}, 0x7379f8b8da68?, 0x2, ...)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/logsevents/logsAndEventsProcessor.go:124 +0x22e
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc.(*elasticProcessor).SaveTransactions(0xc0004c20e0, 0xc0002304e0)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/elasticProcessor.go:526 +0x31e
+github.com/multiversx/mx-chain-es-indexer-go/integrationtests.TestIndexAccountsBalance(0xc0001941a0)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/integrationtests/accountsBalanceWithLowerTimestamp_test.go:202 +0x1c1e
+testing.tRunner(0xc0001941a0, 0xc7bad8)
+	/usr/local/go/src/testing/testing.go:1690 +0xf4
+created by testing.(*T).Run in goroutine 1
+	/usr/local/go/src/testing/testing.go:1743 +0x390
+ 
+[0;33mWARN [0m[2026-04-23 10:39:06.881]   cannot find hash in the txs map or scrs map [0;33mhash[0m = 6831 
+--- PASS: TestIndexAccountsBalance (0.26s)
+=== RUN   TestAccountsESDTDeleteOnRollback
+[0;36mDEBUG[0m[2026-04-23 10:39:06.979]   ei.elasticProcessor indexer version is empty 
+[0;33mWARN [0m[2026-04-23 10:39:06.979]   bech32PubkeyConverter.SilentEncode       [0;33mhex buff[0m =  [0;33merror[0m = wrong size when encoding address, expected length 32, received 0 [0;33mstack trace[0m = goroutine 44 [running]:
+runtime/debug.Stack()
+	/usr/local/go/src/runtime/debug/stack.go:26 +0x5e
+github.com/multiversx/mx-chain-core-go/core/pubkeyConverter.(*bech32PubkeyConverter).SilentEncode(0x8?, {0x0, 0x0, 0x4?}, {0xd3e820, 0xc0000aafc0})
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-core-go/core/pubkeyConverter/bech32PubkeyConverter.go:109 +0x105
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc/logsevents.(*logsAndEventsProcessor).prepareLog(0xc00030a8c0, 0xc000426c60, {0xc0005304b8, 0x4}, 0xc000226510, 0x13b0, 0x2, 0x4ce780)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/logsevents/logsAndEventsProcessor.go:262 +0x173
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc/logsevents.(*logsAndEventsProcessor).prepareLogsForDB(0xc00030a8c0, 0xc000426c60, {0xc000306098, 0x1, 0xc000426c60?}, 0x13b0, 0x2, 0x4ce780)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/logsevents/logsAndEventsProcessor.go:244 +0x109
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc/logsevents.(*logsAndEventsProcessor).ExtractDataFromLogs(0xc00030a8c0, {0xc000306098, 0x1, 0x1}, 0xc000104e00?, 0x13b0, {0x0?, 0x7379f8b8d108?}, 0x10?, 0x2, ...)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/logsevents/logsAndEventsProcessor.go:124 +0x22e
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc.(*elasticProcessor).SaveTransactions(0xc000200000, 0xc000322210)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/elasticProcessor.go:526 +0x31e
+github.com/multiversx/mx-chain-es-indexer-go/integrationtests.TestAccountsESDTDeleteOnRollback(0xc0001951e0)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/integrationtests/accountsESDTRollback_test.go:84 +0xa32
+testing.tRunner(0xc0001951e0, 0xc7ba78)
+	/usr/local/go/src/testing/testing.go:1690 +0xf4
+created by testing.(*T).Run in goroutine 1
+	/usr/local/go/src/testing/testing.go:1743 +0x390
+ 
+[0;33mWARN [0m[2026-04-23 10:39:06.979]   cannot find hash in the txs map or scrs map [0;33mhash[0m = 6831 
+[0;36mDEBUG[0m[2026-04-23 10:39:06.979]   accountsProcessor.splitAlteredAccounts - nil additional data 
+[0;33mWARN [0m[2026-04-23 10:39:06.979]   accountsProcessor.PrepareRegularAccountsMap: cannot cast account's balance to big int [0;33mvalue[0m =  
+--- PASS: TestAccountsESDTDeleteOnRollback (0.13s)
+=== RUN   TestIndexAccountESDTWithTokenType
+[0;36mDEBUG[0m[2026-04-23 10:39:07.099]   ei.elasticProcessor indexer version is empty 
+[0;33mWARN [0m[2026-04-23 10:39:07.099]   cannot find hash in the txs map or scrs map [0;33mhash[0m = 6831 
+[0;36mDEBUG[0m[2026-04-23 10:39:07.101]   elasticProcessor.addTokenType            [0;36mindex[0m = accountsesdt [0;36mduration[0m = 1.049163ms 
+[0;36mDEBUG[0m[2026-04-23 10:39:07.102]   elasticProcessor.addTokenType            [0;36mindex[0m = tokens [0;36mduration[0m = 668.472µs 
+[0;36mDEBUG[0m[2026-04-23 10:39:07.236]   ei.elasticProcessor indexer version is empty 
+[0;33mWARN [0m[2026-04-23 10:39:07.236]   cannot find hash in the txs map or scrs map [0;33mhash[0m = 6831 
+[0;36mDEBUG[0m[2026-04-23 10:39:07.236]   accountsProcessor.splitAlteredAccounts - nil additional data 
+--- PASS: TestIndexAccountESDTWithTokenType (0.25s)
+=== RUN   TestIndexAccountESDTWithTokenTypeShardFirstAndMetachainAfter
+[0;36mDEBUG[0m[2026-04-23 10:39:07.373]   ei.elasticProcessor indexer version is empty 
+[0;33mWARN [0m[2026-04-23 10:39:07.373]   cannot find hash in the txs map or scrs map [0;33mhash[0m = 6831 
+[0;36mDEBUG[0m[2026-04-23 10:39:07.374]   accountsProcessor.splitAlteredAccounts - nil additional data 
+[0;36mDEBUG[0m[2026-04-23 10:39:08.662]   ei.elasticProcessor indexer version is empty 
+[0;33mWARN [0m[2026-04-23 10:39:08.662]   cannot find hash in the txs map or scrs map [0;33mhash[0m = 6831 
+[0;36mDEBUG[0m[2026-04-23 10:39:08.669]   elasticProcessor.addTokenType            [0;36mindex[0m = accountsesdt [0;36mduration[0m = 7.15382ms 
+[0;36mDEBUG[0m[2026-04-23 10:39:08.678]   elasticProcessor.addTokenType            [0;36mindex[0m = tokens [0;36mduration[0m = 8.832069ms 
+--- PASS: TestIndexAccountESDTWithTokenTypeShardFirstAndMetachainAfter (1.42s)
+=== RUN   TestTransactionWithClaimRewardsGasRefund
+[0;36mDEBUG[0m[2026-04-23 10:39:08.789]   ei.elasticProcessor indexer version is empty 
+--- PASS: TestTransactionWithClaimRewardsGasRefund (0.13s)
+=== RUN   TestCreateNFTWithTags
+[0;36mDEBUG[0m[2026-04-23 10:39:08.929]   ei.elasticProcessor indexer version is empty 
+[0;33mWARN [0m[2026-04-23 10:39:08.929]   cannot find hash in the txs map or scrs map [0;33mhash[0m = 6831 
+[0;36mDEBUG[0m[2026-04-23 10:39:08.929]   accountsProcessor.splitAlteredAccounts - nil additional data 
+[0;33mWARN [0m[2026-04-23 10:39:08.939]   cannot find hash in the txs map or scrs map [0;33mhash[0m = 6831 
+[0;36mDEBUG[0m[2026-04-23 10:39:08.939]   accountsProcessor.splitAlteredAccounts - nil additional data 
+[0;36mDEBUG[0m[2026-04-23 10:39:09.044]   ei.elasticProcessor indexer version is empty 
+[0;33mWARN [0m[2026-04-23 10:39:09.044]   cannot find hash in the txs map or scrs map [0;33mhash[0m = 6831 
+[0;36mDEBUG[0m[2026-04-23 10:39:09.044]   accountsProcessor.splitAlteredAccounts - nil additional data 
+--- PASS: TestCreateNFTWithTags (0.23s)
+=== RUN   TestDelegateUnDelegateAndWithdraw
+[0;36mDEBUG[0m[2026-04-23 10:39:09.151]   ei.elasticProcessor indexer version is empty 
+[0;33mWARN [0m[2026-04-23 10:39:09.151]   cannot find hash in the txs map or scrs map [0;33mhash[0m = 6831 
+[0;33mWARN [0m[2026-04-23 10:39:09.160]   cannot find hash in the txs map or scrs map [0;33mhash[0m = 6832 
+[0;33mWARN [0m[2026-04-23 10:39:09.166]   cannot find hash in the txs map or scrs map [0;33mhash[0m = 6833 
+[0;33mWARN [0m[2026-04-23 10:39:11.524]   cannot find hash in the txs map or scrs map [0;33mhash[0m = 6834 
+--- PASS: TestDelegateUnDelegateAndWithdraw (2.49s)
+=== RUN   TestDRWAIdentityRecordFinalizedThenRemovedOnRevert
+[0;36mDEBUG[0m[2026-04-23 10:39:11.632]   ei.elasticProcessor indexer version is empty 
+[0;33mWARN [0m[2026-04-23 10:39:11.635]   bech32PubkeyConverter.SilentEncode       [0;33mhex buff[0m =  [0;33merror[0m = wrong size when encoding address, expected length 32, received 0 [0;33mstack trace[0m = goroutine 114 [running]:
+runtime/debug.Stack()
+	/usr/local/go/src/runtime/debug/stack.go:26 +0x5e
+github.com/multiversx/mx-chain-core-go/core/pubkeyConverter.(*bech32PubkeyConverter).SilentEncode(0x0?, {0x0, 0x0, 0xc0002ce0a8?}, {0xd3e820, 0xc0000ab0c0})
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-core-go/core/pubkeyConverter/bech32PubkeyConverter.go:109 +0x105
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc/transactions.(*dbTransactionBuilder).prepareTransaction(0xc0002ce740, 0xc000012750, {0xc000328570, 0x16, 0x16}, {0xc0000306c0, 0x20, 0xc00029a1e0?}, 0xc0002ce080, {0xd45910, ...}, ...)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/transactions/transactionDBBuilder.go:54 +0x1d3
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc/transactions.(*txsGrouper).prepareNormalTxForDB(0xc000384db0, {0xc0000306c0, 0x20, 0x20}, 0xc0002ce080, {0xc307de, 0x7}, {0xc000328570, 0x16, 0x16}, ...)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/transactions/transactionsGrouper.go:108 +0x1c5
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc/transactions.(*txsGrouper).groupNormalTxs(0xc000384db0, 0x0, 0xc0002ce080, {0xd45910, 0xc00030e8c0}, 0xc000226a50, 0x0, 0x3, 0x18bcfe56800)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/transactions/transactionsGrouper.go:59 +0x219
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc/transactions.(*txsDatabaseProcessor).PrepareTransactionsForDatabase(0xc00009e8e0, {0xc0004ae068, 0x1, 0x1}, {0xd45910, 0xc00030e8c0}, 0xc0000d6fc0, 0x0, 0x3, 0x18bcfe56800)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/transactions/transactionsProcessor.go:100 +0x5c6
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc.(*elasticProcessor).SaveTransactions(0xc00016a0e0, 0xc000012780)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/elasticProcessor.go:525 +0x27a
+github.com/multiversx/mx-chain-es-indexer-go/integrationtests.TestDRWAIdentityRecordFinalizedThenRemovedOnRevert(0xc0003a8340)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/integrationtests/drwa_finality_reorg_test.go:104 +0xb7b
+testing.tRunner(0xc0003a8340, 0xc7ba98)
+	/usr/local/go/src/testing/testing.go:1690 +0xf4
+created by testing.(*T).Run in goroutine 1
+	/usr/local/go/src/testing/testing.go:1743 +0x390
+ 
+[0;33mWARN [0m[2026-04-23 10:39:11.635]   bech32PubkeyConverter.SilentEncode       [0;33mhex buff[0m =  [0;33merror[0m = wrong size when encoding address, expected length 32, received 0 [0;33mstack trace[0m = goroutine 114 [running]:
+runtime/debug.Stack()
+	/usr/local/go/src/runtime/debug/stack.go:26 +0x5e
+github.com/multiversx/mx-chain-core-go/core/pubkeyConverter.(*bech32PubkeyConverter).SilentEncode(0x0?, {0x0, 0x0, 0xc0002ce0a8?}, {0xd3e820, 0xc0000ab0c0})
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-core-go/core/pubkeyConverter/bech32PubkeyConverter.go:109 +0x105
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc/transactions.(*dbTransactionBuilder).prepareTransaction(0xc0002ce740, 0xc000012750, {0xc000328570, 0x16, 0x16}, {0xc0000306c0, 0x20, 0xc00029a1e0?}, 0xc0002ce080, {0xd45910, ...}, ...)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/transactions/transactionDBBuilder.go:55 +0x229
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc/transactions.(*txsGrouper).prepareNormalTxForDB(0xc000384db0, {0xc0000306c0, 0x20, 0x20}, 0xc0002ce080, {0xc307de, 0x7}, {0xc000328570, 0x16, 0x16}, ...)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/transactions/transactionsGrouper.go:108 +0x1c5
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc/transactions.(*txsGrouper).groupNormalTxs(0xc000384db0, 0x0, 0xc0002ce080, {0xd45910, 0xc00030e8c0}, 0xc000226a50, 0x0, 0x3, 0x18bcfe56800)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/transactions/transactionsGrouper.go:59 +0x219
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc/transactions.(*txsDatabaseProcessor).PrepareTransactionsForDatabase(0xc00009e8e0, {0xc0004ae068, 0x1, 0x1}, {0xd45910, 0xc00030e8c0}, 0xc0000d6fc0, 0x0, 0x3, 0x18bcfe56800)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/transactions/transactionsProcessor.go:100 +0x5c6
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc.(*elasticProcessor).SaveTransactions(0xc00016a0e0, 0xc000012780)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/elasticProcessor.go:525 +0x27a
+github.com/multiversx/mx-chain-es-indexer-go/integrationtests.TestDRWAIdentityRecordFinalizedThenRemovedOnRevert(0xc0003a8340)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/integrationtests/drwa_finality_reorg_test.go:104 +0xb7b
+testing.tRunner(0xc0003a8340, 0xc7ba98)
+	/usr/local/go/src/testing/testing.go:1690 +0xf4
+created by testing.(*T).Run in goroutine 1
+	/usr/local/go/src/testing/testing.go:1743 +0x390
+ 
+[0;33mWARN [0m[2026-04-23 10:39:11.635]   bech32PubkeyConverter.SilentEncode       [0;33mhex buff[0m = 647277612d7265676973747279 [0;33merror[0m = wrong size when encoding address, expected length 32, received 13 [0;33mstack trace[0m = goroutine 114 [running]:
+runtime/debug.Stack()
+	/usr/local/go/src/runtime/debug/stack.go:26 +0x5e
+github.com/multiversx/mx-chain-core-go/core/pubkeyConverter.(*bech32PubkeyConverter).SilentEncode(0x8?, {0xc000600240, 0xd, 0x2c?}, {0xd3e820, 0xc0000aafc0})
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-core-go/core/pubkeyConverter/bech32PubkeyConverter.go:109 +0x105
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc/logsevents.(*logsAndEventsProcessor).prepareLog(0xc0002ce780, 0xc0002e22c0, {0xc000292060, 0x2c}, 0xc000226a80, 0x6553f100, 0x2, 0x18bcfe56800)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/logsevents/logsAndEventsProcessor.go:262 +0x173
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc/logsevents.(*logsAndEventsProcessor).prepareLogsForDB(0xc0002ce780, 0xc0002e22c0, {0xc0004ae070, 0x1, 0xc0002e22c0?}, 0x6553f100, 0x2, 0x18bcfe56800)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/logsevents/logsAndEventsProcessor.go:244 +0x109
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc/logsevents.(*logsAndEventsProcessor).ExtractDataFromLogs(0xc0002ce780, {0xc0004ae070, 0x1, 0x1}, 0xc00030e8c0?, 0x6553f100, {0xc0002801c0?, 0x0?}, 0xc000100008?, 0x2, ...)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/logsevents/logsAndEventsProcessor.go:124 +0x22e
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc.(*elasticProcessor).SaveTransactions(0xc00016a0e0, 0xc000012780)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/elasticProcessor.go:526 +0x31e
+github.com/multiversx/mx-chain-es-indexer-go/integrationtests.TestDRWAIdentityRecordFinalizedThenRemovedOnRevert(0xc0003a8340)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/integrationtests/drwa_finality_reorg_test.go:104 +0xb7b
+testing.tRunner(0xc0003a8340, 0xc7ba98)
+	/usr/local/go/src/testing/testing.go:1690 +0xf4
+created by testing.(*T).Run in goroutine 1
+	/usr/local/go/src/testing/testing.go:1743 +0x390
+ 
+[0;33mWARN [0m[2026-04-23 10:39:11.635]   bech32PubkeyConverter.SilentEncode       [0;33mhex buff[0m = 647277612d7265676973747279 [0;33merror[0m = wrong size when encoding address, expected length 32, received 13 [0;33mstack trace[0m = goroutine 114 [running]:
+runtime/debug.Stack()
+	/usr/local/go/src/runtime/debug/stack.go:26 +0x5e
+github.com/multiversx/mx-chain-core-go/core/pubkeyConverter.(*bech32PubkeyConverter).SilentEncode(0x8?, {0xc000600250, 0xd, 0x2c?}, {0xd3e820, 0xc0000aafc0})
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-core-go/core/pubkeyConverter/bech32PubkeyConverter.go:109 +0x105
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc/logsevents.(*logsAndEventsProcessor).prepareLog(0xc0002ce780, 0xc0002e22c0, {0xc000292060, 0x2c}, 0xc000226a80, 0x6553f100, 0x2, 0x18bcfe56800)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/logsevents/logsAndEventsProcessor.go:280 +0x3a3
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc/logsevents.(*logsAndEventsProcessor).prepareLogsForDB(0xc0002ce780, 0xc0002e22c0, {0xc0004ae070, 0x1, 0xc0002e22c0?}, 0x6553f100, 0x2, 0x18bcfe56800)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/logsevents/logsAndEventsProcessor.go:244 +0x109
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc/logsevents.(*logsAndEventsProcessor).ExtractDataFromLogs(0xc0002ce780, {0xc0004ae070, 0x1, 0x1}, 0xc00030e8c0?, 0x6553f100, {0xc0002801c0?, 0x0?}, 0xc000100008?, 0x2, ...)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/logsevents/logsAndEventsProcessor.go:124 +0x22e
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc.(*elasticProcessor).SaveTransactions(0xc00016a0e0, 0xc000012780)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/elasticProcessor.go:526 +0x31e
+github.com/multiversx/mx-chain-es-indexer-go/integrationtests.TestDRWAIdentityRecordFinalizedThenRemovedOnRevert(0xc0003a8340)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/integrationtests/drwa_finality_reorg_test.go:104 +0xb7b
+testing.tRunner(0xc0003a8340, 0xc7ba98)
+	/usr/local/go/src/testing/testing.go:1690 +0xf4
+created by testing.(*T).Run in goroutine 1
+	/usr/local/go/src/testing/testing.go:1743 +0x390
+ 
+--- PASS: TestDRWAIdentityRecordFinalizedThenRemovedOnRevert (0.87s)
+=== RUN   TestESDTTransferTooMuchGasProvided
+[0;36mDEBUG[0m[2026-04-23 10:39:12.583]   ei.elasticProcessor indexer version is empty 
+--- PASS: TestESDTTransferTooMuchGasProvided (0.20s)
+=== RUN   TestESDTTransferCrossShardWithRefundOnSourceShard
+[0;36mDEBUG[0m[2026-04-23 10:39:12.682]   ei.elasticProcessor indexer version is empty 
+--- PASS: TestESDTTransferCrossShardWithRefundOnSourceShard (0.11s)
+=== RUN   TestESDTTransferCrossShardIndexFirstOnDestinationAndAfterSource
+[0;36mDEBUG[0m[2026-04-23 10:39:12.797]   ei.elasticProcessor indexer version is empty 
+--- PASS: TestESDTTransferCrossShardIndexFirstOnDestinationAndAfterSource (0.11s)
+=== RUN   TestIssueTokenAndChangeToDynamic
+[0;36mDEBUG[0m[2026-04-23 10:39:12.948]   ei.elasticProcessor indexer version is empty 
+[0;33mWARN [0m[2026-04-23 10:39:12.948]   cannot find hash in the txs map or scrs map [0;33mhash[0m = 6831 
+[0;33mWARN [0m[2026-04-23 10:39:12.948]   cannot find hash in the txs map or scrs map [0;33mhash[0m = 6831 
+[0;36mDEBUG[0m[2026-04-23 10:39:12.950]   elasticProcessor.addTokenType            [0;36mindex[0m = accountsesdt [0;36mduration[0m = 1.775846ms 
+[0;36mDEBUG[0m[2026-04-23 10:39:12.951]   elasticProcessor.addTokenType            [0;36mindex[0m = tokens [0;36mduration[0m = 1.257001ms 
+[0;33mWARN [0m[2026-04-23 10:39:12.960]   cannot find hash in the txs map or scrs map [0;33mhash[0m = 6831 
+[0;36mDEBUG[0m[2026-04-23 10:39:12.961]   elasticProcessor.addTokenType            [0;36mindex[0m = accountsesdt [0;36mduration[0m = 1.533892ms 
+[0;36mDEBUG[0m[2026-04-23 10:39:12.962]   elasticProcessor.addTokenType            [0;36mindex[0m = tokens [0;36mduration[0m = 1.128915ms 
+--- PASS: TestIssueTokenAndChangeToDynamic (0.16s)
+=== RUN   TestIssueTokenAndSetRole
+[0;36mDEBUG[0m[2026-04-23 10:39:13.072]   ei.elasticProcessor indexer version is empty 
+[0;33mWARN [0m[2026-04-23 10:39:13.072]   cannot find hash in the txs map or scrs map [0;33mhash[0m = 6831 
+[0;33mWARN [0m[2026-04-23 10:39:13.072]   cannot find hash in the txs map or scrs map [0;33mhash[0m = 6831 
+[0;36mDEBUG[0m[2026-04-23 10:39:13.074]   elasticProcessor.addTokenType            [0;36mindex[0m = accountsesdt [0;36mduration[0m = 1.124557ms 
+[0;36mDEBUG[0m[2026-04-23 10:39:13.075]   elasticProcessor.addTokenType            [0;36mindex[0m = tokens [0;36mduration[0m = 1.028323ms 
+[0;33mWARN [0m[2026-04-23 10:39:13.083]   cannot find hash in the txs map or scrs map [0;33mhash[0m = 6831 
+[0;33mWARN [0m[2026-04-23 10:39:13.087]   cannot find hash in the txs map or scrs map [0;33mhash[0m = 6831 
+[0;33mWARN [0m[2026-04-23 10:39:13.087]   cannot find hash in the txs map or scrs map [0;33mhash[0m = 6831 
+[0;33mWARN [0m[2026-04-23 10:39:13.091]   cannot find hash in the txs map or scrs map [0;33mhash[0m = 6831 
+--- PASS: TestIssueTokenAndSetRole (0.12s)
+=== RUN   TestIssueSetRolesEventAndAfterTokenIssue
+[0;36mDEBUG[0m[2026-04-23 10:39:13.192]   ei.elasticProcessor indexer version is empty 
+[0;33mWARN [0m[2026-04-23 10:39:13.192]   cannot find hash in the txs map or scrs map [0;33mhash[0m = 6831 
+[0;33mWARN [0m[2026-04-23 10:39:13.196]   cannot find hash in the txs map or scrs map [0;33mhash[0m = 6831 
+[0;36mDEBUG[0m[2026-04-23 10:39:13.197]   elasticProcessor.addTokenType            [0;36mindex[0m = accountsesdt [0;36mduration[0m = 947.286µs 
+[0;36mDEBUG[0m[2026-04-23 10:39:13.198]   elasticProcessor.addTokenType            [0;36mindex[0m = tokens [0;36mduration[0m = 825.834µs 
+--- PASS: TestIssueSetRolesEventAndAfterTokenIssue (0.11s)
+=== RUN   TestIssueTokenAndTransferOwnership
+[0;36mDEBUG[0m[2026-04-23 10:39:13.298]   ei.elasticProcessor indexer version is empty 
+[0;33mWARN [0m[2026-04-23 10:39:13.298]   cannot find hash in the txs map or scrs map [0;33mhash[0m = 6831 
+[0;36mDEBUG[0m[2026-04-23 10:39:13.300]   elasticProcessor.addTokenType            [0;36mindex[0m = accountsesdt [0;36mduration[0m = 1.577696ms 
+[0;36mDEBUG[0m[2026-04-23 10:39:13.301]   elasticProcessor.addTokenType            [0;36mindex[0m = tokens [0;36mduration[0m = 940.534µs 
+[0;33mWARN [0m[2026-04-23 10:39:13.312]   cannot find hash in the txs map or scrs map [0;33mhash[0m = 6831 
+[0;36mDEBUG[0m[2026-04-23 10:39:13.313]   elasticProcessor.addTokenType            [0;36mindex[0m = accountsesdt [0;36mduration[0m = 1.178921ms 
+[0;36mDEBUG[0m[2026-04-23 10:39:13.314]   elasticProcessor.addTokenType            [0;36mindex[0m = tokens [0;36mduration[0m = 934.281µs 
+[0;33mWARN [0m[2026-04-23 10:39:13.318]   cannot find hash in the txs map or scrs map [0;33mhash[0m = 6831 
+[0;33mWARN [0m[2026-04-23 10:39:13.345]   cannot find hash in the txs map or scrs map [0;33mhash[0m = 6831 
+--- PASS: TestIssueTokenAndTransferOwnership (0.15s)
+=== RUN   TestIndexLogSourceShardAndAfterDestinationAndAgainSource
+[0;36mDEBUG[0m[2026-04-23 10:39:13.459]   ei.elasticProcessor indexer version is empty 
+[0;33mWARN [0m[2026-04-23 10:39:13.459]   bech32PubkeyConverter.SilentEncode       [0;33mhex buff[0m =  [0;33merror[0m = wrong size when encoding address, expected length 32, received 0 [0;33mstack trace[0m = goroutine 130 [running]:
+runtime/debug.Stack()
+	/usr/local/go/src/runtime/debug/stack.go:26 +0x5e
+github.com/multiversx/mx-chain-core-go/core/pubkeyConverter.(*bech32PubkeyConverter).SilentEncode(0x0?, {0x0, 0x0, 0xc00030a2a8?}, {0xd3e820, 0xc0000ab0c0})
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-core-go/core/pubkeyConverter/bech32PubkeyConverter.go:109 +0x105
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc/transactions.(*dbTransactionBuilder).prepareTransaction(0xc000388280, 0xc00043e168, {0xc0006000f0, 0x9, 0x9}, {0xc0003000a0, 0x20, 0xc00003a0a0?}, 0xc00030a280, {0xd45910, ...}, ...)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/transactions/transactionDBBuilder.go:54 +0x1d3
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc/transactions.(*txsGrouper).prepareNormalTxForDB(0xc000384d20, {0xc0003000a0, 0x20, 0x20}, 0xc00030a280, {0xc307ec, 0x7}, {0xc0006000f0, 0x9, 0x9}, ...)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/transactions/transactionsGrouper.go:108 +0x1c5
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc/transactions.(*txsGrouper).groupNormalTxs(0xc000384d20, 0x0, 0xc00030a280, {0xd45910, 0xc00030f880}, 0xc0003042a0, 0x0, 0x3, 0x4ce780)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/transactions/transactionsGrouper.go:59 +0x219
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc/transactions.(*txsDatabaseProcessor).PrepareTransactionsForDatabase(0xc000282340, {0xc0004ae028, 0x1, 0x1}, {0xd45910, 0xc00030f880}, 0xc0005c01c0, 0x0, 0x3, 0x4ce780)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/transactions/transactionsProcessor.go:100 +0x5c6
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc.(*elasticProcessor).SaveTransactions(0xc0003bc1c0, 0xc00043e198)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/elasticProcessor.go:525 +0x27a
+github.com/multiversx/mx-chain-es-indexer-go/integrationtests.TestIndexLogSourceShardAndAfterDestinationAndAgainSource(0xc0003a8820)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/integrationtests/logsCrossShard_test.go:73 +0x8f5
+testing.tRunner(0xc0003a8820, 0xc7bae0)
+	/usr/local/go/src/testing/testing.go:1690 +0xf4
+created by testing.(*T).Run in goroutine 1
+	/usr/local/go/src/testing/testing.go:1743 +0x390
+ 
+[0;33mWARN [0m[2026-04-23 10:39:13.459]   bech32PubkeyConverter.SilentEncode       [0;33mhex buff[0m =  [0;33merror[0m = wrong size when encoding address, expected length 32, received 0 [0;33mstack trace[0m = goroutine 130 [running]:
+runtime/debug.Stack()
+	/usr/local/go/src/runtime/debug/stack.go:26 +0x5e
+github.com/multiversx/mx-chain-core-go/core/pubkeyConverter.(*bech32PubkeyConverter).SilentEncode(0x0?, {0x0, 0x0, 0xc00030a2a8?}, {0xd3e820, 0xc0000ab0c0})
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-core-go/core/pubkeyConverter/bech32PubkeyConverter.go:109 +0x105
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc/transactions.(*dbTransactionBuilder).prepareTransaction(0xc000388280, 0xc00043e168, {0xc0006000f0, 0x9, 0x9}, {0xc0003000a0, 0x20, 0xc00003a0a0?}, 0xc00030a280, {0xd45910, ...}, ...)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/transactions/transactionDBBuilder.go:55 +0x229
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc/transactions.(*txsGrouper).prepareNormalTxForDB(0xc000384d20, {0xc0003000a0, 0x20, 0x20}, 0xc00030a280, {0xc307ec, 0x7}, {0xc0006000f0, 0x9, 0x9}, ...)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/transactions/transactionsGrouper.go:108 +0x1c5
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc/transactions.(*txsGrouper).groupNormalTxs(0xc000384d20, 0x0, 0xc00030a280, {0xd45910, 0xc00030f880}, 0xc0003042a0, 0x0, 0x3, 0x4ce780)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/transactions/transactionsGrouper.go:59 +0x219
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc/transactions.(*txsDatabaseProcessor).PrepareTransactionsForDatabase(0xc000282340, {0xc0004ae028, 0x1, 0x1}, {0xd45910, 0xc00030f880}, 0xc0005c01c0, 0x0, 0x3, 0x4ce780)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/transactions/transactionsProcessor.go:100 +0x5c6
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc.(*elasticProcessor).SaveTransactions(0xc0003bc1c0, 0xc00043e198)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/elasticProcessor.go:525 +0x27a
+github.com/multiversx/mx-chain-es-indexer-go/integrationtests.TestIndexLogSourceShardAndAfterDestinationAndAgainSource(0xc0003a8820)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/integrationtests/logsCrossShard_test.go:73 +0x8f5
+testing.tRunner(0xc0003a8820, 0xc7bae0)
+	/usr/local/go/src/testing/testing.go:1690 +0xf4
+created by testing.(*T).Run in goroutine 1
+	/usr/local/go/src/testing/testing.go:1743 +0x390
+ 
+[0;33mWARN [0m[2026-04-23 10:39:13.464]   bech32PubkeyConverter.SilentEncode       [0;33mhex buff[0m =  [0;33merror[0m = wrong size when encoding address, expected length 32, received 0 [0;33mstack trace[0m = goroutine 130 [running]:
+runtime/debug.Stack()
+	/usr/local/go/src/runtime/debug/stack.go:26 +0x5e
+github.com/multiversx/mx-chain-core-go/core/pubkeyConverter.(*bech32PubkeyConverter).SilentEncode(0x0?, {0x0, 0x0, 0xc00030a2a8?}, {0xd3e820, 0xc0000ab0c0})
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-core-go/core/pubkeyConverter/bech32PubkeyConverter.go:109 +0x105
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc/transactions.(*dbTransactionBuilder).prepareTransaction(0xc000388280, 0xc000012600, {0xc0006000f0, 0x9, 0x9}, {0xc000300160, 0x20, 0xc00003a4b0?}, 0xc00030a280, {0xd45910, ...}, ...)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/transactions/transactionDBBuilder.go:54 +0x1d3
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc/transactions.(*txsGrouper).prepareNormalTxForDB(0xc000384d20, {0xc000300160, 0x20, 0x20}, 0xc00030a280, {0xc307de, 0x7}, {0xc0006000f0, 0x9, 0x9}, ...)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/transactions/transactionsGrouper.go:108 +0x1c5
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc/transactions.(*txsGrouper).groupNormalTxs(0xc000384d20, 0x0, 0xc00030a280, {0xd45910, 0xc00030fa40}, 0xc000304c00, 0x0, 0x3, 0x5c29c0)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/transactions/transactionsGrouper.go:59 +0x219
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc/transactions.(*txsDatabaseProcessor).PrepareTransactionsForDatabase(0xc000282340, {0xc0004ae028, 0x1, 0x1}, {0xd45910, 0xc00030fa40}, 0xc0005c0540, 0x0, 0x3, 0x5c29c0)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/transactions/transactionsProcessor.go:100 +0x5c6
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc.(*elasticProcessor).SaveTransactions(0xc0003bc1c0, 0xc000012648)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/elasticProcessor.go:525 +0x27a
+github.com/multiversx/mx-chain-es-indexer-go/integrationtests.TestIndexLogSourceShardAndAfterDestinationAndAgainSource(0xc0003a8820)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/integrationtests/logsCrossShard_test.go:130 +0x1362
+testing.tRunner(0xc0003a8820, 0xc7bae0)
+	/usr/local/go/src/testing/testing.go:1690 +0xf4
+created by testing.(*T).Run in goroutine 1
+	/usr/local/go/src/testing/testing.go:1743 +0x390
+ 
+[0;33mWARN [0m[2026-04-23 10:39:13.464]   bech32PubkeyConverter.SilentEncode       [0;33mhex buff[0m =  [0;33merror[0m = wrong size when encoding address, expected length 32, received 0 [0;33mstack trace[0m = goroutine 130 [running]:
+runtime/debug.Stack()
+	/usr/local/go/src/runtime/debug/stack.go:26 +0x5e
+github.com/multiversx/mx-chain-core-go/core/pubkeyConverter.(*bech32PubkeyConverter).SilentEncode(0x0?, {0x0, 0x0, 0xc00030a2a8?}, {0xd3e820, 0xc0000ab0c0})
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-core-go/core/pubkeyConverter/bech32PubkeyConverter.go:109 +0x105
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc/transactions.(*dbTransactionBuilder).prepareTransaction(0xc000388280, 0xc000012600, {0xc0006000f0, 0x9, 0x9}, {0xc000300160, 0x20, 0xc00003a4b0?}, 0xc00030a280, {0xd45910, ...}, ...)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/transactions/transactionDBBuilder.go:55 +0x229
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc/transactions.(*txsGrouper).prepareNormalTxForDB(0xc000384d20, {0xc000300160, 0x20, 0x20}, 0xc00030a280, {0xc307de, 0x7}, {0xc0006000f0, 0x9, 0x9}, ...)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/transactions/transactionsGrouper.go:108 +0x1c5
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc/transactions.(*txsGrouper).groupNormalTxs(0xc000384d20, 0x0, 0xc00030a280, {0xd45910, 0xc00030fa40}, 0xc000304c00, 0x0, 0x3, 0x5c29c0)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/transactions/transactionsGrouper.go:59 +0x219
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc/transactions.(*txsDatabaseProcessor).PrepareTransactionsForDatabase(0xc000282340, {0xc0004ae028, 0x1, 0x1}, {0xd45910, 0xc00030fa40}, 0xc0005c0540, 0x0, 0x3, 0x5c29c0)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/transactions/transactionsProcessor.go:100 +0x5c6
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc.(*elasticProcessor).SaveTransactions(0xc0003bc1c0, 0xc000012648)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/elasticProcessor.go:525 +0x27a
+github.com/multiversx/mx-chain-es-indexer-go/integrationtests.TestIndexLogSourceShardAndAfterDestinationAndAgainSource(0xc0003a8820)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/integrationtests/logsCrossShard_test.go:130 +0x1362
+testing.tRunner(0xc0003a8820, 0xc7bae0)
+	/usr/local/go/src/testing/testing.go:1690 +0xf4
+created by testing.(*T).Run in goroutine 1
+	/usr/local/go/src/testing/testing.go:1743 +0x390
+ 
+[0;33mWARN [0m[2026-04-23 10:39:13.469]   bech32PubkeyConverter.SilentEncode       [0;33mhex buff[0m =  [0;33merror[0m = wrong size when encoding address, expected length 32, received 0 [0;33mstack trace[0m = goroutine 130 [running]:
+runtime/debug.Stack()
+	/usr/local/go/src/runtime/debug/stack.go:26 +0x5e
+github.com/multiversx/mx-chain-core-go/core/pubkeyConverter.(*bech32PubkeyConverter).SilentEncode(0x0?, {0x0, 0x0, 0xc00030a2a8?}, {0xd3e820, 0xc0000ab0c0})
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-core-go/core/pubkeyConverter/bech32PubkeyConverter.go:109 +0x105
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc/transactions.(*dbTransactionBuilder).prepareTransaction(0xc000388280, 0xc0002306c0, {0xc0006000f0, 0x9, 0x9}, {0xc00021e600, 0x20, 0xc0003aec80?}, 0xc00030a280, {0xd45910, ...}, ...)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/transactions/transactionDBBuilder.go:54 +0x1d3
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc/transactions.(*txsGrouper).prepareNormalTxForDB(0xc000384d20, {0xc00021e600, 0x20, 0x20}, 0xc00030a280, {0xc307ec, 0x7}, {0xc0006000f0, 0x9, 0x9}, ...)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/transactions/transactionsGrouper.go:108 +0x1c5
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc/transactions.(*txsGrouper).groupNormalTxs(0xc000384d20, 0x0, 0xc00030a280, {0xd45910, 0xc00046c700}, 0xc000488ff0, 0x0, 0x3, 0x4c4b40)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/transactions/transactionsGrouper.go:59 +0x219
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc/transactions.(*txsDatabaseProcessor).PrepareTransactionsForDatabase(0xc000282340, {0xc0004ae028, 0x1, 0x1}, {0xd45910, 0xc00046c700}, 0xc00020fce0, 0x0, 0x3, 0x4c4b40)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/transactions/transactionsProcessor.go:100 +0x5c6
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc.(*elasticProcessor).SaveTransactions(0xc0003bc1c0, 0xc0002306f0)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/elasticProcessor.go:525 +0x27a
+github.com/multiversx/mx-chain-es-indexer-go/integrationtests.TestIndexLogSourceShardAndAfterDestinationAndAgainSource(0xc0003a8820)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/integrationtests/logsCrossShard_test.go:183 +0x1cb7
+testing.tRunner(0xc0003a8820, 0xc7bae0)
+	/usr/local/go/src/testing/testing.go:1690 +0xf4
+created by testing.(*T).Run in goroutine 1
+	/usr/local/go/src/testing/testing.go:1743 +0x390
+ 
+[0;33mWARN [0m[2026-04-23 10:39:13.469]   bech32PubkeyConverter.SilentEncode       [0;33mhex buff[0m =  [0;33merror[0m = wrong size when encoding address, expected length 32, received 0 [0;33mstack trace[0m = goroutine 130 [running]:
+runtime/debug.Stack()
+	/usr/local/go/src/runtime/debug/stack.go:26 +0x5e
+github.com/multiversx/mx-chain-core-go/core/pubkeyConverter.(*bech32PubkeyConverter).SilentEncode(0x0?, {0x0, 0x0, 0xc00030a2a8?}, {0xd3e820, 0xc0000ab0c0})
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-core-go/core/pubkeyConverter/bech32PubkeyConverter.go:109 +0x105
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc/transactions.(*dbTransactionBuilder).prepareTransaction(0xc000388280, 0xc0002306c0, {0xc0006000f0, 0x9, 0x9}, {0xc00021e600, 0x20, 0xc0003aec80?}, 0xc00030a280, {0xd45910, ...}, ...)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/transactions/transactionDBBuilder.go:55 +0x229
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc/transactions.(*txsGrouper).prepareNormalTxForDB(0xc000384d20, {0xc00021e600, 0x20, 0x20}, 0xc00030a280, {0xc307ec, 0x7}, {0xc0006000f0, 0x9, 0x9}, ...)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/transactions/transactionsGrouper.go:108 +0x1c5
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc/transactions.(*txsGrouper).groupNormalTxs(0xc000384d20, 0x0, 0xc00030a280, {0xd45910, 0xc00046c700}, 0xc000488ff0, 0x0, 0x3, 0x4c4b40)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/transactions/transactionsGrouper.go:59 +0x219
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc/transactions.(*txsDatabaseProcessor).PrepareTransactionsForDatabase(0xc000282340, {0xc0004ae028, 0x1, 0x1}, {0xd45910, 0xc00046c700}, 0xc00020fce0, 0x0, 0x3, 0x4c4b40)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/transactions/transactionsProcessor.go:100 +0x5c6
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc.(*elasticProcessor).SaveTransactions(0xc0003bc1c0, 0xc0002306f0)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/elasticProcessor.go:525 +0x27a
+github.com/multiversx/mx-chain-es-indexer-go/integrationtests.TestIndexLogSourceShardAndAfterDestinationAndAgainSource(0xc0003a8820)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/integrationtests/logsCrossShard_test.go:183 +0x1cb7
+testing.tRunner(0xc0003a8820, 0xc7bae0)
+	/usr/local/go/src/testing/testing.go:1690 +0xf4
+created by testing.(*T).Run in goroutine 1
+	/usr/local/go/src/testing/testing.go:1743 +0x390
+ 
+--- PASS: TestIndexLogSourceShardAndAfterDestinationAndAgainSource (0.17s)
+=== RUN   TestMappingsOfESDTsIndex
+[0;36mDEBUG[0m[2026-04-23 10:39:13.625]   ei.elasticProcessor indexer version is empty 
+--- PASS: TestMappingsOfESDTsIndex (0.11s)
+=== RUN   TestIndexMiniBlocksOnSourceAndDestination
+[0;36mDEBUG[0m[2026-04-23 10:39:13.727]   ei.elasticProcessor indexer version is empty 
+--- PASS: TestIndexMiniBlocksOnSourceAndDestination (0.11s)
+=== RUN   TestIndexMiniBlockFirstOnDestinationAndAfterSource
+[0;36mDEBUG[0m[2026-04-23 10:39:13.841]   ei.elasticProcessor indexer version is empty 
+--- PASS: TestIndexMiniBlockFirstOnDestinationAndAfterSource (0.11s)
+=== RUN   TestMultiTransferCrossShardAndScCallErrorSignaledBySC
+[0;36mDEBUG[0m[2026-04-23 10:39:13.943]   ei.elasticProcessor indexer version is empty 
+--- PASS: TestMultiTransferCrossShardAndScCallErrorSignaledBySC (0.15s)
+=== RUN   TestIssueNFTCreateAndBurn
+[0;36mDEBUG[0m[2026-04-23 10:39:14.103]   ei.elasticProcessor indexer version is empty 
+[0;33mWARN [0m[2026-04-23 10:39:14.103]   cannot find hash in the txs map or scrs map [0;33mhash[0m = 6831 
+[0;36mDEBUG[0m[2026-04-23 10:39:14.104]   elasticProcessor.addTokenType            [0;36mindex[0m = accountsesdt [0;36mduration[0m = 1.3605ms 
+[0;36mDEBUG[0m[2026-04-23 10:39:14.105]   elasticProcessor.addTokenType            [0;36mindex[0m = tokens [0;36mduration[0m = 1.144756ms 
+[0;36mDEBUG[0m[2026-04-23 10:39:14.218]   ei.elasticProcessor indexer version is empty 
+[0;33mWARN [0m[2026-04-23 10:39:14.218]   cannot find hash in the txs map or scrs map [0;33mhash[0m = 6831 
+[0;33mWARN [0m[2026-04-23 10:39:14.223]   cannot find hash in the txs map or scrs map [0;33mhash[0m = 6831 
+--- PASS: TestIssueNFTCreateAndBurn (0.23s)
+=== RUN   TestIssueNFTCreateAndBurnNonFungibleV2
+[0;36mDEBUG[0m[2026-04-23 10:39:14.337]   ei.elasticProcessor indexer version is empty 
+[0;33mWARN [0m[2026-04-23 10:39:14.337]   cannot find hash in the txs map or scrs map [0;33mhash[0m = 6831 
+[0;36mDEBUG[0m[2026-04-23 10:39:14.339]   elasticProcessor.addTokenType            [0;36mindex[0m = accountsesdt [0;36mduration[0m = 1.537369ms 
+[0;36mDEBUG[0m[2026-04-23 10:39:14.340]   elasticProcessor.addTokenType            [0;36mindex[0m = tokens [0;36mduration[0m = 1.048691ms 
+[0;36mDEBUG[0m[2026-04-23 10:39:14.449]   ei.elasticProcessor indexer version is empty 
+[0;33mWARN [0m[2026-04-23 10:39:14.449]   cannot find hash in the txs map or scrs map [0;33mhash[0m = 6831 
+[0;33mWARN [0m[2026-04-23 10:39:14.455]   cannot find hash in the txs map or scrs map [0;33mhash[0m = 6831 
+--- PASS: TestIssueNFTCreateAndBurnNonFungibleV2 (0.23s)
+=== RUN   TestNFTTransferCrossShardWithSCCall
+[0;36mDEBUG[0m[2026-04-23 10:39:14.565]   ei.elasticProcessor indexer version is empty 
+--- PASS: TestNFTTransferCrossShardWithSCCall (0.12s)
+=== RUN   TestNFTTransferCrossShard
+[0;36mDEBUG[0m[2026-04-23 10:39:14.684]   ei.elasticProcessor indexer version is empty 
+--- PASS: TestNFTTransferCrossShard (0.11s)
+=== RUN   TestNFTTransferCrossShardImportDBScenarioFirstIndexDestinationAfterSource
+[0;36mDEBUG[0m[2026-04-23 10:39:14.826]   ei.elasticProcessor indexer version is empty 
+--- PASS: TestNFTTransferCrossShardImportDBScenarioFirstIndexDestinationAfterSource (0.15s)
+=== RUN   TestNFTTransferCrossShardImportDBScenarioFirstIndexDestinationAfterSourceSuccess
+[0;36mDEBUG[0m[2026-04-23 10:39:14.953]   ei.elasticProcessor indexer version is empty 
+--- PASS: TestNFTTransferCrossShardImportDBScenarioFirstIndexDestinationAfterSourceSuccess (0.14s)
+=== RUN   TestNFTTransferCrossShardWithScCall
+[0;36mDEBUG[0m[2026-04-23 10:39:15.087]   ei.elasticProcessor indexer version is empty 
+--- PASS: TestNFTTransferCrossShardWithScCall (0.11s)
+=== RUN   TestRelayedTransactionGasUsedCrossShard
+[0;36mDEBUG[0m[2026-04-23 10:39:15.200]   ei.elasticProcessor indexer version is empty 
+--- PASS: TestRelayedTransactionGasUsedCrossShard (0.12s)
+=== RUN   TestRelayedTransactionIntraShard
+[0;36mDEBUG[0m[2026-04-23 10:39:15.342]   ei.elasticProcessor indexer version is empty 
+--- PASS: TestRelayedTransactionIntraShard (0.13s)
+=== RUN   TestRelayedV2Disabled
+[0;36mDEBUG[0m[2026-04-23 10:39:15.449]   ei.elasticProcessor indexer version is empty 
+--- PASS: TestRelayedV2Disabled (0.11s)
+=== RUN   TestRelayedV3TransactionWithMultipleRefunds
+[0;36mDEBUG[0m[2026-04-23 10:39:15.551]   ei.elasticProcessor indexer version is empty 
+[0;33mWARN [0m[2026-04-23 10:39:15.595]   bech32PubkeyConverter.SilentEncode       [0;33mhex buff[0m =  [0;33merror[0m = wrong size when encoding address, expected length 32, received 0 [0;33mstack trace[0m = goroutine 92 [running]:
+runtime/debug.Stack()
+	/usr/local/go/src/runtime/debug/stack.go:26 +0x5e
+github.com/multiversx/mx-chain-core-go/core/pubkeyConverter.(*bech32PubkeyConverter).SilentEncode(0x0?, {0x0, 0x0, 0x1000009?}, {0xd3e820, 0xc0000ab0c0})
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-core-go/core/pubkeyConverter/bech32PubkeyConverter.go:109 +0x105
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc/transactions.(*smartContractResultsProcessor).prepareSmartContractResult(0xc0003031a0, {0xc30243, 0x7}, {0x0?, 0x0?, 0x0?}, 0xc000410000, {0xd45910, 0xc00030f880}, 0x0, ...)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/transactions/smartContractResultsProcessor.go:141 +0x3f0
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc/transactions.(*smartContractResultsProcessor).processSCRs(0xc0003031a0, {0xc0004ae180, 0x1, 0xd45910?}, {0xd45910, 0xc00030f880}, 0xc0001969c0, 0x3, 0x4ce780)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/transactions/smartContractResultsProcessor.go:68 +0x438
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc/transactions.(*txsDatabaseProcessor).PrepareTransactionsForDatabase(0xc00009e2a0, {0xc0004ae180, 0x1, 0x1}, {0xd45910, 0xc00030f880}, 0xc0005c0070, 0x0, 0x3, 0x4ce780)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/transactions/transactionsProcessor.go:127 +0x80b
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc.(*elasticProcessor).SaveTransactions(0xc0002000e0, 0xc000410018)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/elasticProcessor.go:525 +0x27a
+github.com/multiversx/mx-chain-es-indexer-go/integrationtests.TestRelayedV3TransactionWithMultipleRefunds(0xc0003a8820)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/integrationtests/relayedV3_test.go:100 +0xc7f
+testing.tRunner(0xc0003a8820, 0xc7bb88)
+	/usr/local/go/src/testing/testing.go:1690 +0xf4
+created by testing.(*T).Run in goroutine 1
+	/usr/local/go/src/testing/testing.go:1743 +0x390
+ 
+[0;33mWARN [0m[2026-04-23 10:39:15.595]   bech32PubkeyConverter.SilentEncode       [0;33mhex buff[0m =  [0;33merror[0m = wrong size when encoding address, expected length 32, received 0 [0;33mstack trace[0m = goroutine 92 [running]:
+runtime/debug.Stack()
+	/usr/local/go/src/runtime/debug/stack.go:26 +0x5e
+github.com/multiversx/mx-chain-core-go/core/pubkeyConverter.(*bech32PubkeyConverter).SilentEncode(0x0?, {0x0, 0x0, 0x1000009?}, {0xd3e820, 0xc0000ab0c0})
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-core-go/core/pubkeyConverter/bech32PubkeyConverter.go:109 +0x105
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc/transactions.(*smartContractResultsProcessor).prepareSmartContractResult(0xc0003031a0, {0xc30243, 0x7}, {0x0?, 0x0?, 0x0?}, 0xc000410000, {0xd45910, 0xc00030f880}, 0x0, ...)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/transactions/smartContractResultsProcessor.go:142 +0x446
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc/transactions.(*smartContractResultsProcessor).processSCRs(0xc0003031a0, {0xc0004ae180, 0x1, 0xd45910?}, {0xd45910, 0xc00030f880}, 0xc0001969c0, 0x3, 0x4ce780)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/transactions/smartContractResultsProcessor.go:68 +0x438
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc/transactions.(*txsDatabaseProcessor).PrepareTransactionsForDatabase(0xc00009e2a0, {0xc0004ae180, 0x1, 0x1}, {0xd45910, 0xc00030f880}, 0xc0005c0070, 0x0, 0x3, 0x4ce780)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/transactions/transactionsProcessor.go:127 +0x80b
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc.(*elasticProcessor).SaveTransactions(0xc0002000e0, 0xc000410018)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/elasticProcessor.go:525 +0x27a
+github.com/multiversx/mx-chain-es-indexer-go/integrationtests.TestRelayedV3TransactionWithMultipleRefunds(0xc0003a8820)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/integrationtests/relayedV3_test.go:100 +0xc7f
+testing.tRunner(0xc0003a8820, 0xc7bb88)
+	/usr/local/go/src/testing/testing.go:1690 +0xf4
+created by testing.(*T).Run in goroutine 1
+	/usr/local/go/src/testing/testing.go:1743 +0x390
+ 
+[0;33mWARN [0m[2026-04-23 10:39:15.620]   bech32PubkeyConverter.SilentEncode       [0;33mhex buff[0m =  [0;33merror[0m = wrong size when encoding address, expected length 32, received 0 [0;33mstack trace[0m = goroutine 92 [running]:
+runtime/debug.Stack()
+	/usr/local/go/src/runtime/debug/stack.go:26 +0x5e
+github.com/multiversx/mx-chain-core-go/core/pubkeyConverter.(*bech32PubkeyConverter).SilentEncode(0x0?, {0x0, 0x0, 0xc000331388?}, {0xd3e820, 0xc0000ab0c0})
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-core-go/core/pubkeyConverter/bech32PubkeyConverter.go:109 +0x105
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc/transactions.(*smartContractResultsProcessor).prepareSmartContractResult(0xc0003031a0, {0xc30243, 0x7}, {0x0?, 0x0?, 0x0?}, 0xc000012510, {0xd45910, 0xc00030f880}, 0x0, ...)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/transactions/smartContractResultsProcessor.go:141 +0x3f0
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc/transactions.(*smartContractResultsProcessor).processSCRs(0xc0003031a0, {0xc0004ae180, 0x1, 0xd45910?}, {0xd45910, 0xc00030f880}, 0xc0003041b0, 0x3, 0x4ce780)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/transactions/smartContractResultsProcessor.go:68 +0x438
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc/transactions.(*txsDatabaseProcessor).PrepareTransactionsForDatabase(0xc00009e2a0, {0xc0004ae180, 0x1, 0x1}, {0xd45910, 0xc00030f880}, 0xc00020e000, 0x0, 0x3, 0x4ce780)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/transactions/transactionsProcessor.go:127 +0x80b
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc.(*elasticProcessor).SaveTransactions(0xc0002000e0, 0xc000012528)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/elasticProcessor.go:525 +0x27a
+github.com/multiversx/mx-chain-es-indexer-go/integrationtests.TestRelayedV3TransactionWithMultipleRefunds(0xc0003a8820)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/integrationtests/relayedV3_test.go:127 +0x10be
+testing.tRunner(0xc0003a8820, 0xc7bb88)
+	/usr/local/go/src/testing/testing.go:1690 +0xf4
+created by testing.(*T).Run in goroutine 1
+	/usr/local/go/src/testing/testing.go:1743 +0x390
+ 
+[0;33mWARN [0m[2026-04-23 10:39:15.620]   bech32PubkeyConverter.SilentEncode       [0;33mhex buff[0m =  [0;33merror[0m = wrong size when encoding address, expected length 32, received 0 [0;33mstack trace[0m = goroutine 92 [running]:
+runtime/debug.Stack()
+	/usr/local/go/src/runtime/debug/stack.go:26 +0x5e
+github.com/multiversx/mx-chain-core-go/core/pubkeyConverter.(*bech32PubkeyConverter).SilentEncode(0x0?, {0x0, 0x0, 0xc000331388?}, {0xd3e820, 0xc0000ab0c0})
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-core-go/core/pubkeyConverter/bech32PubkeyConverter.go:109 +0x105
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc/transactions.(*smartContractResultsProcessor).prepareSmartContractResult(0xc0003031a0, {0xc30243, 0x7}, {0x0?, 0x0?, 0x0?}, 0xc000012510, {0xd45910, 0xc00030f880}, 0x0, ...)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/transactions/smartContractResultsProcessor.go:142 +0x446
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc/transactions.(*smartContractResultsProcessor).processSCRs(0xc0003031a0, {0xc0004ae180, 0x1, 0xd45910?}, {0xd45910, 0xc00030f880}, 0xc0003041b0, 0x3, 0x4ce780)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/transactions/smartContractResultsProcessor.go:68 +0x438
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc/transactions.(*txsDatabaseProcessor).PrepareTransactionsForDatabase(0xc00009e2a0, {0xc0004ae180, 0x1, 0x1}, {0xd45910, 0xc00030f880}, 0xc00020e000, 0x0, 0x3, 0x4ce780)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/transactions/transactionsProcessor.go:127 +0x80b
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc.(*elasticProcessor).SaveTransactions(0xc0002000e0, 0xc000012528)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/elasticProcessor.go:525 +0x27a
+github.com/multiversx/mx-chain-es-indexer-go/integrationtests.TestRelayedV3TransactionWithMultipleRefunds(0xc0003a8820)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/integrationtests/relayedV3_test.go:127 +0x10be
+testing.tRunner(0xc0003a8820, 0xc7bb88)
+	/usr/local/go/src/testing/testing.go:1690 +0xf4
+created by testing.(*T).Run in goroutine 1
+	/usr/local/go/src/testing/testing.go:1743 +0x390
+ 
+--- PASS: TestRelayedV3TransactionWithMultipleRefunds (0.17s)
+=== RUN   TestTransactionWithSCCallFail
+[0;36mDEBUG[0m[2026-04-23 10:39:15.729]   ei.elasticProcessor indexer version is empty 
+--- PASS: TestTransactionWithSCCallFail (0.11s)
+=== RUN   TestTransactionWithScCallSuccess
+[0;36mDEBUG[0m[2026-04-23 10:39:15.832]   ei.elasticProcessor indexer version is empty 
+--- PASS: TestTransactionWithScCallSuccess (0.10s)
+=== RUN   TestScCallIntraShardWithIssueESDT
+[0;36mDEBUG[0m[2026-04-23 10:39:15.938]   ei.elasticProcessor indexer version is empty 
+--- PASS: TestScCallIntraShardWithIssueESDT (0.11s)
+=== RUN   TestTransactionWithSCDeploy
+[0;36mDEBUG[0m[2026-04-23 10:39:16.052]   ei.elasticProcessor indexer version is empty 
+[0;33mWARN [0m[2026-04-23 10:39:16.052]   cannot find hash in the txs map or scrs map [0;33mhash[0m = 6831 
+[0;33mWARN [0m[2026-04-23 10:39:16.061]   cannot find hash in the txs map or scrs map [0;33mhash[0m = 6832 
+[0;33mWARN [0m[2026-04-23 10:39:16.066]   cannot find hash in the txs map or scrs map [0;33mhash[0m = 6833 
+[0;33mWARN [0m[2026-04-23 10:39:16.070]   cannot find hash in the txs map or scrs map [0;33mhash[0m = 6834 
+--- PASS: TestTransactionWithSCDeploy (0.12s)
+=== RUN   TestScDeployWithSignalErrorAndCompleteTxEvent
+[0;36mDEBUG[0m[2026-04-23 10:39:16.176]   ei.elasticProcessor indexer version is empty 
+--- PASS: TestScDeployWithSignalErrorAndCompleteTxEvent (0.11s)
+=== RUN   TestElasticIndexerSaveTransactions
+[0;36mDEBUG[0m[2026-04-23 10:39:16.278]   ei.elasticProcessor indexer version is empty 
+--- PASS: TestElasticIndexerSaveTransactions (0.10s)
+=== RUN   TestNFTUpdateMetadata
+[0;36mDEBUG[0m[2026-04-23 10:39:16.378]   ei.elasticProcessor indexer version is empty 
+[0;33mWARN [0m[2026-04-23 10:39:16.379]   nftsProcessor.convertMetaData            [0;33mcannot encode creator address[0m = error [0;33mwrong size when encoding address, expected length 32, received 0[0m = address 
+[0;33mWARN [0m[2026-04-23 10:39:16.379]   bech32PubkeyConverter.SilentEncode       [0;33mhex buff[0m =  [0;33merror[0m = wrong size when encoding address, expected length 32, received 0 [0;33mstack trace[0m = goroutine 94 [running]:
+runtime/debug.Stack()
+	/usr/local/go/src/runtime/debug/stack.go:26 +0x5e
+github.com/multiversx/mx-chain-core-go/core/pubkeyConverter.(*bech32PubkeyConverter).SilentEncode(0x8?, {0x0, 0x0, 0x4?}, {0xd3e820, 0xc0000aafc0})
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-core-go/core/pubkeyConverter/bech32PubkeyConverter.go:109 +0x105
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc/logsevents.(*logsAndEventsProcessor).prepareLog(0xc00030a0c0, 0xc000313340, {0xc000386a94, 0x4}, 0xc0002d06f0, 0x13b0, 0x1, 0x4ce780)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/logsevents/logsAndEventsProcessor.go:262 +0x173
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc/logsevents.(*logsAndEventsProcessor).prepareLogsForDB(0xc00030a0c0, 0xc000313340, {0xc00021a040, 0x1, 0xc000313340?}, 0x13b0, 0x1, 0x4ce780)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/logsevents/logsAndEventsProcessor.go:244 +0x109
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc/logsevents.(*logsAndEventsProcessor).ExtractDataFromLogs(0xc00030a0c0, {0xc00021a040, 0x1, 0x1}, 0xc00030f880?, 0x13b0, {0x0?, 0x7379f8b8d5b8?}, 0x10?, 0x1, ...)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/logsevents/logsAndEventsProcessor.go:124 +0x22e
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc.(*elasticProcessor).SaveTransactions(0xc000200000, 0xc0002b81e0)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/elasticProcessor.go:526 +0x31e
+github.com/multiversx/mx-chain-es-indexer-go/integrationtests.TestNFTUpdateMetadata(0xc0003a8680)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/integrationtests/updateNFT_test.go:65 +0x8d1
+testing.tRunner(0xc0003a8680, 0xc7bb68)
+	/usr/local/go/src/testing/testing.go:1690 +0xf4
+created by testing.(*T).Run in goroutine 1
+	/usr/local/go/src/testing/testing.go:1743 +0x390
+ 
+[0;33mWARN [0m[2026-04-23 10:39:16.379]   cannot find hash in the txs map or scrs map [0;33mhash[0m = 6831 
+[0;33mWARN [0m[2026-04-23 10:39:16.395]   bech32PubkeyConverter.SilentEncode       [0;33mhex buff[0m =  [0;33merror[0m = wrong size when encoding address, expected length 32, received 0 [0;33mstack trace[0m = goroutine 94 [running]:
+runtime/debug.Stack()
+	/usr/local/go/src/runtime/debug/stack.go:26 +0x5e
+github.com/multiversx/mx-chain-core-go/core/pubkeyConverter.(*bech32PubkeyConverter).SilentEncode(0x8?, {0x0, 0x0, 0x4?}, {0xd3e820, 0xc0000aafc0})
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-core-go/core/pubkeyConverter/bech32PubkeyConverter.go:109 +0x105
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc/logsevents.(*logsAndEventsProcessor).prepareLog(0xc00030a0c0, 0xc0001b8580, {0xc00053077c, 0x4}, 0xc000264840, 0x13b0, 0x1, 0x4ce780)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/logsevents/logsAndEventsProcessor.go:262 +0x173
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc/logsevents.(*logsAndEventsProcessor).prepareLogsForDB(0xc00030a0c0, 0xc0001b8580, {0xc00021a030, 0x1, 0xc0001b8580?}, 0x13b0, 0x1, 0x4ce780)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/logsevents/logsAndEventsProcessor.go:244 +0x109
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc/logsevents.(*logsAndEventsProcessor).ExtractDataFromLogs(0xc00030a0c0, {0xc00021a030, 0x1, 0x1}, 0xc00030f880?, 0x13b0, {0x0?, 0x7379f8b8d108?}, 0xc0000457d0?, 0x1, ...)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/logsevents/logsAndEventsProcessor.go:124 +0x22e
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc.(*elasticProcessor).SaveTransactions(0xc000200000, 0xc0002b80f0)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/elasticProcessor.go:526 +0x31e
+github.com/multiversx/mx-chain-es-indexer-go/integrationtests.TestNFTUpdateMetadata(0xc0003a8680)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/integrationtests/updateNFT_test.go:92 +0xf94
+testing.tRunner(0xc0003a8680, 0xc7bb68)
+	/usr/local/go/src/testing/testing.go:1690 +0xf4
+created by testing.(*T).Run in goroutine 1
+	/usr/local/go/src/testing/testing.go:1743 +0x390
+ 
+[0;33mWARN [0m[2026-04-23 10:39:16.395]   cannot find hash in the txs map or scrs map [0;33mhash[0m = 6831 
+[0;33mWARN [0m[2026-04-23 10:39:16.403]   bech32PubkeyConverter.SilentEncode       [0;33mhex buff[0m =  [0;33merror[0m = wrong size when encoding address, expected length 32, received 0 [0;33mstack trace[0m = goroutine 94 [running]:
+runtime/debug.Stack()
+	/usr/local/go/src/runtime/debug/stack.go:26 +0x5e
+github.com/multiversx/mx-chain-core-go/core/pubkeyConverter.(*bech32PubkeyConverter).SilentEncode(0x8?, {0x0, 0x0, 0x4?}, {0xd3e820, 0xc0000aafc0})
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-core-go/core/pubkeyConverter/bech32PubkeyConverter.go:109 +0x105
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc/logsevents.(*logsAndEventsProcessor).prepareLog(0xc00030a0c0, 0xc000114160, {0xc000386794, 0x4}, 0xc0002d0180, 0x13b0, 0x1, 0x4ce780)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/logsevents/logsAndEventsProcessor.go:262 +0x173
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc/logsevents.(*logsAndEventsProcessor).prepareLogsForDB(0xc00030a0c0, 0xc000114160, {0xc0004ae018, 0x1, 0xc000114160?}, 0x13b0, 0x1, 0x4ce780)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/logsevents/logsAndEventsProcessor.go:244 +0x109
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc/logsevents.(*logsAndEventsProcessor).ExtractDataFromLogs(0xc00030a0c0, {0xc0004ae018, 0x1, 0x1}, 0xc00030f880?, 0x13b0, {0x0?, 0x7379f8b8df18?}, 0x10?, 0x1, ...)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/logsevents/logsAndEventsProcessor.go:124 +0x22e
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc.(*elasticProcessor).SaveTransactions(0xc000200000, 0xc000012588)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/elasticProcessor.go:526 +0x31e
+github.com/multiversx/mx-chain-es-indexer-go/integrationtests.TestNFTUpdateMetadata(0xc0003a8680)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/integrationtests/updateNFT_test.go:113 +0x151f
+testing.tRunner(0xc0003a8680, 0xc7bb68)
+	/usr/local/go/src/testing/testing.go:1690 +0xf4
+created by testing.(*T).Run in goroutine 1
+	/usr/local/go/src/testing/testing.go:1743 +0x390
+ 
+[0;33mWARN [0m[2026-04-23 10:39:16.403]   cannot find hash in the txs map or scrs map [0;33mhash[0m = 6831 
+[0;33mWARN [0m[2026-04-23 10:39:16.413]   bech32PubkeyConverter.SilentEncode       [0;33mhex buff[0m =  [0;33merror[0m = wrong size when encoding address, expected length 32, received 0 [0;33mstack trace[0m = goroutine 94 [running]:
+runtime/debug.Stack()
+	/usr/local/go/src/runtime/debug/stack.go:26 +0x5e
+github.com/multiversx/mx-chain-core-go/core/pubkeyConverter.(*bech32PubkeyConverter).SilentEncode(0x8?, {0x0, 0x0, 0x4?}, {0xd3e820, 0xc0000aafc0})
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-core-go/core/pubkeyConverter/bech32PubkeyConverter.go:109 +0x105
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc/logsevents.(*logsAndEventsProcessor).prepareLog(0xc00030a0c0, 0xc0001b8160, {0xc0005305ac, 0x4}, 0xc000264570, 0x13b0, 0x1, 0x4ce780)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/logsevents/logsAndEventsProcessor.go:262 +0x173
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc/logsevents.(*logsAndEventsProcessor).prepareLogsForDB(0xc00030a0c0, 0xc0001b8160, {0xc00021a000, 0x1, 0xc0001b8160?}, 0x13b0, 0x1, 0x4ce780)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/logsevents/logsAndEventsProcessor.go:244 +0x109
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc/logsevents.(*logsAndEventsProcessor).ExtractDataFromLogs(0xc00030a0c0, {0xc00021a000, 0x1, 0x1}, 0xc00030f880?, 0x13b0, {0x0?, 0x7379f8b8d108?}, 0xc0002297d0?, 0x1, ...)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/logsevents/logsAndEventsProcessor.go:124 +0x22e
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc.(*elasticProcessor).SaveTransactions(0xc000200000, 0xc000310888)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/elasticProcessor.go:526 +0x31e
+github.com/multiversx/mx-chain-es-indexer-go/integrationtests.TestNFTUpdateMetadata(0xc0003a8680)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/integrationtests/updateNFT_test.go:140 +0x1be9
+testing.tRunner(0xc0003a8680, 0xc7bb68)
+	/usr/local/go/src/testing/testing.go:1690 +0xf4
+created by testing.(*T).Run in goroutine 1
+	/usr/local/go/src/testing/testing.go:1743 +0x390
+ 
+[0;33mWARN [0m[2026-04-23 10:39:16.413]   cannot find hash in the txs map or scrs map [0;33mhash[0m = 6831 
+[0;33mWARN [0m[2026-04-23 10:39:16.421]   bech32PubkeyConverter.SilentEncode       [0;33mhex buff[0m =  [0;33merror[0m = wrong size when encoding address, expected length 32, received 0 [0;33mstack trace[0m = goroutine 94 [running]:
+runtime/debug.Stack()
+	/usr/local/go/src/runtime/debug/stack.go:26 +0x5e
+github.com/multiversx/mx-chain-core-go/core/pubkeyConverter.(*bech32PubkeyConverter).SilentEncode(0x8?, {0x0, 0x0, 0x4?}, {0xd3e820, 0xc0000aafc0})
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-core-go/core/pubkeyConverter/bech32PubkeyConverter.go:109 +0x105
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc/logsevents.(*logsAndEventsProcessor).prepareLog(0xc00030a0c0, 0xc0001b8160, {0xc00053060c, 0x4}, 0xc000264570, 0x13b0, 0x1, 0x4ce780)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/logsevents/logsAndEventsProcessor.go:262 +0x173
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc/logsevents.(*logsAndEventsProcessor).prepareLogsForDB(0xc00030a0c0, 0xc0001b8160, {0xc00021a000, 0x1, 0xc0001b8160?}, 0x13b0, 0x1, 0x4ce780)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/logsevents/logsAndEventsProcessor.go:244 +0x109
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc/logsevents.(*logsAndEventsProcessor).ExtractDataFromLogs(0xc00030a0c0, {0xc00021a000, 0x1, 0x1}, 0xc00030f880?, 0x13b0, {0x0?, 0x7379f8b8d5b8?}, 0xc0002297d0?, 0x1, ...)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/logsevents/logsAndEventsProcessor.go:124 +0x22e
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc.(*elasticProcessor).SaveTransactions(0xc000200000, 0xc0003108b8)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/elasticProcessor.go:526 +0x31e
+github.com/multiversx/mx-chain-es-indexer-go/integrationtests.TestNFTUpdateMetadata(0xc0003a8680)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/integrationtests/updateNFT_test.go:168 +0x2297
+testing.tRunner(0xc0003a8680, 0xc7bb68)
+	/usr/local/go/src/testing/testing.go:1690 +0xf4
+created by testing.(*T).Run in goroutine 1
+	/usr/local/go/src/testing/testing.go:1743 +0x390
+ 
+[0;33mWARN [0m[2026-04-23 10:39:16.421]   cannot find hash in the txs map or scrs map [0;33mhash[0m = 6831 
+[0;33mWARN [0m[2026-04-23 10:39:16.429]   bech32PubkeyConverter.SilentEncode       [0;33mhex buff[0m =  [0;33merror[0m = wrong size when encoding address, expected length 32, received 0 [0;33mstack trace[0m = goroutine 94 [running]:
+runtime/debug.Stack()
+	/usr/local/go/src/runtime/debug/stack.go:26 +0x5e
+github.com/multiversx/mx-chain-core-go/core/pubkeyConverter.(*bech32PubkeyConverter).SilentEncode(0x8?, {0x0, 0x0, 0x4?}, {0xd3e820, 0xc0000aafc0})
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-core-go/core/pubkeyConverter/bech32PubkeyConverter.go:109 +0x105
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc/logsevents.(*logsAndEventsProcessor).prepareLog(0xc00030a0c0, 0xc0001b8160, {0xc0005305fc, 0x4}, 0xc000264540, 0x13b0, 0x1, 0x4ce780)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/logsevents/logsAndEventsProcessor.go:262 +0x173
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc/logsevents.(*logsAndEventsProcessor).prepareLogsForDB(0xc00030a0c0, 0xc0001b8160, {0xc00021a000, 0x1, 0xc0001b8160?}, 0x13b0, 0x1, 0x4ce780)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/logsevents/logsAndEventsProcessor.go:244 +0x109
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc/logsevents.(*logsAndEventsProcessor).ExtractDataFromLogs(0xc00030a0c0, {0xc00021a000, 0x1, 0x1}, 0xc00030f880?, 0x13b0, {0x0?, 0x7379f8b8da68?}, 0xc0000457d0?, 0x1, ...)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/logsevents/logsAndEventsProcessor.go:124 +0x22e
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc.(*elasticProcessor).SaveTransactions(0xc000200000, 0xc000310870)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/elasticProcessor.go:526 +0x31e
+github.com/multiversx/mx-chain-es-indexer-go/integrationtests.TestNFTUpdateMetadata(0xc0003a8680)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/integrationtests/updateNFT_test.go:195 +0x2924
+testing.tRunner(0xc0003a8680, 0xc7bb68)
+	/usr/local/go/src/testing/testing.go:1690 +0xf4
+created by testing.(*T).Run in goroutine 1
+	/usr/local/go/src/testing/testing.go:1743 +0x390
+ 
+[0;33mWARN [0m[2026-04-23 10:39:16.429]   cannot find hash in the txs map or scrs map [0;33mhash[0m = 6831 
+[0;33mWARN [0m[2026-04-23 10:39:16.474]   bech32PubkeyConverter.SilentEncode       [0;33mhex buff[0m =  [0;33merror[0m = wrong size when encoding address, expected length 32, received 0 [0;33mstack trace[0m = goroutine 94 [running]:
+runtime/debug.Stack()
+	/usr/local/go/src/runtime/debug/stack.go:26 +0x5e
+github.com/multiversx/mx-chain-core-go/core/pubkeyConverter.(*bech32PubkeyConverter).SilentEncode(0x8?, {0x0, 0x0, 0x4?}, {0xd3e820, 0xc0000aafc0})
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-core-go/core/pubkeyConverter/bech32PubkeyConverter.go:109 +0x105
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc/logsevents.(*logsAndEventsProcessor).prepareLog(0xc00030a0c0, 0xc0001b8160, {0xc00048609c, 0x4}, 0xc0002d0000, 0x13b0, 0x1, 0x4ce780)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/logsevents/logsAndEventsProcessor.go:262 +0x173
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc/logsevents.(*logsAndEventsProcessor).prepareLogsForDB(0xc00030a0c0, 0xc0001b8160, {0xc0004ae018, 0x1, 0xc0001b8160?}, 0x13b0, 0x1, 0x4ce780)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/logsevents/logsAndEventsProcessor.go:244 +0x109
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc/logsevents.(*logsAndEventsProcessor).ExtractDataFromLogs(0xc00030a0c0, {0xc0004ae018, 0x1, 0x1}, 0xc00030f880?, 0x13b0, {0x0?, 0x7379f8b8da68?}, 0xc0000457d0?, 0x1, ...)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/logsevents/logsAndEventsProcessor.go:124 +0x22e
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc.(*elasticProcessor).SaveTransactions(0xc000200000, 0xc0002b8030)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/elasticProcessor.go:526 +0x31e
+github.com/multiversx/mx-chain-es-indexer-go/integrationtests.TestNFTUpdateMetadata(0xc0003a8680)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/integrationtests/updateNFT_test.go:221 +0x2fc4
+testing.tRunner(0xc0003a8680, 0xc7bb68)
+	/usr/local/go/src/testing/testing.go:1690 +0xf4
+created by testing.(*T).Run in goroutine 1
+	/usr/local/go/src/testing/testing.go:1743 +0x390
+ 
+[0;33mWARN [0m[2026-04-23 10:39:16.474]   cannot find hash in the txs map or scrs map [0;33mhash[0m = 6831 
+[0;33mWARN [0m[2026-04-23 10:39:16.482]   bech32PubkeyConverter.SilentEncode       [0;33mhex buff[0m =  [0;33merror[0m = wrong size when encoding address, expected length 32, received 0 [0;33mstack trace[0m = goroutine 94 [running]:
+runtime/debug.Stack()
+	/usr/local/go/src/runtime/debug/stack.go:26 +0x5e
+github.com/multiversx/mx-chain-core-go/core/pubkeyConverter.(*bech32PubkeyConverter).SilentEncode(0x8?, {0x0, 0x0, 0x4?}, {0xd3e820, 0xc0000aafc0})
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-core-go/core/pubkeyConverter/bech32PubkeyConverter.go:109 +0x105
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc/logsevents.(*logsAndEventsProcessor).prepareLog(0xc00030a0c0, 0xc0001b8160, {0xc0004861fc, 0x4}, 0xc0002d0270, 0x13b0, 0x1, 0x4ce780)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/logsevents/logsAndEventsProcessor.go:262 +0x173
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc/logsevents.(*logsAndEventsProcessor).prepareLogsForDB(0xc00030a0c0, 0xc0001b8160, {0xc0004ae010, 0x1, 0xc0001b8160?}, 0x13b0, 0x1, 0x4ce780)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/logsevents/logsAndEventsProcessor.go:244 +0x109
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc/logsevents.(*logsAndEventsProcessor).ExtractDataFromLogs(0xc00030a0c0, {0xc0004ae010, 0x1, 0x1}, 0xc00030f880?, 0x13b0, {0x0?, 0x7379f8b8d108?}, 0xc00022f7d0?, 0x1, ...)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/logsevents/logsAndEventsProcessor.go:124 +0x22e
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc.(*elasticProcessor).SaveTransactions(0xc000200000, 0xc0002b8048)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/elasticProcessor.go:526 +0x31e
+github.com/multiversx/mx-chain-es-indexer-go/integrationtests.TestNFTUpdateMetadata(0xc0003a8680)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/integrationtests/updateNFT_test.go:247 +0x379f
+testing.tRunner(0xc0003a8680, 0xc7bb68)
+	/usr/local/go/src/testing/testing.go:1690 +0xf4
+created by testing.(*T).Run in goroutine 1
+	/usr/local/go/src/testing/testing.go:1743 +0x390
+ 
+[0;33mWARN [0m[2026-04-23 10:39:16.482]   cannot find hash in the txs map or scrs map [0;33mhash[0m = 6831 
+[0;33mWARN [0m[2026-04-23 10:39:16.487]   bech32PubkeyConverter.SilentEncode       [0;33mhex buff[0m =  [0;33merror[0m = wrong size when encoding address, expected length 32, received 0 [0;33mstack trace[0m = goroutine 94 [running]:
+runtime/debug.Stack()
+	/usr/local/go/src/runtime/debug/stack.go:26 +0x5e
+github.com/multiversx/mx-chain-core-go/core/pubkeyConverter.(*bech32PubkeyConverter).SilentEncode(0x8?, {0x0, 0x0, 0x4?}, {0xd3e820, 0xc0000aafc0})
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-core-go/core/pubkeyConverter/bech32PubkeyConverter.go:109 +0x105
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc/logsevents.(*logsAndEventsProcessor).prepareLog(0xc00030a0c0, 0xc000254420, {0xc00053088c, 0x4}, 0xc0002648a0, 0x13b0, 0x1, 0x4ce780)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/logsevents/logsAndEventsProcessor.go:262 +0x173
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc/logsevents.(*logsAndEventsProcessor).prepareLogsForDB(0xc00030a0c0, 0xc000254420, {0xc00021a020, 0x1, 0xc000254420?}, 0x13b0, 0x1, 0x4ce780)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/logsevents/logsAndEventsProcessor.go:244 +0x109
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc/logsevents.(*logsAndEventsProcessor).ExtractDataFromLogs(0xc00030a0c0, {0xc00021a020, 0x1, 0x1}, 0xc00030f880?, 0x13b0, {0x0?, 0x7379f8b8d5b8?}, 0xc0000457d0?, 0x1, ...)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/logsevents/logsAndEventsProcessor.go:124 +0x22e
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc.(*elasticProcessor).SaveTransactions(0xc000200000, 0xc000310990)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/elasticProcessor.go:526 +0x31e
+github.com/multiversx/mx-chain-es-indexer-go/integrationtests.TestNFTUpdateMetadata(0xc0003a8680)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/integrationtests/updateNFT_test.go:274 +0x3dec
+testing.tRunner(0xc0003a8680, 0xc7bb68)
+	/usr/local/go/src/testing/testing.go:1690 +0xf4
+created by testing.(*T).Run in goroutine 1
+	/usr/local/go/src/testing/testing.go:1743 +0x390
+ 
+[0;33mWARN [0m[2026-04-23 10:39:16.488]   cannot find hash in the txs map or scrs map [0;33mhash[0m = 6831 
+[0;33mWARN [0m[2026-04-23 10:39:16.492]   bech32PubkeyConverter.SilentEncode       [0;33mhex buff[0m =  [0;33merror[0m = wrong size when encoding address, expected length 32, received 0 [0;33mstack trace[0m = goroutine 94 [running]:
+runtime/debug.Stack()
+	/usr/local/go/src/runtime/debug/stack.go:26 +0x5e
+github.com/multiversx/mx-chain-core-go/core/pubkeyConverter.(*bech32PubkeyConverter).SilentEncode(0x8?, {0x0, 0x0, 0x4?}, {0xd3e820, 0xc0000aafc0})
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-core-go/core/pubkeyConverter/bech32PubkeyConverter.go:109 +0x105
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc/logsevents.(*logsAndEventsProcessor).prepareLog(0xc00030a0c0, 0xc0001b82c0, {0xc0004863bc, 0x4}, 0xc0002d0570, 0x13b0, 0x1, 0x4ce780)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/logsevents/logsAndEventsProcessor.go:262 +0x173
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc/logsevents.(*logsAndEventsProcessor).prepareLogsForDB(0xc00030a0c0, 0xc0001b82c0, {0xc0004ae030, 0x1, 0xc0001b82c0?}, 0x13b0, 0x1, 0x4ce780)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/logsevents/logsAndEventsProcessor.go:244 +0x109
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc/logsevents.(*logsAndEventsProcessor).ExtractDataFromLogs(0xc00030a0c0, {0xc0004ae030, 0x1, 0x1}, 0xc00030f880?, 0x13b0, {0x0?, 0x7379f8b8da68?}, 0x10?, 0x1, ...)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/logsevents/logsAndEventsProcessor.go:124 +0x22e
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc.(*elasticProcessor).SaveTransactions(0xc000200000, 0xc0002b8090)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/elasticProcessor.go:526 +0x31e
+github.com/multiversx/mx-chain-es-indexer-go/integrationtests.TestNFTUpdateMetadata(0xc0003a8680)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/integrationtests/updateNFT_test.go:300 +0x44f0
+testing.tRunner(0xc0003a8680, 0xc7bb68)
+	/usr/local/go/src/testing/testing.go:1690 +0xf4
+created by testing.(*T).Run in goroutine 1
+	/usr/local/go/src/testing/testing.go:1743 +0x390
+ 
+[0;33mWARN [0m[2026-04-23 10:39:16.492]   cannot find hash in the txs map or scrs map [0;33mhash[0m = 6831 
+--- PASS: TestNFTUpdateMetadata (0.21s)
+=== RUN   TestCreateNFTAndMetaDataRecreate
+[0;36mDEBUG[0m[2026-04-23 10:39:16.603]   ei.elasticProcessor indexer version is empty 
+[0;33mWARN [0m[2026-04-23 10:39:16.603]   nftsProcessor.convertMetaData            [0;33mcannot encode creator address[0m = error [0;33mwrong size when encoding address, expected length 32, received 0[0m = address 
+[0;33mWARN [0m[2026-04-23 10:39:16.603]   bech32PubkeyConverter.SilentEncode       [0;33mhex buff[0m =  [0;33merror[0m = wrong size when encoding address, expected length 32, received 0 [0;33mstack trace[0m = goroutine 30 [running]:
+runtime/debug.Stack()
+	/usr/local/go/src/runtime/debug/stack.go:26 +0x5e
+github.com/multiversx/mx-chain-core-go/core/pubkeyConverter.(*bech32PubkeyConverter).SilentEncode(0x8?, {0x0, 0x0, 0x4?}, {0xd3e820, 0xc0000aafc0})
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-core-go/core/pubkeyConverter/bech32PubkeyConverter.go:109 +0x105
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc/logsevents.(*logsAndEventsProcessor).prepareLog(0xc00030a700, 0xc0003d29a0, {0xc000386734, 0x4}, 0xc000304330, 0x13b0, 0x1, 0x4ce780)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/logsevents/logsAndEventsProcessor.go:262 +0x173
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc/logsevents.(*logsAndEventsProcessor).prepareLogsForDB(0xc00030a700, 0xc0003d29a0, {0xc000306020, 0x1, 0xc0003d29a0?}, 0x13b0, 0x1, 0x4ce780)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/logsevents/logsAndEventsProcessor.go:244 +0x109
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc/logsevents.(*logsAndEventsProcessor).ExtractDataFromLogs(0xc00030a700, {0xc000306020, 0x1, 0x1}, 0xc00030f880?, 0x13b0, {0x0?, 0x7379f8b8d5b8?}, 0x10?, 0x1, ...)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/logsevents/logsAndEventsProcessor.go:124 +0x22e
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc.(*elasticProcessor).SaveTransactions(0xc000200380, 0xc000230138)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/elasticProcessor.go:526 +0x31e
+github.com/multiversx/mx-chain-es-indexer-go/integrationtests.TestCreateNFTAndMetaDataRecreate(0xc0003a8820)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/integrationtests/updateNFT_test.go:352 +0x8d1
+testing.tRunner(0xc0003a8820, 0xc7ba88)
+	/usr/local/go/src/testing/testing.go:1690 +0xf4
+created by testing.(*T).Run in goroutine 1
+	/usr/local/go/src/testing/testing.go:1743 +0x390
+ 
+[0;33mWARN [0m[2026-04-23 10:39:16.603]   cannot find hash in the txs map or scrs map [0;33mhash[0m = 6831 
+[0;33mWARN [0m[2026-04-23 10:39:16.608]   nftsProcessor.convertMetaData            [0;33mcannot encode creator address[0m = error [0;33mwrong size when encoding address, expected length 32, received 0[0m = address 
+[0;33mWARN [0m[2026-04-23 10:39:16.608]   bech32PubkeyConverter.SilentEncode       [0;33mhex buff[0m =  [0;33merror[0m = wrong size when encoding address, expected length 32, received 0 [0;33mstack trace[0m = goroutine 30 [running]:
+runtime/debug.Stack()
+	/usr/local/go/src/runtime/debug/stack.go:26 +0x5e
+github.com/multiversx/mx-chain-core-go/core/pubkeyConverter.(*bech32PubkeyConverter).SilentEncode(0x8?, {0x0, 0x0, 0x4?}, {0xd3e820, 0xc0000aafc0})
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-core-go/core/pubkeyConverter/bech32PubkeyConverter.go:109 +0x105
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc/logsevents.(*logsAndEventsProcessor).prepareLog(0xc00030a700, 0xc0001b91e0, {0xc0004864b8, 0x4}, 0xc000488960, 0x13b0, 0x1, 0x4ce780)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/logsevents/logsAndEventsProcessor.go:262 +0x173
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc/logsevents.(*logsAndEventsProcessor).prepareLogsForDB(0xc00030a700, 0xc0001b91e0, {0xc0004ae098, 0x1, 0xc0001b91e0?}, 0x13b0, 0x1, 0x4ce780)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/logsevents/logsAndEventsProcessor.go:244 +0x109
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc/logsevents.(*logsAndEventsProcessor).ExtractDataFromLogs(0xc00030a700, {0xc0004ae098, 0x1, 0x1}, 0xc00030f880?, 0x13b0, {0x0?, 0x7379f8b8d108?}, 0xc000229a78?, 0x1, ...)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/logsevents/logsAndEventsProcessor.go:124 +0x22e
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc.(*elasticProcessor).SaveTransactions(0xc000200380, 0xc000012fd8)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/elasticProcessor.go:526 +0x31e
+github.com/multiversx/mx-chain-es-indexer-go/integrationtests.TestCreateNFTAndMetaDataRecreate(0xc0003a8820)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/integrationtests/updateNFT_test.go:388 +0x10f5
+testing.tRunner(0xc0003a8820, 0xc7ba88)
+	/usr/local/go/src/testing/testing.go:1690 +0xf4
+created by testing.(*T).Run in goroutine 1
+	/usr/local/go/src/testing/testing.go:1743 +0x390
+ 
+[0;33mWARN [0m[2026-04-23 10:39:16.608]   cannot find hash in the txs map or scrs map [0;33mhash[0m = 6831 
+[0;33mWARN [0m[2026-04-23 10:39:16.611]   nftsProcessor.convertMetaData            [0;33mcannot encode creator address[0m = error [0;33mwrong size when encoding address, expected length 32, received 0[0m = address 
+[0;33mWARN [0m[2026-04-23 10:39:16.612]   bech32PubkeyConverter.SilentEncode       [0;33mhex buff[0m =  [0;33merror[0m = wrong size when encoding address, expected length 32, received 0 [0;33mstack trace[0m = goroutine 30 [running]:
+runtime/debug.Stack()
+	/usr/local/go/src/runtime/debug/stack.go:26 +0x5e
+github.com/multiversx/mx-chain-core-go/core/pubkeyConverter.(*bech32PubkeyConverter).SilentEncode(0x8?, {0x0, 0x0, 0x4?}, {0xd3e820, 0xc0000aafc0})
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-core-go/core/pubkeyConverter/bech32PubkeyConverter.go:109 +0x105
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc/logsevents.(*logsAndEventsProcessor).prepareLog(0xc00030a700, 0xc0002202c0, {0xc000600874, 0x4}, 0xc0002262d0, 0x13b0, 0x1, 0x4ce780)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/logsevents/logsAndEventsProcessor.go:262 +0x173
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc/logsevents.(*logsAndEventsProcessor).prepareLogsForDB(0xc00030a700, 0xc0002202c0, {0xc000080300, 0x1, 0xc0002202c0?}, 0x13b0, 0x1, 0x4ce780)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/logsevents/logsAndEventsProcessor.go:244 +0x109
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc/logsevents.(*logsAndEventsProcessor).ExtractDataFromLogs(0xc00030a700, {0xc000080300, 0x1, 0x1}, 0xc00030f880?, 0x13b0, {0x0?, 0x7379f8b8e878?}, 0x10?, 0x1, ...)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/logsevents/logsAndEventsProcessor.go:124 +0x22e
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc.(*elasticProcessor).SaveTransactions(0xc000200380, 0xc0002ca108)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/elasticProcessor.go:526 +0x31e
+github.com/multiversx/mx-chain-es-indexer-go/integrationtests.TestCreateNFTAndMetaDataRecreate(0xc0003a8820)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/integrationtests/updateNFT_test.go:423 +0x1902
+testing.tRunner(0xc0003a8820, 0xc7ba88)
+	/usr/local/go/src/testing/testing.go:1690 +0xf4
+created by testing.(*T).Run in goroutine 1
+	/usr/local/go/src/testing/testing.go:1743 +0x390
+ 
+[0;33mWARN [0m[2026-04-23 10:39:16.612]   cannot find hash in the txs map or scrs map [0;33mhash[0m = 6831 
+--- PASS: TestCreateNFTAndMetaDataRecreate (0.14s)
+=== RUN   TestMultipleESDTMetadataRecreate
+[0;36mDEBUG[0m[2026-04-23 10:39:16.729]   ei.elasticProcessor indexer version is empty 
+[0;33mWARN [0m[2026-04-23 10:39:16.729]   nftsProcessor.convertMetaData            [0;33mcannot encode creator address[0m = error [0;33mwrong size when encoding address, expected length 32, received 0[0m = address 
+[0;33mWARN [0m[2026-04-23 10:39:16.729]   nftsProcessor.convertMetaData            [0;33mcannot encode creator address[0m = error [0;33mwrong size when encoding address, expected length 32, received 0[0m = address 
+[0;33mWARN [0m[2026-04-23 10:39:16.729]   bech32PubkeyConverter.SilentEncode       [0;33mhex buff[0m =  [0;33merror[0m = wrong size when encoding address, expected length 32, received 0 [0;33mstack trace[0m = goroutine 211 [running]:
+runtime/debug.Stack()
+	/usr/local/go/src/runtime/debug/stack.go:26 +0x5e
+github.com/multiversx/mx-chain-core-go/core/pubkeyConverter.(*bech32PubkeyConverter).SilentEncode(0x8?, {0x0, 0x0, 0x4?}, {0xd3e820, 0xc0000aafc0})
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-core-go/core/pubkeyConverter/bech32PubkeyConverter.go:109 +0x105
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc/logsevents.(*logsAndEventsProcessor).prepareLog(0xc00030a500, 0xc000259ce0, {0xc000486524, 0x4}, 0xc000489ef0, 0x13b0, 0x1, 0x4ce780)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/logsevents/logsAndEventsProcessor.go:262 +0x173
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc/logsevents.(*logsAndEventsProcessor).prepareLogsForDB(0xc00030a500, 0xc000259ce0, {0xc000391e90, 0x2, 0xc000259ce0?}, 0x13b0, 0x1, 0x4ce780)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/logsevents/logsAndEventsProcessor.go:244 +0x109
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc/logsevents.(*logsAndEventsProcessor).ExtractDataFromLogs(0xc00030a500, {0xc000391e90, 0x2, 0x2}, 0xc00030f880?, 0x13b0, {0x0?, 0x7379f8b8d108?}, 0x10?, 0x1, ...)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/logsevents/logsAndEventsProcessor.go:124 +0x22e
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc.(*elasticProcessor).SaveTransactions(0xc00034c0e0, 0xc0000129a8)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/elasticProcessor.go:526 +0x31e
+github.com/multiversx/mx-chain-es-indexer-go/integrationtests.TestMultipleESDTMetadataRecreate(0xc0003a8680)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/integrationtests/updateNFT_test.go:488 +0xd54
+testing.tRunner(0xc0003a8680, 0xc7bb38)
+	/usr/local/go/src/testing/testing.go:1690 +0xf4
+created by testing.(*T).Run in goroutine 1
+	/usr/local/go/src/testing/testing.go:1743 +0x390
+ 
+[0;33mWARN [0m[2026-04-23 10:39:16.729]   cannot find hash in the txs map or scrs map [0;33mhash[0m = 6831 
+[0;33mWARN [0m[2026-04-23 10:39:16.729]   bech32PubkeyConverter.SilentEncode       [0;33mhex buff[0m =  [0;33merror[0m = wrong size when encoding address, expected length 32, received 0 [0;33mstack trace[0m = goroutine 211 [running]:
+runtime/debug.Stack()
+	/usr/local/go/src/runtime/debug/stack.go:26 +0x5e
+github.com/multiversx/mx-chain-core-go/core/pubkeyConverter.(*bech32PubkeyConverter).SilentEncode(0x8?, {0x0, 0x0, 0x4?}, {0xd3e820, 0xc0000aafc0})
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-core-go/core/pubkeyConverter/bech32PubkeyConverter.go:109 +0x105
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc/logsevents.(*logsAndEventsProcessor).prepareLog(0xc00030a500, 0xc000259ce0, {0xc00048655c, 0x4}, 0xc000489f20, 0x13b0, 0x1, 0x4ce780)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/logsevents/logsAndEventsProcessor.go:262 +0x173
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc/logsevents.(*logsAndEventsProcessor).prepareLogsForDB(0xc00030a500, 0xc000259ce0, {0xc000391e90, 0x2, 0xc000259ce0?}, 0x13b0, 0x1, 0x4ce780)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/logsevents/logsAndEventsProcessor.go:244 +0x109
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc/logsevents.(*logsAndEventsProcessor).ExtractDataFromLogs(0xc00030a500, {0xc000391e90, 0x2, 0x2}, 0xc00030f880?, 0x13b0, {0x0?, 0x7379f8b8d108?}, 0x10?, 0x1, ...)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/logsevents/logsAndEventsProcessor.go:124 +0x22e
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc.(*elasticProcessor).SaveTransactions(0xc00034c0e0, 0xc0000129a8)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/elasticProcessor.go:526 +0x31e
+github.com/multiversx/mx-chain-es-indexer-go/integrationtests.TestMultipleESDTMetadataRecreate(0xc0003a8680)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/integrationtests/updateNFT_test.go:488 +0xd54
+testing.tRunner(0xc0003a8680, 0xc7bb38)
+	/usr/local/go/src/testing/testing.go:1690 +0xf4
+created by testing.(*T).Run in goroutine 1
+	/usr/local/go/src/testing/testing.go:1743 +0x390
+ 
+[0;33mWARN [0m[2026-04-23 10:39:16.729]   cannot find hash in the txs map or scrs map [0;33mhash[0m = 6832 
+[0;33mWARN [0m[2026-04-23 10:39:16.733]   nftsProcessor.convertMetaData            [0;33mcannot encode creator address[0m = error [0;33mwrong size when encoding address, expected length 32, received 0[0m = address 
+[0;33mWARN [0m[2026-04-23 10:39:16.733]   nftsProcessor.convertMetaData            [0;33mcannot encode creator address[0m = error [0;33mwrong size when encoding address, expected length 32, received 0[0m = address 
+[0;33mWARN [0m[2026-04-23 10:39:16.733]   bech32PubkeyConverter.SilentEncode       [0;33mhex buff[0m =  [0;33merror[0m = wrong size when encoding address, expected length 32, received 0 [0;33mstack trace[0m = goroutine 211 [running]:
+runtime/debug.Stack()
+	/usr/local/go/src/runtime/debug/stack.go:26 +0x5e
+github.com/multiversx/mx-chain-core-go/core/pubkeyConverter.(*bech32PubkeyConverter).SilentEncode(0x8?, {0x0, 0x0, 0x4?}, {0xd3e820, 0xc0000aafc0})
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-core-go/core/pubkeyConverter/bech32PubkeyConverter.go:109 +0x105
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc/logsevents.(*logsAndEventsProcessor).prepareLog(0xc00030a500, 0xc000144840, {0xc0000141c8, 0x4}, 0xc000305b30, 0x13b0, 0x1, 0x4ce780)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/logsevents/logsAndEventsProcessor.go:262 +0x173
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc/logsevents.(*logsAndEventsProcessor).prepareLogsForDB(0xc00030a500, 0xc000144840, {0xc0005257f0, 0x2, 0xc000144840?}, 0x13b0, 0x1, 0x4ce780)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/logsevents/logsAndEventsProcessor.go:244 +0x109
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc/logsevents.(*logsAndEventsProcessor).ExtractDataFromLogs(0xc00030a500, {0xc0005257f0, 0x2, 0x2}, 0xc00030f880?, 0x13b0, {0x0?, 0x7379f8b8da68?}, 0x10?, 0x1, ...)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/logsevents/logsAndEventsProcessor.go:124 +0x22e
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc.(*elasticProcessor).SaveTransactions(0xc00034c0e0, 0xc000310840)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/elasticProcessor.go:526 +0x31e
+github.com/multiversx/mx-chain-es-indexer-go/integrationtests.TestMultipleESDTMetadataRecreate(0xc0003a8680)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/integrationtests/updateNFT_test.go:531 +0x18e4
+testing.tRunner(0xc0003a8680, 0xc7bb38)
+	/usr/local/go/src/testing/testing.go:1690 +0xf4
+created by testing.(*T).Run in goroutine 1
+	/usr/local/go/src/testing/testing.go:1743 +0x390
+ 
+[0;33mWARN [0m[2026-04-23 10:39:16.733]   cannot find hash in the txs map or scrs map [0;33mhash[0m = 6831 
+[0;33mWARN [0m[2026-04-23 10:39:16.733]   bech32PubkeyConverter.SilentEncode       [0;33mhex buff[0m =  [0;33merror[0m = wrong size when encoding address, expected length 32, received 0 [0;33mstack trace[0m = goroutine 211 [running]:
+runtime/debug.Stack()
+	/usr/local/go/src/runtime/debug/stack.go:26 +0x5e
+github.com/multiversx/mx-chain-core-go/core/pubkeyConverter.(*bech32PubkeyConverter).SilentEncode(0x8?, {0x0, 0x0, 0x4?}, {0xd3e820, 0xc0000aafc0})
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-core-go/core/pubkeyConverter/bech32PubkeyConverter.go:109 +0x105
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc/logsevents.(*logsAndEventsProcessor).prepareLog(0xc00030a500, 0xc000144840, {0xc00001433c, 0x4}, 0xc000305b60, 0x13b0, 0x1, 0x4ce780)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/logsevents/logsAndEventsProcessor.go:262 +0x173
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc/logsevents.(*logsAndEventsProcessor).prepareLogsForDB(0xc00030a500, 0xc000144840, {0xc0005257f0, 0x2, 0xc000144840?}, 0x13b0, 0x1, 0x4ce780)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/logsevents/logsAndEventsProcessor.go:244 +0x109
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc/logsevents.(*logsAndEventsProcessor).ExtractDataFromLogs(0xc00030a500, {0xc0005257f0, 0x2, 0x2}, 0xc00030f880?, 0x13b0, {0x0?, 0x7379f8b8da68?}, 0x10?, 0x1, ...)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/logsevents/logsAndEventsProcessor.go:124 +0x22e
+github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc.(*elasticProcessor).SaveTransactions(0xc00034c0e0, 0xc000310840)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/process/elasticproc/elasticProcessor.go:526 +0x31e
+github.com/multiversx/mx-chain-es-indexer-go/integrationtests.TestMultipleESDTMetadataRecreate(0xc0003a8680)
+	/home/divesh/Desktop/RWA/finalize/sdfghjxcb/RWA2Audit/mx-chain-es-indexer-go/integrationtests/updateNFT_test.go:531 +0x18e4
+testing.tRunner(0xc0003a8680, 0xc7bb38)
+	/usr/local/go/src/testing/testing.go:1690 +0xf4
+created by testing.(*T).Run in goroutine 1
+	/usr/local/go/src/testing/testing.go:1743 +0x390
+ 
+[0;33mWARN [0m[2026-04-23 10:39:16.733]   cannot find hash in the txs map or scrs map [0;33mhash[0m = 6832 
+--- PASS: TestMultipleESDTMetadataRecreate (0.10s)
+=== RUN   TestCheckVersionIsIndexer
+--- PASS: TestCheckVersionIsIndexer (0.12s)
+PASS
+ok  	github.com/multiversx/mx-chain-es-indexer-go/integrationtests	12.883s

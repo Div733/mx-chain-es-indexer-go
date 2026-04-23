@@ -1,0 +1,59 @@
+{
+	"index_patterns": [
+		"drwa-holder-compliance-*"
+	],
+	"mappings": {
+		"properties": {
+			"amlStatus": {
+				"type": "keyword"
+			},
+			"auditorAuthorized": {
+				"type": "boolean"
+			},
+			"eventOrder": {
+				"type": "long"
+			},
+			"expiryRound": {
+				"type": "long"
+			},
+			"holder": {
+				"type": "keyword"
+			},
+			"holderPolicyVersion": {
+				"type": "long"
+			},
+			"investorClass": {
+				"type": "keyword"
+			},
+			"jurisdictionCode": {
+				"type": "keyword"
+			},
+			"kycStatus": {
+				"type": "keyword"
+			},
+			"receiveLocked": {
+				"type": "boolean"
+			},
+			"shardID": {
+				"type": "long"
+			},
+			"timestamp": {
+				"format": "epoch_second",
+				"type": "date"
+			},
+			"tokenId": {
+				"type": "keyword"
+			},
+			"transferLocked": {
+				"type": "boolean"
+			},
+			"txHash": {
+				"type": "keyword"
+			}
+		}
+	},
+	"settings": {
+		"number_of_replicas": 0,
+		"number_of_shards": 3
+	}
+}

@@ -3,9 +3,9 @@ name: Go build
 
 on:
   push:
-    branches: [ master, feat/*, rc/*, dev ]
+    branches: [ master, feat/*, rc/* ]
   pull_request:
-    branches: [ master, feat/*, rc/*, dev ]
+    branches: [ master, feat/*, rc/* ]
 
 jobs:
   build:

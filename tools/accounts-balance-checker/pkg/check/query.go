@@ -45,74 +45,40 @@ func getBalancesByAddress(addr string) object {
 	}
 }
 
-func queryGetLastTxForToken(identifier, addr string) *bytes.Buffer {
-	queryBytes := fmt.Sprintf(`{
-	"query": {
-		"bool": {
-			"must": [
-				{
-					"match": {
-						"tokens": {
-							"query":"%s",
-							"operator":"AND"
-						}
-					}
+func queryGetLastTxForToken(identifier, addr string) (*bytes.Buffer, error) {
+	query := object{
+		"query": object{
+			"bool": object{
+				"must": []interface{}{
+					object{"match": object{"tokens": object{"query": identifier, "operator": "AND"}}},
+					object{"match": object{"sender": object{"query": addr, "operator": "AND"}}},
 				},
-				{
-					"match": {
-						"sender": {
-							"query":"%s",
-							"operator":"AND"
-						}
-					}
-				}
-			]
-		}
-	},
-	"sort": [
-		{
-			"timestamp": {
-				"order":"desc"
-			}
-		}
-	]
-}`, identifier, addr)
-
-	return bytes.NewBuffer([]byte(queryBytes))
+			},
+		},
+		"sort": []interface{}{object{"timestamp": object{"order": "desc"}}},
+	}
+	encoded, err := json.Marshal(query)
+	if err != nil {
+		return nil, err
+	}
+	return bytes.NewBuffer(encoded), nil
 }
 
-func queryGetLastOperationForAddress(addr string) *bytes.Buffer {
-	queryBytes := fmt.Sprintf(`{
-	"query": {
-		"bool": {
-			"should": [
-				{
-					"match": {
-						"sender": {
-							"query":"%s",
-							"operator":"AND"
-						}
-					}
+func queryGetLastOperationForAddress(addr string) (*bytes.Buffer, error) {
+	query := object{
+		"query": object{
+			"bool": object{
+				"should": []interface{}{
+					object{"match": object{"sender": object{"query": addr, "operator": "AND"}}},
+					object{"match": object{"receiver": object{"query": addr, "operator": "AND"}}},
 				},
-				{
-					"match": {
-						"receiver": {
-							"query":"%s",
-							"operator":"AND"
-						}
-					}
-				}
-			]
-		}
-	},
-	"sort": [
-		{
-			"timestamp": {
-				"order":"desc"
-			}
-		}
-	]
-}`, addr, addr)
-
-	return bytes.NewBuffer([]byte(queryBytes))
+			},
+		},
+		"sort": []interface{}{object{"timestamp": object{"order": "desc"}}},
+	}
+	encoded, err := json.Marshal(query)
+	if err != nil {
+		return nil, err
+	}
+	return bytes.NewBuffer(encoded), nil
 }

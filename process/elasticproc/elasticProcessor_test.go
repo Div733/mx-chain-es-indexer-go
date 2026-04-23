@@ -234,6 +234,50 @@ func TestNewElasticProcessor(t *testing.T) {
 	}
 }
 
+func TestElasticProcessor_FinalizedBlockUpdatesEnabledDRWAIndexes(t *testing.T) {
+	args := createMockElasticProcessorArgs()
+
+	calls := make(map[string]string)
+	args.EnabledIndexes = map[string]struct{}{
+		dataindexer.DrwaDenialsIndex:          {},
+		dataindexer.DrwaIdentitiesIndex:       {},
+		dataindexer.DrwaHolderComplianceIndex: {},
+		dataindexer.DrwaAttestationsIndex:     {},
+		dataindexer.DrwaTokenPoliciesIndex:    {},
+		dataindexer.DrwaControlEventsIndex:    {},
+	}
+	args.DBClient = &mock.DatabaseWriterStub{
+		UpdateByQueryCalled: func(index string, body *bytes.Buffer) error {
+			calls[index] = body.String()
+			return nil
+		},
+	}
+
+	ep := newElasticsearchProcessor(args.DBClient, args)
+
+	err := ep.FinalizedBlock(&outport.FinalizedBlock{
+		ShardID:    4,
+		HeaderHash: []byte{0xaa, 0xbb, 0xcc},
+	})
+	require.NoError(t, err)
+	require.Len(t, calls, 6)
+
+	for _, index := range []string{
+		dataindexer.DrwaDenialsIndex,
+		dataindexer.DrwaIdentitiesIndex,
+		dataindexer.DrwaHolderComplianceIndex,
+		dataindexer.DrwaAttestationsIndex,
+		dataindexer.DrwaTokenPoliciesIndex,
+		dataindexer.DrwaControlEventsIndex,
+	} {
+		query, ok := calls[index]
+		require.True(t, ok)
+		require.Contains(t, query, `"blockHash":"aabbcc"`)
+		require.Contains(t, query, `"shardID":4`)
+		require.Contains(t, query, `ctx._source.isFinalized = true`)
+	}
+}
+
 func TestNewElasticProcessorWithKibana(t *testing.T) {
 	args := createMockElasticProcessorArgs()
 	args.UseKibana = true
@@ -242,6 +286,29 @@ func TestNewElasticProcessorWithKibana(t *testing.T) {
 	elasticProc, err := NewElasticProcessor(args)
 	require.NoError(t, err)
 	require.NotNil(t, elasticProc)
+}
+
+func TestNewElasticProcessor_CreatesDRWAIndexes(t *testing.T) {
+	t.Parallel()
+
+	createdIndexes := make(map[string]struct{})
+	args := createMockElasticProcessorArgs()
+	args.DBClient = &mock.DatabaseWriterStub{
+		CheckAndCreateIndexCalled: func(index string) error {
+			createdIndexes[index] = struct{}{}
+			return nil
+		},
+	}
+
+	_, err := NewElasticProcessor(args)
+	require.NoError(t, err)
+
+	require.Contains(t, createdIndexes, dataindexer.DrwaDenialsIndex+"-"+dataindexer.IndexSuffix)
+	require.Contains(t, createdIndexes, dataindexer.DrwaIdentitiesIndex+"-"+dataindexer.IndexSuffix)
+	require.Contains(t, createdIndexes, dataindexer.DrwaHolderComplianceIndex+"-"+dataindexer.IndexSuffix)
+	require.Contains(t, createdIndexes, dataindexer.DrwaAttestationsIndex+"-"+dataindexer.IndexSuffix)
+	require.Contains(t, createdIndexes, dataindexer.DrwaTokenPoliciesIndex+"-"+dataindexer.IndexSuffix)
+	require.Contains(t, createdIndexes, dataindexer.DrwaControlEventsIndex+"-"+dataindexer.IndexSuffix)
 }
 
 func TestElasticProcessor_RemoveHeader(t *testing.T) {
@@ -467,21 +534,60 @@ func TestElasticsearch_saveRoundInfoRequestError(t *testing.T) {
 
 func TestElasticProcessor_RemoveTransactions(t *testing.T) {
 	arguments := createMockElasticProcessorArgs()
+	arguments.EnabledIndexes[dataindexer.DrwaDenialsIndex] = struct{}{}
+	arguments.EnabledIndexes[dataindexer.DrwaIdentitiesIndex] = struct{}{}
+	arguments.EnabledIndexes[dataindexer.DrwaHolderComplianceIndex] = struct{}{}
+	arguments.EnabledIndexes[dataindexer.DrwaAttestationsIndex] = struct{}{}
+	arguments.EnabledIndexes[dataindexer.DrwaTokenPoliciesIndex] = struct{}{}
+	arguments.EnabledIndexes[dataindexer.DrwaControlEventsIndex] = struct{}{}
 
 	called := false
+	removedIndexes := make(map[string]int)
 	txsHashes := [][]byte{[]byte("txHas1"), []byte("txHash2")}
 	expectedHashes := []string{hex.EncodeToString(txsHashes[0]), hex.EncodeToString(txsHashes[1])}
+	headerHash, err := createMockElasticProcessorArgs().BlockProc.ComputeHeaderHash(&dataBlock.Header{ShardID: core.MetachainShardId, MiniBlockHeaders: []dataBlock.MiniBlockHeader{{}}})
+	require.NoError(t, err)
+	expectedHeaderHash := hex.EncodeToString(headerHash)
 	dbWriter := &mock.DatabaseWriterStub{
 		DoQueryRemoveCalled: func(index string, body *bytes.Buffer) error {
+			removedIndexes[index]++
 			bodyStr := body.String()
-			require.Contains(t, []string{dataindexer.TransactionsIndex, dataindexer.OperationsIndex, dataindexer.LogsIndex, dataindexer.EventsIndex}, index)
+			require.Contains(t, []string{
+				dataindexer.TransactionsIndex,
+				dataindexer.OperationsIndex,
+				dataindexer.LogsIndex,
+				dataindexer.EventsIndex,
+				dataindexer.DrwaDenialsIndex,
+				dataindexer.DrwaIdentitiesIndex,
+				dataindexer.DrwaHolderComplianceIndex,
+				dataindexer.DrwaAttestationsIndex,
+				dataindexer.DrwaTokenPoliciesIndex,
+				dataindexer.DrwaControlEventsIndex,
+			}, index)
 			if index != dataindexer.EventsIndex {
-				require.True(t, strings.Contains(bodyStr, expectedHashes[0]))
-				require.True(t, strings.Contains(bodyStr, expectedHashes[1]))
+				if index == dataindexer.TransactionsIndex || index == dataindexer.OperationsIndex || index == dataindexer.LogsIndex {
+					require.True(t, strings.Contains(bodyStr, expectedHashes[0]))
+					require.True(t, strings.Contains(bodyStr, expectedHashes[1]))
+				} else if index == dataindexer.DrwaDenialsIndex ||
+					index == dataindexer.DrwaIdentitiesIndex ||
+					index == dataindexer.DrwaHolderComplianceIndex ||
+					index == dataindexer.DrwaAttestationsIndex ||
+					index == dataindexer.DrwaTokenPoliciesIndex ||
+					index == dataindexer.DrwaControlEventsIndex {
+					require.Equal(t,
+						`{"query":{"bool":{"must":[{"term":{"shardID":4294967295}},{"term":{"blockHash":"`+expectedHeaderHash+`"}}]}}}`,
+						body.String(),
+					)
+				} else {
+					require.Equal(t,
+						`{"query":{"bool":{"must":[{"match":{"shardID":{"operator":"AND","query":4294967295}}},{"match":{"timestampMs":{"operator":"AND","query":0}}}]}}}`,
+						body.String(),
+					)
+				}
 				called = true
 			} else {
 				require.Equal(t,
-					`{"query": {"bool": {"must": [{"match": {"shardID": {"query": 4294967295,"operator": "AND"}}},{"match": {"timestampMs": {"query": "0","operator": "AND"}}}]}}}`,
+					`{"query":{"bool":{"must":[{"match":{"shardID":{"operator":"AND","query":4294967295}}},{"match":{"timestampMs":{"operator":"AND","query":0}}}]}}}`,
 					body.String(),
 				)
 			}
@@ -516,9 +622,15 @@ func TestElasticProcessor_RemoveTransactions(t *testing.T) {
 		},
 	}
 
-	err := elasticSearchProc.RemoveTransactions(header, blk, 0)
+	err = elasticSearchProc.RemoveTransactions(header, blk, 0)
 	require.Nil(t, err)
 	require.True(t, called)
+	require.Equal(t, 1, removedIndexes[dataindexer.DrwaDenialsIndex])
+	require.Equal(t, 1, removedIndexes[dataindexer.DrwaIdentitiesIndex])
+	require.Equal(t, 1, removedIndexes[dataindexer.DrwaHolderComplianceIndex])
+	require.Equal(t, 1, removedIndexes[dataindexer.DrwaAttestationsIndex])
+	require.Equal(t, 1, removedIndexes[dataindexer.DrwaTokenPoliciesIndex])
+	require.Equal(t, 1, removedIndexes[dataindexer.DrwaControlEventsIndex])
 }
 
 func TestElasticProcessor_IndexEpochInfoData(t *testing.T) {

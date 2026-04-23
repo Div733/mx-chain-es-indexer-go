@@ -10,6 +10,7 @@ type StatusMetricsHandler interface {
 	AddIndexingData(args metrics.ArgsAddIndexingData)
 	GetMetrics() map[string]*request.MetricsResponse
 	GetMetricsForPrometheus() string
+	IncrementDRWAStaleUnfinalizedCount()
 	IsInterfaceNil() bool
 }
 

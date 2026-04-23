@@ -1,6 +1,9 @@
 package factory
 
 import (
+	"errors"
+	"os"
+
 	"github.com/multiversx/mx-chain-communication-go/websocket/data"
 	factoryHost "github.com/multiversx/mx-chain-communication-go/websocket/factory"
 	"github.com/multiversx/mx-chain-core-go/core/pubkeyConverter"
@@ -65,6 +68,15 @@ func createDataIndexer(
 	statusMetrics core.StatusMetricsHandler,
 	version string,
 ) (wsindexer.DataIndexer, error) {
+	if u := os.Getenv("ES_USERNAME"); u != "" {
+		clusterCfg.Config.ElasticCluster.UserName = u
+	}
+	if p := os.Getenv("ES_PASSWORD"); p != "" {
+		clusterCfg.Config.ElasticCluster.Password = p
+	}
+	if clusterCfg.Config.ElasticCluster.UserName == "" || clusterCfg.Config.ElasticCluster.Password == "" {
+		return nil, errors.New("elasticsearch credentials must not be empty — set ES_USERNAME and ES_PASSWORD")
+	}
 	marshaller, err := factoryMarshaller.NewMarshalizer(cfg.Config.Marshaller.Type)
 	if err != nil {
 		return nil, err
@@ -98,6 +110,7 @@ func createDataIndexer(
 		StatusMetrics:            statusMetrics,
 		Version:                  version,
 		EnableEpochsConfig:       enableEpochsCfg,
+		DrwaRegistryAddress:      clusterCfg.Config.ElasticCluster.DrwaRegistryAddress,
 	})
 }
 
