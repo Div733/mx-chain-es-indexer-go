@@ -4,13 +4,13 @@ go 1.23
 
 require (
 	github.com/elastic/go-elasticsearch/v7 v7.12.0
-	github.com/gin-contrib/cors v1.4.0
+	github.com/gin-contrib/cors v1.6.0
 	github.com/gin-gonic/gin v1.10.0
 	github.com/google/uuid v1.6.0
 	github.com/multiversx/mx-chain-communication-go v1.3.0
-	github.com/multiversx/mx-chain-core-go v1.4.0
+	github.com/multiversx/mx-chain-core-go v1.5.0
 	github.com/multiversx/mx-chain-logger-go v1.1.0
-	github.com/multiversx/mx-chain-vm-common-go v1.6.1-0.20251127112501-0b5f28e33b2e
+	github.com/multiversx/mx-chain-vm-common-go v1.6.1
 	github.com/prometheus/client_model v0.6.1
 	github.com/prometheus/common v0.62.0
 	github.com/stretchr/testify v1.10.0
@@ -61,3 +61,11 @@ require (
 	golang.org/x/text v0.21.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
+
+replace github.com/multiversx/mx-chain-core-go => github.com/Div733/mx-chain-core-go v0.0.0-20260511065504-1af0ea1f0a2b
+
+replace github.com/multiversx/mx-chain-logger-go => github.com/Div733/mx-chain-logger-go v0.0.0-20260511073010-e5571e937ae7
+
+replace github.com/multiversx/mx-chain-communication-go => github.com/Div733/mx-chain-communication-go v0.0.0-20260511085437-d045a13ad24d
+
+replace github.com/multiversx/mx-chain-vm-common-go => github.com/Div733/mx-chain-vm-common-go v0.0.0-20260511073257-3380d7da0c01

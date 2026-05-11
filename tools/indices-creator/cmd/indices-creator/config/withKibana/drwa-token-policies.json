@@ -1,0 +1,47 @@
+{
+	"index_patterns": [
+		"drwa-token-policies-*"
+	],
+	"mappings": {
+		"properties": {
+			"eventOrder": {
+				"type": "long"
+			},
+			"eventType": {
+				"type": "keyword"
+			},
+			"globalPause": {
+				"type": "boolean"
+			},
+			"policyId": {
+				"type": "keyword"
+			},
+			"regulated": {
+				"type": "boolean"
+			},
+			"shardID": {
+				"type": "long"
+			},
+			"strictAuditorMode": {
+				"type": "boolean"
+			},
+			"timestamp": {
+				"format": "epoch_second",
+				"type": "date"
+			},
+			"tokenId": {
+				"type": "keyword"
+			},
+			"tokenPolicyVersion": {
+				"type": "long"
+			},
+			"txHash": {
+				"type": "keyword"
+			}
+		}
+	},
+	"settings": {
+		"number_of_replicas": 0,
+		"number_of_shards": 3
+	}
+}

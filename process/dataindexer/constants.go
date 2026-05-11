@@ -29,8 +29,6 @@ const (
 	AccountsESDTHistoryIndex = "accountsesdthistory"
 	// EpochInfoIndex is the Elasticsearch index for the epoch information
 	EpochInfoIndex = "epochinfo"
-	// OpenDistroIndex is the Elasticsearch index for opendistro
-	OpenDistroIndex = "opendistro"
 	// SCDeploysIndex is the Elasticsearch index for the smart contracts deploy information
 	SCDeploysIndex = "scdeploys"
 	// TokensIndex is the Elasticsearch index for the ESDT tokens
@@ -49,29 +47,18 @@ const (
 	ValuesIndex = "values"
 	// EventsIndex is the Elasticsearch index for log events
 	EventsIndex = "events"
-
-	// TransactionsPolicy is the Elasticsearch policy for the transactions
-	TransactionsPolicy = "transactions_policy"
-	// BlockPolicy is the Elasticsearch policy for the blocks
-	BlockPolicy = "blocks_policy"
-	// MiniblocksPolicy is the Elasticsearch policy for the miniblocks
-	MiniblocksPolicy = "miniblocks_policy"
-	// ValidatorsPolicy is the Elasticsearch policy for the validators information
-	ValidatorsPolicy = "validators_policy"
-	// RoundsPolicy is the Elasticsearch policy for the rounds information
-	RoundsPolicy = "rounds_policy"
-	// RatingPolicy is the Elasticsearch policy for the rating information
-	RatingPolicy = "rating_policy"
-	// AccountsPolicy is the Elasticsearch policy for the accounts
-	AccountsPolicy = "accounts_policy"
-	// AccountsHistoryPolicy is the Elasticsearch policy for the accounts history information
-	AccountsHistoryPolicy = "accountshistory_policy"
-	// AccountsESDTPolicy is the Elasticsearch policy for the accounts with ESDT balance
-	AccountsESDTPolicy = "accountsesdt_policy"
-	// AccountsESDTHistoryPolicy is the Elasticsearch policy for the accounts history information with ESDT
-	AccountsESDTHistoryPolicy = "accountsesdthistory_policy"
-	// ScResultsPolicy is the Elasticsearch policy for the smart contract results
-	ScResultsPolicy = "scresults_policy"
-	// ReceiptsPolicy is the Elasticsearch policy for the receipts
-	ReceiptsPolicy = "receipts_policy"
+	// ExecutionResultsIndex is the Elasticsearch index for execution results
+	ExecutionResultsIndex = "executionresults"
+	// DrwaDenialsIndex is the Elasticsearch index for DRWA denials
+	DrwaDenialsIndex = "drwa-denials"
+	// DrwaIdentitiesIndex is the Elasticsearch index for DRWA identities
+	DrwaIdentitiesIndex = "drwa-identities"
+	// DrwaHolderComplianceIndex is the Elasticsearch index for DRWA holder compliance
+	DrwaHolderComplianceIndex = "drwa-holder-compliance"
+	// DrwaAttestationsIndex is the Elasticsearch index for DRWA attestations
+	DrwaAttestationsIndex = "drwa-attestations"
+	// DrwaTokenPoliciesIndex is the Elasticsearch index for DRWA token policies
+	DrwaTokenPoliciesIndex = "drwa-token-policies"
+	// DrwaControlEventsIndex is the Elasticsearch index for DRWA control events
+	DrwaControlEventsIndex = "drwa-control-events"
 )

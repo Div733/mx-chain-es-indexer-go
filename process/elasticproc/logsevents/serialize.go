@@ -242,7 +242,7 @@ func serializeTokenChangeType(tokenData *data.TokenInfo, index string) ([]byte, 
 		`"lang": "painless",`+
 		`"params": {"type": "%s", "timestamp": %d }},`+
 		`"upsert": {}}`,
-		converters.FormatPainlessSource(codeToExecute), tokenData.Type, tokenData.Timestamp)
+		converters.FormatPainlessSource(codeToExecute), converters.JsonEscape(tokenData.Type), tokenData.Timestamp)
 
 	return meta, []byte(serializedDataStr), nil
 }

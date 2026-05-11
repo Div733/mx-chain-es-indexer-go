@@ -4,6 +4,8 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+
+	"github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc/converters"
 )
 
 type object = map[string]interface{}
@@ -76,7 +78,7 @@ func queryGetLastTxForToken(identifier, addr string) *bytes.Buffer {
 			}
 		}
 	]
-}`, identifier, addr)
+}`, converters.JsonEscape(identifier), converters.JsonEscape(addr))
 
 	return bytes.NewBuffer([]byte(queryBytes))
 }
@@ -112,7 +114,7 @@ func queryGetLastOperationForAddress(addr string) *bytes.Buffer {
 			}
 		}
 	]
-}`, addr, addr)
+}`, converters.JsonEscape(addr), converters.JsonEscape(addr))
 
 	return bytes.NewBuffer([]byte(queryBytes))
 }

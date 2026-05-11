@@ -6,6 +6,7 @@ import (
 	"strings"
 
 	"github.com/multiversx/mx-chain-es-indexer-go/data"
+	"github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc/converters"
 )
 
 func (bc *balanceChecker) deleteExtraBalance(addr, identifier string, timestamp uint64, index string) error {
@@ -14,7 +15,7 @@ func (bc *balanceChecker) deleteExtraBalance(addr, identifier string, timestamp 
 	}
 
 	id := prepareID(addr, identifier)
-	meta := []byte(fmt.Sprintf(`{ "update" : {"_index":"%s", "_id" : "%s" } }%s`, index, id, "\n"))
+	meta := []byte(fmt.Sprintf(`{ "update" : {"_index":"%s", "_id" : "%s" } }%s`, index, converters.JsonEscape(id), "\n"))
 	serializedDataStr := fmt.Sprintf(`{"scripted_upsert": true, "script": {`+
 		`"source": "if ( ctx.op == 'create' )  { ctx.op = 'noop' } else { if (ctx._source.containsKey('timestamp')) { if (ctx._source.timestamp < params.timestamp ) { ctx.op = 'delete'  } } else {  ctx.op = 'delete' } }",`+
 		`"lang": "painless",`+
@@ -55,13 +56,13 @@ func (bc *balanceChecker) fixWrongBalance(addr, identifier string, timestamp uin
 	}
 
 	id := prepareID(addr, identifier)
-	meta := []byte(fmt.Sprintf(`{ "update" : {"_index":"%s", "_id" : "%s" } }%s`, index, id, "\n"))
+	meta := []byte(fmt.Sprintf(`{ "update" : {"_index":"%s", "_id" : "%s" } }%s`, index, converters.JsonEscape(id), "\n"))
 	serializedDataStr := fmt.Sprintf(`{"scripted_upsert": true, "script": {`+
 		`"source": "if (ctx.op == 'create') { ctx.op = 'noop'} else { if (ctx._source.containsKey('timestamp')) { if (ctx._source.timestamp < params.timestamp) {ctx._source.timestamp = params.timestamp;ctx._source.balance = params.balanceStr;ctx._source.balanceNum = params.balanceFloat;}} else {ctx._source.timestamp = params.timestamp; ctx._source.balance = params.balanceStr; ctx._source.balanceNum = params.balanceFloat;}}",`+
 		`"lang": "painless",`+
 		`"params": {"timestamp": %d, "balanceStr": "%s", "balanceFloat": %.10f}},`+
 		`"upsert": {}}`,
-		timestamp, balanceFromProxy, balanceFloat,
+		timestamp, converters.JsonEscape(balanceFromProxy), balanceFloat,
 	)
 
 	buffSlice := data.NewBufferSlice(0)

@@ -86,6 +86,16 @@ func (dwm *DatabaseWriterStub) CheckAndCreatePolicy(_ string, _ *bytes.Buffer) e
 	return nil
 }
 
+// SetWriteIndexTrue -
+func (dwm *DatabaseWriterStub) SetWriteIndexTrue(_ string, _ string) error {
+	return nil
+}
+
+// PolicyExists -
+func (dwm *DatabaseWriterStub) PolicyExists(_ string) bool {
+	return false
+}
+
 // IsInterfaceNil returns true if there is no value under the interface
 func (dwm *DatabaseWriterStub) IsInterfaceNil() bool {
 	return dwm == nil

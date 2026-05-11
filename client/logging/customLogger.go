@@ -1,7 +1,6 @@
 package logging
 
 import (
-	"io"
 	"net/http"
 	"time"
 
@@ -26,11 +25,14 @@ func (cl *CustomLogger) LogRoundTrip(
 		resSize int64
 	)
 
-	if req != nil && req.Body != nil && req.Body != http.NoBody {
-		reqSize, _ = io.Copy(io.Discard, req.Body)
+	// Read sizes from the headers — never consume req.Body/res.Body here, or
+	// the request would be sent without a body and downstream code could not
+	// decode the response. Clamp -1 (unknown length) to 0 for cleaner logs.
+	if req != nil && req.ContentLength > 0 {
+		reqSize = req.ContentLength
 	}
-	if res != nil && res.Body != nil && res.Body != http.NoBody {
-		resSize, _ = io.Copy(io.Discard, res.Body)
+	if res != nil && res.ContentLength > 0 {
+		resSize = res.ContentLength
 	}
 
 	if err != nil {
@@ -68,12 +70,15 @@ func logInformation(
 	log.Debug("elastic client", logData...)
 }
 
-// RequestBodyEnabled makes the client pass request body to logger
+// RequestBodyEnabled tells the elastic client whether the round-tripper
+// will consume req.Body. We do not — we read req.ContentLength instead —
+// so this returns false, which prevents the client from teeing the body
+// for us and avoids the (now-removed) drain that was breaking real requests.
 func (cl *CustomLogger) RequestBodyEnabled() bool {
-	return true
+	return false
 }
 
-// ResponseBodyEnabled makes the client pass response body to logger
+// ResponseBodyEnabled mirrors RequestBodyEnabled for the response side.
 func (cl *CustomLogger) ResponseBodyEnabled() bool {
-	return true
+	return false
 }

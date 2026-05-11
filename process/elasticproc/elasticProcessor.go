@@ -5,7 +5,10 @@ import (
 	"context"
 	"encoding/hex"
 	"encoding/json"
+	"errors"
 	"fmt"
+	"sync"
+
 	"github.com/multiversx/mx-chain-core-go/core"
 	"github.com/multiversx/mx-chain-core-go/core/check"
 	coreData "github.com/multiversx/mx-chain-core-go/data"
@@ -20,57 +23,54 @@ import (
 	"github.com/multiversx/mx-chain-es-indexer-go/process/elasticproc/tokeninfo"
 	"github.com/multiversx/mx-chain-es-indexer-go/templates"
 	logger "github.com/multiversx/mx-chain-logger-go"
-	"sync"
 )
 
 var (
 	log = logger.GetOrCreate("indexer/process")
-
-	indexes = []string{
-		elasticIndexer.TransactionsIndex, elasticIndexer.BlockIndex, elasticIndexer.MiniblocksIndex, elasticIndexer.RatingIndex, elasticIndexer.RoundsIndex, elasticIndexer.ValidatorsIndex,
-		elasticIndexer.AccountsIndex, elasticIndexer.AccountsHistoryIndex, elasticIndexer.ReceiptsIndex, elasticIndexer.ScResultsIndex, elasticIndexer.AccountsESDTHistoryIndex, elasticIndexer.AccountsESDTIndex,
-		elasticIndexer.EpochInfoIndex, elasticIndexer.SCDeploysIndex, elasticIndexer.TokensIndex, elasticIndexer.TagsIndex, elasticIndexer.LogsIndex, elasticIndexer.DelegatorsIndex, elasticIndexer.OperationsIndex,
-		elasticIndexer.ESDTsIndex, elasticIndexer.ValuesIndex, elasticIndexer.EventsIndex,
-	}
 )
 
-const versionStr = "indexer-version"
+const (
+	versionStr             = "indexer-version"
+	minNumWritesInParallel = 1
+)
 
 // ArgElasticProcessor holds all dependencies required by the elasticProcessor in order to create
 // new instances
 type ArgElasticProcessor struct {
-	BulkRequestMaxSize int
-	UseKibana          bool
-	ImportDB           bool
-	EnabledIndexes     map[string]struct{}
-	TransactionsProc   DBTransactionsHandler
-	AccountsProc       DBAccountHandler
-	BlockProc          DBBlockHandler
-	MiniblocksProc     DBMiniblocksHandler
-	StatisticsProc     DBStatisticsHandler
-	ValidatorsProc     DBValidatorsHandler
-	DBClient           DatabaseClientHandler
-	LogsAndEventsProc  DBLogsAndEventsHandler
-	OperationsProc     OperationsHandler
-	MappingsHandler    TemplatesAndPoliciesHandler
-	Version            string
+	NumWritesInParallel int
+	BulkRequestMaxSize  int
+	UseKibana           bool
+	ImportDB            bool
+	EnabledIndexes      map[string]struct{}
+	TransactionsProc    DBTransactionsHandler
+	AccountsProc        DBAccountHandler
+	BlockProc           DBBlockHandler
+	MiniblocksProc      DBMiniblocksHandler
+	StatisticsProc      DBStatisticsHandler
+	ValidatorsProc      DBValidatorsHandler
+	DBClient            DatabaseClientHandler
+	LogsAndEventsProc   DBLogsAndEventsHandler
+	OperationsProc      OperationsHandler
+	MappingsHandler     TemplatesAndPoliciesHandler
+	Version             string
 }
 
 type elasticProcessor struct {
-	bulkRequestMaxSize int
-	importDB           bool
-	enabledIndexes     map[string]struct{}
-	mutex              sync.RWMutex
-	elasticClient      DatabaseClientHandler
-	accountsProc       DBAccountHandler
-	blockProc          DBBlockHandler
-	transactionsProc   DBTransactionsHandler
-	miniblocksProc     DBMiniblocksHandler
-	statisticsProc     DBStatisticsHandler
-	validatorsProc     DBValidatorsHandler
-	logsAndEventsProc  DBLogsAndEventsHandler
-	operationsProc     OperationsHandler
-	mappingsHandler    TemplatesAndPoliciesHandler
+	numWritesInParallel int
+	bulkRequestMaxSize  int
+	importDB            bool
+	enabledIndexes      map[string]struct{}
+	mutex               sync.RWMutex
+	elasticClient       DatabaseClientHandler
+	accountsProc        DBAccountHandler
+	blockProc           DBBlockHandler
+	transactionsProc    DBTransactionsHandler
+	miniblocksProc      DBMiniblocksHandler
+	statisticsProc      DBStatisticsHandler
+	validatorsProc      DBValidatorsHandler
+	logsAndEventsProc   DBLogsAndEventsHandler
+	operationsProc      OperationsHandler
+	mappingsHandler     TemplatesAndPoliciesHandler
 }
 
 // NewElasticProcessor handles Elasticsearch operations such as initialization, adding, modifying or removing data
@@ -79,20 +79,26 @@ func NewElasticProcessor(arguments *ArgElasticProcessor) (*elasticProcessor, err
 	if err != nil {
 		return nil, err
 	}
+	numWritesInParallel := arguments.NumWritesInParallel
+	if numWritesInParallel < minNumWritesInParallel {
+		log.Warn("elasticProcessor.NewElasticProcessor: provided num writes in parallel is invalid, the minimum value will be set", "min value", minNumWritesInParallel)
+		numWritesInParallel = minNumWritesInParallel
+	}
 
 	ei := &elasticProcessor{
-		elasticClient:      arguments.DBClient,
-		enabledIndexes:     arguments.EnabledIndexes,
-		accountsProc:       arguments.AccountsProc,
-		blockProc:          arguments.BlockProc,
-		miniblocksProc:     arguments.MiniblocksProc,
-		transactionsProc:   arguments.TransactionsProc,
-		statisticsProc:     arguments.StatisticsProc,
-		validatorsProc:     arguments.ValidatorsProc,
-		logsAndEventsProc:  arguments.LogsAndEventsProc,
-		operationsProc:     arguments.OperationsProc,
-		bulkRequestMaxSize: arguments.BulkRequestMaxSize,
-		mappingsHandler:    arguments.MappingsHandler,
+		elasticClient:       arguments.DBClient,
+		enabledIndexes:      arguments.EnabledIndexes,
+		accountsProc:        arguments.AccountsProc,
+		blockProc:           arguments.BlockProc,
+		miniblocksProc:      arguments.MiniblocksProc,
+		transactionsProc:    arguments.TransactionsProc,
+		statisticsProc:      arguments.StatisticsProc,
+		validatorsProc:      arguments.ValidatorsProc,
+		logsAndEventsProc:   arguments.LogsAndEventsProc,
+		operationsProc:      arguments.OperationsProc,
+		bulkRequestMaxSize:  arguments.BulkRequestMaxSize,
+		mappingsHandler:     arguments.MappingsHandler,
+		numWritesInParallel: numWritesInParallel,
 	}
 
 	err = ei.init()
@@ -107,27 +113,17 @@ func NewElasticProcessor(arguments *ArgElasticProcessor) (*elasticProcessor, err
 
 // TODO move all the index create part in a new component
 func (ei *elasticProcessor) init() error {
-	indexTemplates, _, err := ei.mappingsHandler.GetElasticTemplatesAndPolicies()
+	indexTemplates, indexPolices, err := ei.mappingsHandler.GetElasticTemplatesAndPolicies()
 	if err != nil {
 		return err
 	}
 
-	err = ei.createOpenDistroTemplates(indexTemplates)
+	err = ei.createIndices(indexTemplates)
 	if err != nil {
 		return err
 	}
 
-	err = ei.createIndexTemplates(indexTemplates)
-	if err != nil {
-		return err
-	}
-
-	err = ei.createIndexes()
-	if err != nil {
-		return err
-	}
-
-	err = ei.createAliases()
+	err = ei.createPolicies(indexPolices)
 	if err != nil {
 		return err
 	}
@@ -177,94 +173,62 @@ func (ei *elasticProcessor) indexVersion(version string) error {
 	return ei.elasticClient.DoBulkRequest(context.Background(), buffSlice.Buffers()[0], "")
 }
 
-// nolint
-func (ei *elasticProcessor) createIndexPolicies(indexPolicies map[string]*bytes.Buffer) error {
-	indexesPolicies := []string{elasticIndexer.TransactionsPolicy, elasticIndexer.BlockPolicy, elasticIndexer.MiniblocksPolicy, elasticIndexer.RatingPolicy, elasticIndexer.RoundsPolicy, elasticIndexer.ValidatorsPolicy,
-		elasticIndexer.AccountsPolicy, elasticIndexer.AccountsESDTPolicy, elasticIndexer.AccountsHistoryPolicy, elasticIndexer.AccountsESDTHistoryPolicy, elasticIndexer.AccountsESDTIndex, elasticIndexer.ReceiptsPolicy, elasticIndexer.ScResultsPolicy}
-	for _, indexPolicyName := range indexesPolicies {
-		indexPolicy := getTemplateByName(indexPolicyName, indexPolicies)
-		if indexPolicy != nil {
-			err := ei.elasticClient.CheckAndCreatePolicy(indexPolicyName, indexPolicy)
-			if err != nil {
-				return err
-			}
-		}
-	}
-
-	return nil
-}
-
-func (ei *elasticProcessor) createOpenDistroTemplates(indexTemplates map[string]*bytes.Buffer) error {
-	opendistroTemplate := getTemplateByName(elasticIndexer.OpenDistroIndex, indexTemplates)
-	if opendistroTemplate != nil {
-		err := ei.elasticClient.CheckAndCreateTemplate(elasticIndexer.OpenDistroIndex, opendistroTemplate)
+func (ei *elasticProcessor) createIndices(indexTemplateMap map[string]*bytes.Buffer) error {
+	for index, indexData := range indexTemplateMap {
+		err := ei.elasticClient.CheckAndCreateTemplate(index, indexData)
 		if err != nil {
-			return err
+			return fmt.Errorf("elasticClient.CreateIndexWithMapping index: %s, error: %w", index, err)
 		}
-	}
 
-	return nil
-}
-
-func (ei *elasticProcessor) createIndexTemplates(indexTemplates map[string]*bytes.Buffer) error {
-	for _, index := range indexes {
-		indexTemplate := getTemplateByName(index, indexTemplates)
-		if indexTemplate != nil {
-			err := ei.elasticClient.CheckAndCreateTemplate(index, indexTemplate)
-			if err != nil {
-				return fmt.Errorf("index: %s, error: %w", index, err)
-			}
-		}
-	}
-	return nil
-}
-
-func (ei *elasticProcessor) createIndexes() error {
-
-	for _, index := range indexes {
-		indexName := fmt.Sprintf("%s-%s", index, elasticIndexer.IndexSuffix)
-		err := ei.elasticClient.CheckAndCreateIndex(indexName)
+		indexWithSuffix := fmt.Sprintf("%s-%s", index, elasticIndexer.IndexSuffix)
+		err = ei.elasticClient.CheckAndCreateIndex(indexWithSuffix)
 		if err != nil {
-			return fmt.Errorf("index: %s, error: %w", index, err)
+			return fmt.Errorf("elasticClient.CheckAndCreateIndex index: %s, error: %w", index, err)
 		}
-	}
-	return nil
-}
 
-func (ei *elasticProcessor) createAliases() error {
-	for _, index := range indexes {
-		indexName := fmt.Sprintf("%s-%s", index, elasticIndexer.IndexSuffix)
-		err := ei.elasticClient.CheckAndCreateAlias(index, indexName)
+		err = ei.elasticClient.CheckAndCreateAlias(index, indexWithSuffix)
 		if err != nil {
-			return err
+			return fmt.Errorf("elasticClient.CheckAndCreateAlias index: %s, error: %w", index, err)
 		}
 	}
 
 	return nil
 }
 
-func getTemplateByName(templateName string, templateList map[string]*bytes.Buffer) *bytes.Buffer {
-	if template, ok := templateList[templateName]; ok {
-		return template
+func (ei *elasticProcessor) createPolicies(indexPolicyMap map[string]*bytes.Buffer) error {
+	for index, policy := range indexPolicyMap {
+		policyName := fmt.Sprintf("%s-%s", index, "policy")
+		if ei.elasticClient.PolicyExists(policyName) {
+			continue
+		}
+
+		indexWithSuffix := fmt.Sprintf("%s-%s", index, elasticIndexer.IndexSuffix)
+		err := ei.elasticClient.SetWriteIndexTrue(index, indexWithSuffix)
+		if err != nil {
+			return fmt.Errorf("elasticClient.SetWriteIndexTrue index: %s, error: %w", index, err)
+		}
+		log.Info("elasticClient.SetWriteIndexTrue", "index", index)
+
+		err = ei.elasticClient.CheckAndCreatePolicy(policyName, policy)
+		if err != nil {
+			return fmt.Errorf("databaseClient.PutPolicy index: %s, error: %w", index, err)
+		}
+
+		log.Info("databaseClient.PutPolicy", "index", index)
 	}
 
-	log.Debug("elasticProcessor.getTemplateByName", "could not find template", templateName)
 	return nil
 }
 
 // SaveHeader will prepare and save information about a header in elasticsearch server
 func (ei *elasticProcessor) SaveHeader(outportBlockWithHeader *outport.OutportBlockWithHeader) error {
-	if !ei.isIndexEnabled(elasticIndexer.BlockIndex) {
-		return nil
-	}
-
-	elasticBlock, err := ei.blockProc.PrepareBlockForDB(outportBlockWithHeader)
+	blockResults, err := ei.blockProc.PrepareBlockForDB(outportBlockWithHeader)
 	if err != nil {
 		return err
 	}
 
 	buffSlice := data.NewBufferSlice(ei.bulkRequestMaxSize)
-	err = ei.blockProc.SerializeBlock(elasticBlock, buffSlice, elasticIndexer.BlockIndex)
+	err = ei.indexBlock(blockResults.Block, buffSlice)
 	if err != nil {
 		return err
 	}
@@ -274,7 +238,28 @@ func (ei *elasticProcessor) SaveHeader(outportBlockWithHeader *outport.OutportBl
 		return err
 	}
 
+	err = ei.indexExecutionResults(blockResults.ExecutionResults, buffSlice)
+	if err != nil {
+		return err
+	}
+
 	return ei.doBulkRequests("", buffSlice.Buffers(), outportBlockWithHeader.ShardID)
+}
+
+func (ei *elasticProcessor) indexBlock(esBlock *data.Block, buffSlice *data.BufferSlice) error {
+	if !ei.isIndexEnabled(elasticIndexer.BlockIndex) {
+		return nil
+	}
+
+	return ei.blockProc.SerializeBlock(esBlock, buffSlice, elasticIndexer.BlockIndex)
+}
+
+func (ei *elasticProcessor) indexExecutionResults(executionResults []*data.ExecutionResult, buffSlice *data.BufferSlice) error {
+	if !ei.isIndexEnabled(elasticIndexer.ExecutionResultsIndex) {
+		return nil
+	}
+
+	return ei.blockProc.SerializeExecutionResults(executionResults, buffSlice, elasticIndexer.ExecutionResultsIndex)
 }
 
 func (ei *elasticProcessor) indexEpochInfoData(header coreData.HeaderHandler, buffSlice *data.BufferSlice) error {
@@ -294,19 +279,38 @@ func (ei *elasticProcessor) RemoveHeader(header coreData.HeaderHandler) error {
 	}
 
 	ctxWithValue := context.WithValue(context.Background(), request.ContextKey, request.ExtendTopicWithShardID(request.RemoveTopic, header.GetShardID()))
-	return ei.elasticClient.DoQueryRemove(
+	err = ei.elasticClient.DoQueryRemove(
 		ctxWithValue,
 		elasticIndexer.BlockIndex,
 		converters.PrepareHashesForQueryRemove([]string{hex.EncodeToString(headerHash)}),
 	)
+	if err != nil {
+		return err
+	}
+
+	if len(header.GetExecutionResultsHandlers()) == 0 {
+		return nil
+	}
+
+	executionResultsHashes := make([]string, 0)
+	for _, executonResult := range header.GetExecutionResultsHandlers() {
+		executionResultsHashes = append(executionResultsHashes, hex.EncodeToString(executonResult.GetHeaderHash()))
+	}
+
+	return ei.elasticClient.DoQueryRemove(
+		ctxWithValue,
+		elasticIndexer.ExecutionResultsIndex,
+		converters.PrepareHashesForQueryRemove(executionResultsHashes),
+	)
 }
 
 // RemoveMiniblocks will remove all miniblocks that are in header from elasticsearch server
-func (ei *elasticProcessor) RemoveMiniblocks(header coreData.HeaderHandler, body *block.Body) error {
-	encodedMiniblocksHashes := ei.miniblocksProc.GetMiniblocksHashesHexEncoded(header, body)
-	if len(encodedMiniblocksHashes) == 0 {
-		return nil
+func (ei *elasticProcessor) RemoveMiniblocks(header coreData.HeaderHandler) error {
+	headerData := &data.HeaderData{
+		ShardID:          header.GetShardID(),
+		MiniBlockHeaders: header.GetMiniBlockHeaderHandlers(),
 	}
+	encodedMiniblocksHashes := ei.miniblocksProc.GetMiniblocksHashesHexEncoded(headerData)
 
 	ctxWithValue := context.WithValue(context.Background(), request.ContextKey, request.ExtendTopicWithShardID(request.RemoveTopic, header.GetShardID()))
 	return ei.elasticClient.DoQueryRemove(
@@ -318,7 +322,15 @@ func (ei *elasticProcessor) RemoveMiniblocks(header coreData.HeaderHandler, body
 
 // RemoveTransactions will remove transaction that are in miniblock from the elasticsearch server
 func (ei *elasticProcessor) RemoveTransactions(header coreData.HeaderHandler, body *block.Body, timestampMs uint64) error {
-	encodedTxsHashes, encodedScrsHashes := ei.transactionsProc.GetHexEncodedHashesForRemove(header, body)
+	headerData := &data.HeaderData{
+		Timestamp:        header.GetTimeStamp(),
+		TimestampMs:      timestampMs,
+		Round:            header.GetRound(),
+		ShardID:          header.GetShardID(),
+		Epoch:            header.GetEpoch(),
+		MiniBlockHeaders: header.GetMiniBlockHeaderHandlers(),
+	}
+	encodedTxsHashes, encodedScrsHashes := ei.transactionsProc.GetHexEncodedHashesForRemove(headerData, body)
 	shardID := header.GetShardID()
 
 	err := ei.removeIfHashesNotEmpty(elasticIndexer.TransactionsIndex, encodedTxsHashes, shardID)
@@ -344,6 +356,31 @@ func (ei *elasticProcessor) RemoveTransactions(header coreData.HeaderHandler, bo
 	err = ei.removeFromIndexByTimestampAndShardID(header.GetShardID(), elasticIndexer.EventsIndex, timestampMs)
 	if err != nil {
 		return err
+	}
+
+	drwaIndices := []string{
+		elasticIndexer.DrwaDenialsIndex,
+		elasticIndexer.DrwaIdentitiesIndex,
+		elasticIndexer.DrwaHolderComplianceIndex,
+		elasticIndexer.DrwaAttestationsIndex,
+		elasticIndexer.DrwaTokenPoliciesIndex,
+		elasticIndexer.DrwaControlEventsIndex,
+	}
+
+	headerHash, err := ei.blockProc.ComputeHeaderHash(header)
+	if err != nil {
+		return err
+	}
+	blockHashHex := hex.EncodeToString(headerHash)
+
+	for _, index := range drwaIndices {
+		if !ei.isIndexEnabled(index) {
+			continue
+		}
+		err = ei.removeFromIndexByBlockHashAndShardID(header.GetShardID(), index, blockHashHex)
+		if err != nil {
+			return err
+		}
 	}
 
 	return ei.updateDelegatorsInCaseOfRevert(header, body, timestampMs)
@@ -398,38 +435,137 @@ func (ei *elasticProcessor) removeFromIndexByTimestampAndShardID(shardID uint32,
 	)
 }
 
+func (ei *elasticProcessor) removeFromIndexByBlockHashAndShardID(shardID uint32, index string, blockHash string) error {
+	ctxWithValue := context.WithValue(context.Background(), request.ContextKey, request.ExtendTopicWithShardID(request.RemoveTopic, shardID))
+	query, err := json.Marshal(map[string]interface{}{
+		"query": map[string]interface{}{
+			"bool": map[string]interface{}{
+				"must": []interface{}{
+					map[string]interface{}{"term": map[string]interface{}{"shardID": shardID}},
+					map[string]interface{}{"term": map[string]interface{}{"blockHash": blockHash}},
+				},
+			},
+		},
+	})
+	if err != nil {
+		return err
+	}
+	return ei.elasticClient.DoQueryRemove(ctxWithValue, index, bytes.NewBuffer(query))
+}
+
 // SaveMiniblocks will prepare and save information about miniblocks in elasticsearch server
-func (ei *elasticProcessor) SaveMiniblocks(header coreData.HeaderHandler, miniBlocks []*block.MiniBlock, timestampMS uint64) error {
+func (ei *elasticProcessor) SaveMiniblocks(obh *outport.OutportBlockWithHeader) error {
 	if !ei.isIndexEnabled(elasticIndexer.MiniblocksIndex) {
 		return nil
 	}
 
-	mbs := ei.miniblocksProc.PrepareDBMiniblocks(header, miniBlocks, timestampMS)
-	if len(mbs) == 0 {
-		return nil
+	buffSlice := data.NewBufferSlice(ei.bulkRequestMaxSize)
+
+	headerData := &data.HeaderData{
+		Timestamp:        converters.MillisecondsToSeconds(obh.BlockData.TimestampMs),
+		TimestampMs:      obh.BlockData.TimestampMs,
+		Round:            obh.Header.GetRound(),
+		ShardID:          obh.Header.GetShardID(),
+		Epoch:            obh.Header.GetEpoch(),
+		MiniBlockHeaders: obh.Header.GetMiniBlockHeaderHandlers(),
+		NumberOfShards:   obh.NumberOfShards,
+		HeaderHash:       obh.BlockData.HeaderHash,
+	}
+	miniBlocks := append(obh.BlockData.Body.MiniBlocks, obh.BlockData.IntraShardMiniBlocks...)
+	mbs := ei.miniblocksProc.PrepareDBMiniblocks(headerData, miniBlocks)
+	ei.miniblocksProc.SerializeBulkMiniBlocks(mbs, buffSlice, elasticIndexer.MiniblocksIndex, headerData.ShardID)
+
+	for _, executionResult := range obh.Header.GetExecutionResultsHandlers() {
+		executionResulData, found := obh.BlockData.Results[hex.EncodeToString(executionResult.GetHeaderHash())]
+		if !found {
+			log.Warn("elasticProcessor.SaveTransactions: cannot find execution result data", "hash", executionResult.GetHeaderHash())
+			continue
+		}
+
+		headerData = &data.HeaderData{
+			Timestamp:        converters.MillisecondsToSeconds(executionResulData.TimestampMs),
+			TimestampMs:      executionResulData.TimestampMs,
+			Round:            executionResult.GetHeaderRound(),
+			ShardID:          obh.Header.GetShardID(),
+			NumberOfShards:   obh.NumberOfShards,
+			Epoch:            executionResult.GetHeaderEpoch(),
+			MiniBlockHeaders: converters.GetMiniBlocksHeaderHandlersFromExecResult(executionResult),
+			HeaderHash:       executionResult.GetHeaderHash(),
+		}
+
+		miniBlocks = append(executionResulData.Body.MiniBlocks, executionResulData.IntraShardMiniBlocks...)
+		mbs = ei.miniblocksProc.PrepareDBMiniblocks(headerData, miniBlocks)
+		ei.miniblocksProc.SerializeBulkMiniBlocks(mbs, buffSlice, elasticIndexer.MiniblocksIndex, headerData.ShardID)
+
 	}
 
-	buffSlice := data.NewBufferSlice(ei.bulkRequestMaxSize)
-	ei.miniblocksProc.SerializeBulkMiniBlocks(mbs, buffSlice, elasticIndexer.MiniblocksIndex, header.GetShardID())
-
-	return ei.doBulkRequests("", buffSlice.Buffers(), header.GetShardID())
+	return ei.doBulkRequests("", buffSlice.Buffers(), headerData.ShardID)
 }
 
 // SaveTransactions will prepare and save information about a transactions in elasticsearch server
 func (ei *elasticProcessor) SaveTransactions(obh *outport.OutportBlockWithHeader) error {
-	headerTimestamp := obh.Header.GetTimeStamp()
-
 	miniBlocks := append(obh.BlockData.Body.MiniBlocks, obh.BlockData.IntraShardMiniBlocks...)
-	preparedResults := ei.transactionsProc.PrepareTransactionsForDatabase(miniBlocks, obh.Header, obh.TransactionPool, ei.isImportDB(), obh.NumberOfShards, obh.BlockData.TimestampMs)
-	logsData := ei.logsAndEventsProc.ExtractDataFromLogs(obh.TransactionPool.Logs, preparedResults, headerTimestamp, obh.Header.GetShardID(), obh.NumberOfShards, obh.BlockData.TimestampMs)
+	headerData := &data.HeaderData{
+		Timestamp:        converters.MillisecondsToSeconds(obh.BlockData.TimestampMs),
+		TimestampMs:      obh.BlockData.TimestampMs,
+		Round:            obh.Header.GetRound(),
+		ShardID:          obh.Header.GetShardID(),
+		Epoch:            obh.Header.GetEpoch(),
+		MiniBlockHeaders: obh.Header.GetMiniBlockHeaderHandlers(),
+		NumberOfShards:   obh.NumberOfShards,
+		HeaderHash:       obh.BlockData.HeaderHash,
+	}
 
 	buffers := data.NewBufferSlice(ei.bulkRequestMaxSize)
-	err := ei.indexTransactions(preparedResults.Transactions, logsData.TxHashStatusInfo, obh.Header, buffers)
+	err := ei.prepareAndSaveTransactionsData(headerData, miniBlocks, obh.TransactionPool, obh.AlteredAccounts, buffers)
 	if err != nil {
 		return err
 	}
 
-	err = ei.prepareAndIndexOperations(preparedResults.Transactions, logsData.TxHashStatusInfo, obh.Header, preparedResults.ScResults, buffers, ei.isImportDB())
+	for _, executionResult := range obh.Header.GetExecutionResultsHandlers() {
+		executionResulData, found := obh.BlockData.Results[hex.EncodeToString(executionResult.GetHeaderHash())]
+		if !found {
+			log.Warn("elasticProcessor.SaveTransactions: cannot find execution result data", "hash", executionResult.GetHeaderHash())
+			continue
+		}
+
+		headerData = &data.HeaderData{
+			Timestamp:        converters.MillisecondsToSeconds(executionResulData.TimestampMs),
+			TimestampMs:      executionResulData.TimestampMs,
+			Round:            executionResult.GetHeaderRound(),
+			ShardID:          obh.Header.GetShardID(),
+			NumberOfShards:   obh.NumberOfShards,
+			Epoch:            executionResult.GetHeaderEpoch(),
+			MiniBlockHeaders: converters.GetMiniBlocksHeaderHandlersFromExecResult(executionResult),
+		}
+
+		miniBlocks = append(executionResulData.Body.MiniBlocks, executionResulData.IntraShardMiniBlocks...)
+		err = ei.prepareAndSaveTransactionsData(headerData, miniBlocks, executionResulData.TransactionPool, executionResulData.AlteredAccounts, buffers)
+		if err != nil {
+			return err
+		}
+	}
+
+	return ei.doBulkRequests("", buffers.Buffers(), headerData.ShardID)
+}
+
+func (ei *elasticProcessor) prepareAndSaveTransactionsData(
+	headerData *data.HeaderData,
+	miniBlocks []*block.MiniBlock,
+	pool *outport.TransactionPool,
+	alteredAccounts map[string]*alteredAccount.AlteredAccount,
+	buffers *data.BufferSlice,
+) error {
+	preparedResults := ei.transactionsProc.PrepareTransactionsForDatabase(miniBlocks, headerData, pool, ei.isImportDB())
+	blockHashHex := hex.EncodeToString(headerData.HeaderHash)
+	logsData := ei.logsAndEventsProc.ExtractDataFromLogs(pool.Logs, preparedResults, headerData.ShardID, headerData.NumberOfShards, headerData.TimestampMs, blockHashHex, headerData.Round)
+
+	err := ei.indexTransactions(preparedResults.Transactions, logsData.TxHashStatusInfo, headerData.ShardID, buffers)
+	if err != nil {
+		return err
+	}
+
+	err = ei.prepareAndIndexOperations(preparedResults.Transactions, logsData.TxHashStatusInfo, headerData.ShardID, preparedResults.ScResults, buffers, ei.isImportDB())
 	if err != nil {
 		return err
 	}
@@ -439,7 +575,7 @@ func (ei *elasticProcessor) SaveTransactions(obh *outport.OutportBlockWithHeader
 		return err
 	}
 
-	err = ei.indexNFTCreateInfo(logsData.Tokens, obh.AlteredAccounts, buffers, obh.ShardID)
+	err = ei.indexNFTCreateInfo(logsData.Tokens, alteredAccounts, buffers, headerData.ShardID)
 	if err != nil {
 		return err
 	}
@@ -465,7 +601,7 @@ func (ei *elasticProcessor) SaveTransactions(obh *outport.OutportBlockWithHeader
 	}
 
 	tagsCount := tags.NewTagsCount()
-	err = ei.indexAlteredAccounts(logsData.NFTsDataUpdates, obh.AlteredAccounts, buffers, tagsCount, obh.Header.GetShardID(), obh.BlockData.TimestampMs)
+	err = ei.indexAlteredAccounts(logsData.NFTsDataUpdates, alteredAccounts, buffers, tagsCount, headerData.ShardID, headerData.TimestampMs)
 	if err != nil {
 		return err
 	}
@@ -475,7 +611,7 @@ func (ei *elasticProcessor) SaveTransactions(obh *outport.OutportBlockWithHeader
 		return err
 	}
 
-	err = ei.indexTokens(logsData.TokensInfo, logsData.NFTsDataUpdates, buffers, obh.ShardID)
+	err = ei.indexTokens(logsData.TokensInfo, logsData.NFTsDataUpdates, buffers, headerData.ShardID)
 	if err != nil {
 		return err
 	}
@@ -485,7 +621,7 @@ func (ei *elasticProcessor) SaveTransactions(obh *outport.OutportBlockWithHeader
 		return err
 	}
 
-	err = ei.indexNFTBurnInfo(logsData.TokensSupply, buffers, obh.ShardID)
+	err = ei.indexNFTBurnInfo(logsData.TokensSupply, buffers, headerData.ShardID)
 	if err != nil {
 		return err
 	}
@@ -504,7 +640,39 @@ func (ei *elasticProcessor) SaveTransactions(obh *outport.OutportBlockWithHeader
 		return err
 	}
 
-	return ei.doBulkRequests("", buffers.Buffers(), obh.ShardID)
+	return ei.indexDRWARecords(logsData, buffers)
+}
+
+func (ei *elasticProcessor) indexDRWARecords(logsData *data.PreparedLogsResults, buffers *data.BufferSlice) error {
+	indexMap := map[string]func() error{
+		elasticIndexer.DrwaDenialsIndex: func() error {
+			return ei.logsAndEventsProc.SerializeDRWADenials(logsData.DrwaDenials, buffers, elasticIndexer.DrwaDenialsIndex)
+		},
+		elasticIndexer.DrwaIdentitiesIndex: func() error {
+			return ei.logsAndEventsProc.SerializeDRWAIdentities(logsData.DrwaIdentities, buffers, elasticIndexer.DrwaIdentitiesIndex)
+		},
+		elasticIndexer.DrwaHolderComplianceIndex: func() error {
+			return ei.logsAndEventsProc.SerializeDRWAHolderCompliance(logsData.DrwaHolderCompliances, buffers, elasticIndexer.DrwaHolderComplianceIndex)
+		},
+		elasticIndexer.DrwaAttestationsIndex: func() error {
+			return ei.logsAndEventsProc.SerializeDRWAAttestations(logsData.DrwaAttestations, buffers, elasticIndexer.DrwaAttestationsIndex)
+		},
+		elasticIndexer.DrwaTokenPoliciesIndex: func() error {
+			return ei.logsAndEventsProc.SerializeDRWATokenPolicies(logsData.DrwaTokenPolicies, buffers, elasticIndexer.DrwaTokenPoliciesIndex)
+		},
+		elasticIndexer.DrwaControlEventsIndex: func() error {
+			return ei.logsAndEventsProc.SerializeDRWAControlEvents(logsData.DrwaControlEvents, buffers, elasticIndexer.DrwaControlEventsIndex)
+		},
+	}
+	for index, fn := range indexMap {
+		if !ei.isIndexEnabled(index) {
+			continue
+		}
+		if err := fn(); err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 func (ei *elasticProcessor) prepareAndIndexRolesData(tokenRolesAndProperties *tokeninfo.TokenRolesAndProperties, buffSlice *data.BufferSlice, index string) error {
@@ -528,12 +696,21 @@ func (ei *elasticProcessor) indexTransactionsFeeData(txsHashFeeData map[string]*
 		return nil
 	}
 
-	err := ei.transactionsProc.SerializeTransactionsFeeData(txsHashFeeData, buffSlice, elasticIndexer.TransactionsIndex)
-	if err != nil {
-		return nil
+	if ei.isIndexEnabled(elasticIndexer.TransactionsIndex) {
+		err := ei.transactionsProc.SerializeTransactionsFeeData(txsHashFeeData, buffSlice, elasticIndexer.TransactionsIndex)
+		if err != nil {
+			return err
+		}
 	}
 
-	return ei.transactionsProc.SerializeTransactionsFeeData(txsHashFeeData, buffSlice, elasticIndexer.OperationsIndex)
+	if ei.isIndexEnabled(elasticIndexer.OperationsIndex) {
+		err := ei.transactionsProc.SerializeTransactionsFeeData(txsHashFeeData, buffSlice, elasticIndexer.OperationsIndex)
+		if err != nil {
+			return err
+		}
+	}
+
+	return nil
 }
 
 func (ei *elasticProcessor) indexLogs(logsDB []*data.Logs, buffSlice *data.BufferSlice) error {
@@ -565,18 +742,18 @@ func (ei *elasticProcessor) indexScDeploys(deployData map[string]*data.ScDeployI
 	return ei.logsAndEventsProc.SerializeChangeOwnerOperations(changeOwnerOperation, buffSlice, elasticIndexer.SCDeploysIndex)
 }
 
-func (ei *elasticProcessor) indexTransactions(txs []*data.Transaction, txHashStatusInfo map[string]*outport.StatusInfo, header coreData.HeaderHandler, bytesBuff *data.BufferSlice) error {
+func (ei *elasticProcessor) indexTransactions(txs []*data.Transaction, txHashStatusInfo map[string]*outport.StatusInfo, shardID uint32, bytesBuff *data.BufferSlice) error {
 	if !ei.isIndexEnabled(elasticIndexer.TransactionsIndex) {
 		return nil
 	}
 
-	return ei.transactionsProc.SerializeTransactions(txs, txHashStatusInfo, header.GetShardID(), bytesBuff, elasticIndexer.TransactionsIndex)
+	return ei.transactionsProc.SerializeTransactions(txs, txHashStatusInfo, shardID, bytesBuff, elasticIndexer.TransactionsIndex)
 }
 
 func (ei *elasticProcessor) prepareAndIndexOperations(
 	txs []*data.Transaction,
 	txHashStatusInfo map[string]*outport.StatusInfo,
-	header coreData.HeaderHandler,
+	shardID uint32,
 	scrs []*data.ScResult,
 	buffSlice *data.BufferSlice,
 	isImportDB bool,
@@ -585,14 +762,14 @@ func (ei *elasticProcessor) prepareAndIndexOperations(
 		return nil
 	}
 
-	processedTxs, processedSCRs := ei.operationsProc.ProcessTransactionsAndSCRs(txs, scrs, isImportDB, header.GetShardID())
+	processedTxs, processedSCRs := ei.operationsProc.ProcessTransactionsAndSCRs(txs, scrs, isImportDB, shardID)
 
-	err := ei.transactionsProc.SerializeTransactions(processedTxs, txHashStatusInfo, header.GetShardID(), buffSlice, elasticIndexer.OperationsIndex)
+	err := ei.transactionsProc.SerializeTransactions(processedTxs, txHashStatusInfo, shardID, buffSlice, elasticIndexer.OperationsIndex)
 	if err != nil {
 		return err
 	}
 
-	return ei.operationsProc.SerializeSCRs(processedSCRs, buffSlice, elasticIndexer.OperationsIndex, header.GetShardID())
+	return ei.operationsProc.SerializeSCRs(processedSCRs, buffSlice, elasticIndexer.OperationsIndex, shardID)
 }
 
 // SaveValidatorsRating will save validators rating
@@ -836,13 +1013,41 @@ func (ei *elasticProcessor) isIndexEnabled(index string) bool {
 }
 
 func (ei *elasticProcessor) doBulkRequests(index string, buffSlice []*bytes.Buffer, shardID uint32) error {
-	var err error
-	for idx := range buffSlice {
-		ctxWithValue := context.WithValue(context.Background(), request.ContextKey, request.ExtendTopicWithShardID(request.BulkTopic, shardID))
-		err = ei.elasticClient.DoBulkRequest(ctxWithValue, buffSlice[idx], index)
-		if err != nil {
-			return err
+	jobs := make(chan *bytes.Buffer)
+	errCh := make(chan error, len(buffSlice))
+
+	var wg sync.WaitGroup
+
+	for i := 0; i < ei.numWritesInParallel; i++ {
+		wg.Add(1)
+		go func() {
+			defer wg.Done()
+			for buf := range jobs {
+				ctx := context.WithValue(context.Background(), request.ContextKey, request.ExtendTopicWithShardID(request.BulkTopic, shardID))
+				err := ei.elasticClient.DoBulkRequest(ctx, buf, index)
+				if err != nil {
+					errCh <- err
+				}
+			}
+		}()
+	}
+
+	go func() {
+		for _, buf := range buffSlice {
+			jobs <- buf
 		}
+		close(jobs)
+	}()
+
+	wg.Wait()
+	close(errCh)
+
+	var errs []error
+	for err := range errCh {
+		errs = append(errs, err)
+	}
+	if len(errs) > 0 {
+		return errors.Join(errs...)
 	}
 
 	return nil
@@ -868,4 +1073,49 @@ func (ei *elasticProcessor) isImportDB() bool {
 // IsInterfaceNil returns true if there is no value under the interface
 func (ei *elasticProcessor) IsInterfaceNil() bool {
 	return ei == nil
+}
+
+// FinalizedBlock marks all DRWA index documents with the given headerHash as finalized
+func (ei *elasticProcessor) FinalizedBlock(finalizedBlock *outport.FinalizedBlock) error {
+	if finalizedBlock == nil {
+		return nil
+	}
+
+	hashHex := hex.EncodeToString(finalizedBlock.GetHeaderHash())
+	query, err := json.Marshal(map[string]interface{}{
+		"script": map[string]interface{}{
+			"source": "ctx._source.isFinalized = true",
+			"lang":   "painless",
+		},
+		"query": map[string]interface{}{
+			"term": map[string]interface{}{
+				"blockHash": hashHex,
+			},
+		},
+	})
+	if err != nil {
+		return err
+	}
+
+	ctxWithValue := context.WithValue(context.Background(), request.ContextKey, request.ExtendTopicWithShardID(request.UpdateTopic, finalizedBlock.GetShardID()))
+	buff := bytes.NewBuffer(query)
+
+	drwaIndices := []string{
+		elasticIndexer.DrwaDenialsIndex,
+		elasticIndexer.DrwaIdentitiesIndex,
+		elasticIndexer.DrwaHolderComplianceIndex,
+		elasticIndexer.DrwaAttestationsIndex,
+		elasticIndexer.DrwaTokenPoliciesIndex,
+		elasticIndexer.DrwaControlEventsIndex,
+	}
+	for _, index := range drwaIndices {
+		if _, ok := ei.enabledIndexes[index]; !ok {
+			continue
+		}
+		if err := ei.elasticClient.UpdateByQuery(ctxWithValue, index, bytes.NewBuffer(buff.Bytes())); err != nil {
+			return err
+		}
+	}
+
+	return nil
 }

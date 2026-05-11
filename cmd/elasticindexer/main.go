@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 	"os"
 	"os/signal"
@@ -64,6 +65,7 @@ func main() {
 		logLevel,
 		logSaveFile,
 		disableAnsiColor,
+		configPath,
 	}
 	app.Authors = []cli.Author{
 		{
@@ -103,8 +105,9 @@ func startIndexer(ctx *cli.Context) error {
 		return fmt.Errorf("%w while loading the enable epochs config file", err)
 	}
 
+	configPathStr := ctx.GlobalString(configPath.Name)
 	statusMetrics := metrics.NewStatusMetrics()
-	wsHost, err := factory.CreateWsIndexer(cfg, clusterCfg, epochsCfg, statusMetrics, ctx.App.Version)
+	wsHost, err := factory.CreateWsIndexer(cfg, clusterCfg, epochsCfg, statusMetrics, ctx.App.Version, configPathStr)
 	if err != nil {
 		return fmt.Errorf("%w while creating the indexer", err)
 	}
@@ -189,8 +192,16 @@ func loadEpochsConfig(filepath string) (config.EnableEpochsConfig, error) {
 func loadClusterConfig(filepath string) (config.ClusterConfig, error) {
 	cfg := config.ClusterConfig{}
 	err := core.LoadTomlFile(&cfg, filepath)
+	if err != nil {
+		return cfg, err
+	}
 
-	return cfg, err
+	ec := cfg.Config.ElasticCluster
+	if ec.UserName == "" && ec.Password == "" && !ec.AllowInsecureNoAuthDev {
+		return cfg, errors.New("elasticsearch username and password are required (set allow-insecure-no-auth-dev = true to opt out for local development)")
+	}
+
+	return cfg, nil
 }
 
 // loadApiConfig returns a ApiRoutesConfig by reading the config file provided

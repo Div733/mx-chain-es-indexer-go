@@ -1,5 +1,4 @@
 name: Integration tests
-
 on:
   push:
     branches: [ master, feat/*, rc/* ]
@@ -9,7 +8,7 @@ on:
 jobs:
   test-0:
     name: Elasticsearch v7.16.1
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - name: Set up Go 1.x
         uses: actions/setup-go@v5

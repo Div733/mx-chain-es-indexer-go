@@ -95,8 +95,9 @@ func TestElasticClient_GetWriteIndexMultipleIndicesBehind(t *testing.T) {
 		Addresses: []string{ts.URL},
 		Logger:    &logging.CustomLogger{},
 	})
-	res, err := esClient.getWriteIndex("blocks")
+	res, set, err := esClient.getWriteIndex("blocks")
 	require.Nil(t, err)
+	require.True(t, set)
 	require.Equal(t, "blocks-000004", res)
 }
 
@@ -119,7 +120,8 @@ func TestElasticClient_GetWriteIndexOneIndex(t *testing.T) {
 		Addresses: []string{ts.URL},
 		Logger:    &logging.CustomLogger{},
 	})
-	res, err := esClient.getWriteIndex("delegators")
+	res, set, err := esClient.getWriteIndex("delegators")
 	require.Nil(t, err)
+	require.False(t, set)
 	require.Equal(t, "delegators-000001", res)
 }

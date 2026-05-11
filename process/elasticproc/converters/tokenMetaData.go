@@ -80,10 +80,13 @@ func PrepareNFTUpdateData(buffSlice *data.BufferSlice, updateNFTData []*data.NFT
 			id = fmt.Sprintf("%s-%s", nftUpdate.Address, nftUpdate.Identifier)
 		}
 
-		metaData := []byte(fmt.Sprintf(`{"update":{ "_index":"%s","_id":"%s"}}%s`, index, id, "\n"))
+		metaData, err := prepareBulkUpdateMeta(index, id)
+		if err != nil {
+			return err
+		}
 		freezeOrUnfreezeTokenIndex := (nftUpdate.Freeze || nftUpdate.UnFreeze) && !isAccountsESDTIndex
 		if freezeOrUnfreezeTokenIndex {
-			err := buffSlice.PutData(metaData, prepareSerializeDataForFreezeAndUnFreeze(nftUpdate))
+			err = buffSlice.PutData(metaData, prepareSerializeDataForFreezeAndUnFreeze(nftUpdate))
 			if err != nil {
 				return err
 			}
@@ -133,14 +136,9 @@ func PrepareNFTUpdateData(buffSlice *data.BufferSlice, updateNFTData []*data.NFT
 		newTags := TruncateSliceElementsIfExceedsMaxLength(ExtractTagsFromAttributes(nftUpdate.NewAttributes))
 		newMetadata := ExtractMetaDataFromAttributes(nftUpdate.NewAttributes)
 
-		marshalizedTags, errM := json.Marshal(newTags)
-		if errM != nil {
-			return errM
-		}
-
 		codeToExecute := `
-			if (ctx._source.containsKey('data')) {
-				ctx._source.data.attributes = params.attributes;
+				if (ctx._source.containsKey('data')) {
+					ctx._source.data.attributes = params.attributes;
 				if (!params.metadata.isEmpty() ) {
 					ctx._source.data.metadata = params.metadata
 				} else {
@@ -155,11 +153,32 @@ func PrepareNFTUpdateData(buffSlice *data.BufferSlice, updateNFTData []*data.NFT
 						ctx._source.data.remove('tags')
 					}
 				}
-			}
-`
-		serializedData := []byte(fmt.Sprintf(`{"script": {"source": "%s","lang": "painless","params": {"attributes": "%s", "metadata": "%s", "tags": %s}}, "upsert": {}}`,
-			FormatPainlessSource(codeToExecute), base64Attr, newMetadata, marshalizedTags),
-		)
+				}
+	`
+		payload := struct {
+			Script struct {
+				Source string `json:"source"`
+				Lang   string `json:"lang"`
+				Params struct {
+					Attributes string   `json:"attributes"`
+					Metadata   string   `json:"metadata"`
+					Tags       []string `json:"tags"`
+				} `json:"params"`
+			} `json:"script"`
+			Upsert map[string]interface{} `json:"upsert"`
+		}{
+			Upsert: map[string]interface{}{},
+		}
+		payload.Script.Source = FormatPainlessSource(codeToExecute)
+		payload.Script.Lang = "painless"
+		payload.Script.Params.Attributes = base64Attr
+		payload.Script.Params.Metadata = newMetadata
+		payload.Script.Params.Tags = newTags
+
+		serializedData, err := json.Marshal(payload)
+		if err != nil {
+			return err
+		}
 		if len(nftUpdate.URIsToAdd) != 0 {
 			uris := make([]string, 0, len(nftUpdate.URIsToAdd))
 			for _, uri := range nftUpdate.URIsToAdd {
@@ -196,13 +215,31 @@ func PrepareNFTUpdateData(buffSlice *data.BufferSlice, updateNFTData []*data.NFT
 			serializedData = []byte(fmt.Sprintf(`{"script": {"source": "%s","lang": "painless","params": {"uris": %s, "set":%t}},"upsert": {}}`, FormatPainlessSource(codeToExecute), marshalizedURIS, nftUpdate.SetURIs))
 		}
 
-		err := buffSlice.PutData(metaData, serializedData)
+		err = buffSlice.PutData(metaData, serializedData)
 		if err != nil {
 			return err
 		}
 	}
 
 	return nil
+}
+
+func prepareBulkUpdateMeta(index string, id string) ([]byte, error) {
+	meta := struct {
+		Update struct {
+			Index string `json:"_index"`
+			ID    string `json:"_id"`
+		} `json:"update"`
+	}{}
+	meta.Update.Index = index
+	meta.Update.ID = id
+
+	serialized, err := json.Marshal(meta)
+	if err != nil {
+		return nil, err
+	}
+
+	return append(serialized, '\n'), nil
 }
 
 func prepareSerializeDataForFreezeAndUnFreeze(nftUpdateData *data.NFTDataUpdate) []byte {
@@ -264,9 +301,23 @@ func prepareSerializeDataForNewCreator(nftUpdateData *data.NFTDataUpdate) []byte
 				ctx._source.data.creator = params.creator;
 			}
 `
-	serializedData := []byte(fmt.Sprintf(`{"script": {"source": "%s","lang": "painless","params": {"creator": "%s"}}, "upsert": {}}`,
-		FormatPainlessSource(codeToExecute), nftUpdateData.NewCreator),
-	)
+	payload := struct {
+		Script struct {
+			Source string `json:"source"`
+			Lang   string `json:"lang"`
+			Params struct {
+				Creator string `json:"creator"`
+			} `json:"params"`
+		} `json:"script"`
+		Upsert map[string]interface{} `json:"upsert"`
+	}{
+		Upsert: map[string]interface{}{},
+	}
+	payload.Script.Source = FormatPainlessSource(codeToExecute)
+	payload.Script.Lang = "painless"
+	payload.Script.Params.Creator = nftUpdateData.NewCreator
+
+	serializedData, _ := json.Marshal(payload)
 
 	return serializedData
 }

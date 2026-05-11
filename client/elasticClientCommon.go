@@ -1,17 +1,13 @@
 package client
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"net/http"
-	"net/url"
 	"strings"
 
 	"github.com/elastic/go-elasticsearch/v7/esapi"
-	"github.com/multiversx/mx-chain-es-indexer-go/data"
 	"github.com/multiversx/mx-chain-es-indexer-go/process/dataindexer"
 )
 
@@ -95,25 +91,41 @@ func elasticBulkRequestResponseHandler(res *esapi.Response) error {
 	if res.IsError() {
 		return fmt.Errorf("%s", res.String())
 	}
+	defer func() {
+		_ = res.Body.Close()
+	}()
 
-	bodyBytes, err := io.ReadAll(res.Body)
-	if err != nil {
-		return fmt.Errorf("%w cannot read elastic response body bytes", err)
+	var response struct {
+		Errors bool            `json:"errors"`
+		Items  json.RawMessage `json:"items"`
 	}
 
-	return extractErrorFromBulkBodyResponseBytes(bodyBytes)
+	err := json.NewDecoder(res.Body).Decode(&response)
+	if err != nil {
+		return fmt.Errorf("cannot decode elastic response body: %w", err)
+	}
+
+	if !response.Errors {
+		return nil
+	}
+
+	return extractErrorFromBulkItems(response.Items)
 }
 
-func extractErrorFromBulkBodyResponseBytes(bodyBytes []byte) error {
-	response := BulkRequestResponse{}
-	err := json.Unmarshal(bodyBytes, &response)
+func extractErrorFromBulkItems(itemsBytes []byte) error {
+	var items []struct {
+		ItemIndex  *Item `json:"index"`
+		ItemUpdate *Item `json:"update"`
+	}
+
+	err := json.Unmarshal(itemsBytes, &items)
 	if err != nil {
-		return err
+		return fmt.Errorf("cannot unmarshal bulk items: %w", err)
 	}
 
 	count := 0
 	errorsString := ""
-	for _, item := range response.Items {
+	for _, item := range items {
 		var selectedItem Item
 
 		switch {
@@ -192,46 +204,6 @@ func isErrAliasAlreadyExists(response map[string]interface{}) bool {
 	}
 
 	return existsString == aliasExistsMessage
-}
-
-func kibanaResponseErrorHandler(res *esapi.Response) error {
-	errorRes := &data.Response{}
-	decodeErr := loadResponseBody(res.Body, errorRes)
-	if decodeErr != nil {
-		return decodeErr
-	}
-
-	errStr := fmt.Sprintf("%v", errorRes.Error)
-	if errorRes.Status == http.StatusConflict && strings.Contains(errStr, errPolicyAlreadyExists) {
-		return nil
-	}
-
-	if errorRes.Error == nil && errorRes.Status < http.StatusBadRequest {
-		return nil
-	}
-
-	log.Warn("elasticClient.parseResponse",
-		"error returned by elastic API", errorRes.Error,
-		"code", res.StatusCode)
-	return dataindexer.ErrBackOff
-}
-
-func newRequest(method, path string, body *bytes.Buffer) *http.Request {
-	r := http.Request{
-		Method:     method,
-		URL:        &url.URL{Path: path},
-		Proto:      "HTTP/1.1",
-		ProtoMajor: 1,
-		ProtoMinor: 1,
-		Header:     make(http.Header),
-	}
-
-	if body != nil {
-		r.Body = ioutil.NopCloser(body)
-		r.ContentLength = int64(body.Len())
-	}
-
-	return &r
 }
 
 /**

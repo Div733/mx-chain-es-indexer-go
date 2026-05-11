@@ -1,0 +1,75 @@
+{
+	"index_patterns": [
+		"mrv-anchored-proofs-*"
+	],
+	"mappings": {
+		"properties": {
+			"anchoredAt": {
+				"type": "long"
+			},
+			"blockHash": {
+				"type": "keyword"
+			},
+			"blockRound": {
+				"type": "long"
+			},
+			"canonicalization": {
+				"type": "keyword"
+			},
+			"eventOrder": {
+				"type": "long"
+			},
+			"eventType": {
+				"type": "keyword"
+			},
+			"evidenceManifestHash": {
+				"type": "keyword"
+			},
+			"hashAlgo": {
+				"type": "keyword"
+			},
+			"isFinalized": {
+				"type": "boolean"
+			},
+			"methodologyVersion": {
+				"type": "long"
+			},
+			"publicFarmId": {
+				"type": "keyword"
+			},
+			"publicProjectId": {
+				"type": "keyword"
+			},
+			"publicSeasonId": {
+				"type": "keyword"
+			},
+			"publicTenantId": {
+				"type": "keyword"
+			},
+			"reportHash": {
+				"type": "keyword"
+			},
+			"reportId": {
+				"type": "keyword"
+			},
+			"shardID": {
+				"type": "long"
+			},
+			"timestamp": {
+				"format": "epoch_second",
+				"type": "date"
+			},
+			"timestampMs": {
+				"format": "epoch_millis",
+				"type": "date"
+			},
+			"txHash": {
+				"type": "keyword"
+			}
+		}
+	},
+	"settings": {
+		"number_of_replicas": 0,
+		"number_of_shards": 3
+	}
+}

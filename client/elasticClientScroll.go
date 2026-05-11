@@ -29,7 +29,7 @@ func (ec *elasticClient) DoCountRequest(ctx context.Context, index string, body 
 		return 0, err
 	}
 
-	countRes := gjson.Get(string(bodyBytes), "count")
+	countRes := gjson.GetBytes(bodyBytes, "count")
 
 	return countRes.Uint(), nil
 }
@@ -66,7 +66,7 @@ func (ec *elasticClient) DoScrollRequest(
 		return err
 	}
 
-	scrollID := gjson.Get(string(bodyBytes), "_scroll_id")
+	scrollID := gjson.GetBytes(bodyBytes, "_scroll_id")
 	return ec.iterateScroll(scrollID.String(), handlerFunc)
 }
 
@@ -90,7 +90,7 @@ func (ec *elasticClient) iterateScroll(
 			return errScroll
 		}
 
-		numberOfHits := gjson.Get(string(scrollBodyBytes), "hits.hits.#")
+		numberOfHits := gjson.GetBytes(scrollBodyBytes, "hits.hits.#")
 		if numberOfHits.Int() < 1 {
 			return nil
 		}
